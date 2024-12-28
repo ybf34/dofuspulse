@@ -1,0 +1,30 @@
+# Node.js
+node_modules/
+pnpm-lock.yaml
+
+
+# Logs
+api_old/
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# OS generated files
+.DS_Store
+Thumbs.db
+
+# IDEs and editors
+.idea/
+.vscode/
+*.swp
+
+# Build directories
+dist/
+build/
+target/
+
+# Temporary files
+tmp/
+temp/

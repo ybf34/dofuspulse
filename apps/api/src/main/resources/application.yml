@@ -1,0 +1,65 @@
+spring:
+  application:
+    name: dtapi
+  datasource:
+    url: jdbc:postgresql://localhost:5432/dofuspulse
+    username: yassinebenfekih
+    password: admin
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: true
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+logging:
+  level:
+    org.springframework.security: trace
+    root: INFO
+server:
+  servlet:
+      session:
+        timeout: 1m
+        tracking-modes: cookie
+        http-only: true
+        secure: false
+        name: JSESSIONID
+        domain: localhost
+        path: /
+        max-age: 600
+        same-site: strict
+  port: 8080
+  tomcat:
+    additional-tld-skip-patterns: '*.tld'
+
+
+---
+spring:
+    config:
+        activate:
+            on-profile: local
+    devtools:
+        restart:
+            enabled: true
+
+
+    jpa:
+        properties:
+            hibernate:
+                format_sql: true
+                
+
+---
+spring:
+    config:
+        activate:
+            on-profile: prod
+    datasource:
+        url: jdbc:postgresql://prod-db-server:5432/dofuspulse
+        username: dofuspulse
+        password: admin
+    jpa:
+        properties:
+            hibernate:
+                format_sql: true
