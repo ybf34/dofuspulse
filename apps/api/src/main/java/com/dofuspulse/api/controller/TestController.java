@@ -1,7 +1,6 @@
 package com.dofuspulse.api.controller;
 
 import com.dofuspulse.api.auth.UserPrincipal;
-import com.dofuspulse.api.auth.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,7 +12,7 @@ public class TestController {
 
 
     @GetMapping("/")
-    public String test(){
+    public String test() {
         return "Dofus Pulse Api is running";
     }
 

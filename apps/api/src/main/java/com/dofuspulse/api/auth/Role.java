@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 import static com.dofuspulse.api.auth.Permission.*;
 
 
-
 @RequiredArgsConstructor
 @Getter
 public enum Role {

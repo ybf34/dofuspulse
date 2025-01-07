@@ -27,7 +27,7 @@ public class AuthService {
     private final SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
 
     public String loginAttempt(LoginRequest loginRequest, HttpServletRequest request,
-                                             HttpServletResponse response){
+                               HttpServletResponse response) {
         var authenticate = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), CharBuffer.wrap(loginRequest.getPassword()))
         );

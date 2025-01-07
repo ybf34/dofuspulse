@@ -2,7 +2,6 @@ package com.dofuspulse.api.auth;
 
 
 import com.dofuspulse.api.model.LoginRequest;
-
 import com.dofuspulse.api.model.RegisterRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -12,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -94,7 +94,7 @@ public class AuthControllerTest {
     public void shouldReturnSuccessWhenAdminAccessesAdminProtectedResource() throws Exception {
 
         this.mockMvc.perform(get("/admin")
-                .contentType(MediaType.APPLICATION_JSON))
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
     }

@@ -43,7 +43,7 @@ public class ValidPasswordValidator implements ConstraintValidator<ValidPassword
                 ));
 
         boolean isValid = StringUtils.isNotBlank(CharBuffer.wrap(password).toString()) && validator.validate(new PasswordData(CharBuffer.wrap(password).toString())).isValid();
-        //System.out.println(" IS " + (isValid ? "VALID" : "INVALID"));
+
         if (!isValid) {
             context.disableDefaultConstraintViolation();
             context.buildConstraintViolationWithTemplate(message).addConstraintViolation();

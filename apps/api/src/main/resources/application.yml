@@ -22,13 +22,11 @@ server:
       session:
         timeout: 1m
         tracking-modes: cookie
-        http-only: true
-        secure: false
-        name: JSESSIONID
-        domain: localhost
-        path: /
-        max-age: 600
-        same-site: strict
+        cookie:
+          http-only: true
+
+
+
   port: 8080
   tomcat:
     additional-tld-skip-patterns: '*.tld'
