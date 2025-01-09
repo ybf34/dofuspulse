@@ -1,8 +1,6 @@
 package com.dofuspulse.api.auth;
 
 
-import com.dofuspulse.api.model.LoginRequest;
-import com.dofuspulse.api.model.RegisterRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

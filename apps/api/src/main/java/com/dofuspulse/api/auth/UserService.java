@@ -16,10 +16,11 @@ public class UserService {
         return userRepository.findByEmail(email);
     }
 
-    public void saveUser(UserPrincipal user) {
+    public Long saveUser(UserPrincipal user) {
         if (userRepository.findByEmail(user.getEmail()).isPresent()) {
             throw new UserAlreadyExistsException("User with email " + user.getEmail() + " already exists");
         }
         userRepository.save(user);
+        return user.getId();
     }
 }

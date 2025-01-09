@@ -1,8 +1,6 @@
 package com.dofuspulse.api.auth;
 
 
-import com.dofuspulse.api.model.LoginRequest;
-import com.dofuspulse.api.model.RegisterRequest;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
