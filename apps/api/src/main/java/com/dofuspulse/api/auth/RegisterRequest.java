@@ -12,13 +12,13 @@ import lombok.Data;
 @Builder
 public class RegisterRequest {
 
-    @Email
-    @NotNull
-    private String email;
+  @Email
+  @NotNull
+  private String email;
 
-    @ValidPassword
-    @NotNull
-    private char[] password;
+  @ValidPassword
+  @NotNull
+  private char[] password;
 
-    private Role role;
+  private Role role;
 }

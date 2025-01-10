@@ -1,4 +1,3 @@
 package com.dofuspulse.api.constraint;
 
-public record ValidationError(String name, String reason) {
-}
+public record ValidationError(String name, String reason) {}

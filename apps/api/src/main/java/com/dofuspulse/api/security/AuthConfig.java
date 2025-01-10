@@ -14,19 +14,20 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @RequiredArgsConstructor
 public class AuthConfig {
 
-    public final CustomUserDetailsService customUserDetailsService;
+  public final CustomUserDetailsService customUserDetailsService;
 
-    @Bean
-    public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
-        AuthenticationManagerBuilder authManagerBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
-        authManagerBuilder.userDetailsService(customUserDetailsService)
-                .passwordEncoder(passwordEncoder());
+  @Bean
+  public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
+    AuthenticationManagerBuilder authManager = http.getSharedObject(
+        AuthenticationManagerBuilder.class);
 
-        return authManagerBuilder.build();
-    }
+    authManager.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+    return authManager.build();
+  }
+
+  @Bean
+  public PasswordEncoder passwordEncoder() {
+    return new BCryptPasswordEncoder();
+  }
 }

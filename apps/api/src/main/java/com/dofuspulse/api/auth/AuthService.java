@@ -3,6 +3,7 @@ package com.dofuspulse.api.auth;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import java.nio.CharBuffer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -13,39 +14,39 @@ import org.springframework.security.web.context.HttpSessionSecurityContextReposi
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Service;
 
-import java.nio.CharBuffer;
-
 @Service
 @RequiredArgsConstructor
 public class AuthService {
 
-    private final AuthenticationManager authenticationManager;
-    private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
-    private final SecurityContextRepository securityContextRepository = new HttpSessionSecurityContextRepository();
+  private final AuthenticationManager authenticationManager;
+  private final UserService userService;
+  private final PasswordEncoder passwordEncoder;
+  private final SecurityContextRepository scr = new HttpSessionSecurityContextRepository();
 
-    public String loginAttempt(LoginRequest loginRequest, HttpServletRequest request,
-                               HttpServletResponse response) {
-        var authenticate = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), CharBuffer.wrap(loginRequest.getPassword()))
-        );
-        SecurityContextHolder.getContext().setAuthentication(authenticate);
+  public String loginAttempt(
+      LoginRequest loginRequest,
+      HttpServletRequest request,
+      HttpServletResponse response) {
 
-        SecurityContext context = SecurityContextHolder.getContext();
-        securityContextRepository.saveContext(context, request, response);
+    var authenticate = authenticationManager.authenticate(
+        new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),
+            CharBuffer.wrap(loginRequest.getPassword())));
 
-        return "Successfully logged in";
-    }
+    SecurityContextHolder.getContext().setAuthentication(authenticate);
 
-    public String register(RegisterRequest request) {
+    SecurityContext context = SecurityContextHolder.getContext();
+    scr.saveContext(context, request, response);
 
-        UserPrincipal newUser = UserPrincipal.builder()
-                .email(request.getEmail())
-                .password(passwordEncoder.encode(CharBuffer.wrap(request.getPassword())).toCharArray())
-                .role(Role.valueOf("USER"))
-                .build();
+    return "Successfully logged in";
+  }
 
-        userService.saveUser(newUser);
-        return "User registered successfully";
-    }
+  public String register(RegisterRequest request) {
+
+    UserPrincipal newUser = UserPrincipal.builder().email(request.getEmail())
+        .password(passwordEncoder.encode(CharBuffer.wrap(request.getPassword())).toCharArray())
+        .role(Role.USER).build();
+
+    userService.saveUser(newUser);
+    return "User registered successfully";
+  }
 }

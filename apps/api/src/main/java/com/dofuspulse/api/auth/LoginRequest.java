@@ -11,10 +11,10 @@ import lombok.Getter;
 
 public class LoginRequest {
 
-    @Email
-    @NotNull
-    private String email;
+  @Email
+  @NotNull
+  private String email;
 
-    @NotNull
-    private char[] password;
+  @NotNull
+  private char[] password;
 }
