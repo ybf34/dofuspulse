@@ -28,13 +28,16 @@ public class AuthService {
       HttpServletRequest request,
       HttpServletResponse response) {
 
-    var authenticate = authenticationManager.authenticate(
-        new UsernamePasswordAuthenticationToken(loginRequest.getEmail(),
-            CharBuffer.wrap(loginRequest.getPassword())));
+    var authenticationToken = new UsernamePasswordAuthenticationToken(
+        loginRequest.getEmail(),
+        CharBuffer.wrap(loginRequest.getPassword())
+    );
 
-    SecurityContextHolder.getContext().setAuthentication(authenticate);
+    var authentication = authenticationManager.authenticate(authenticationToken);
 
     SecurityContext context = SecurityContextHolder.getContext();
+    context.setAuthentication(authentication);
+
     scr.saveContext(context, request, response);
 
     return "Successfully logged in";
@@ -42,9 +45,14 @@ public class AuthService {
 
   public String register(RegisterRequest request) {
 
-    UserPrincipal newUser = UserPrincipal.builder().email(request.getEmail())
-        .password(passwordEncoder.encode(CharBuffer.wrap(request.getPassword())).toCharArray())
-        .role(Role.USER).build();
+    var encodedPassword = passwordEncoder.encode(CharBuffer.wrap(request.getPassword()))
+        .toCharArray();
+
+    UserPrincipal newUser = new UserPrincipal();
+
+    newUser.setEmail(request.getEmail());
+    newUser.setPassword(encodedPassword);
+    newUser.setRole(Role.USER);
 
     userService.saveUser(newUser);
     return "User registered successfully";
