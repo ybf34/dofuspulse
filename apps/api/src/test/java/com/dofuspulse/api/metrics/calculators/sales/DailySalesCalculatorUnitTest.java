@@ -17,7 +17,7 @@ import org.junit.jupiter.api.Test;
  * Unit tests for the DailySalesCalculator
  */
 @DisplayName("Daily Sales Calculator Unit Tests")
-public class DailySalesCalculatorUnitTest {
+class DailySalesCalculatorUnitTest {
 
   /**
    * Test to ensure that no sales data returns an empty list
@@ -25,7 +25,7 @@ public class DailySalesCalculatorUnitTest {
 
   @Test
   @DisplayName("Should return an empty list if no sales data")
-  public void shouldReturnEmptyListIfNoSalesData() {
+  void shouldReturnEmptyListIfNoSalesData() {
 
     DailySalesCalculator calculator = new DailySalesCalculator();
     List<DailySales> dailySales = calculator.calculate(new DailySalesParam(List.of()));
@@ -45,7 +45,7 @@ public class DailySalesCalculatorUnitTest {
 
   @Test
   @DisplayName("Should expire an item after 14 days in the market")
-  public void itemShouldExpireAfter14daysInTheMarketIfNotBought() {
+  void itemShouldExpireAfter14daysInTheMarketIfNotBought() {
     DailySalesCalculator calculator = new DailySalesCalculator();
 
     DailySalesParam params = SalesScenarioFactory.expiredListingsScenario();
@@ -66,7 +66,7 @@ public class DailySalesCalculatorUnitTest {
 
   @Test
   @DisplayName("Should sell an item if it disappears before 14 days")
-  public void itemShouldBeSoldIfItDisappearsBefore14Days() {
+  void itemShouldBeSoldIfItDisappearsBefore14Days() {
     DailySalesCalculator calculator = new DailySalesCalculator();
 
     DailySalesParam params = SalesScenarioFactory.soldListingsScenario();

@@ -12,11 +12,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 @DisplayName("Craft Cost Calculator Unit Tests")
-public class CraftCostCalculatorUnitTest {
+class CraftCostCalculatorUnitTest {
 
   @Test
   @DisplayName("Should calculate and return correct craft cost for each date")
-  public void shouldCalculateAndReturnCorrectCraftCostForEachDate() {
+  void shouldCalculateAndReturnCorrectCraftCostForEachDate() {
 
     CraftCostCalculator craftCostCalculator = new CraftCostCalculator();
     CraftCostParams craftCostParams = CraftCostScenarioFactory.multipleIngredientsCraftHistoryScenario();
@@ -36,7 +36,7 @@ public class CraftCostCalculatorUnitTest {
    */
   @Test
   @DisplayName("Should Return Empty Craft cost for the concerned date that misses ingredient prices")
-  public void shouldReturnEmptyCraftCostIfMissingAnIngredientPrice() {
+  void shouldReturnEmptyCraftCostIfMissingAnIngredientPrice() {
 
     CraftCostCalculator craftCostCalculator = new CraftCostCalculator();
     CraftCostParams craftCostParams = CraftCostScenarioFactory.missingIngredientPriceScenario();

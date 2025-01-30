@@ -16,7 +16,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class AuthControllerTest {
+class AuthControllerTest {
 
   @Autowired
   private MockMvc mockMvc;
@@ -38,7 +38,7 @@ public class AuthControllerTest {
 //    }
 
   @Test
-  public void shouldReturn400WhenInvalidRegistrationDataIsProvided() throws Exception {
+  void shouldReturn400WhenInvalidRegistrationDataIsProvided() throws Exception {
 
     RegisterRequest registerRequest = RegisterRequest.builder()
         .email("invalidmail")
@@ -54,7 +54,7 @@ public class AuthControllerTest {
   }
 
   @Test
-  public void shouldReturn200WhenUserLogsInWithValidCredentials() throws Exception {
+  void shouldReturn200WhenUserLogsInWithValidCredentials() throws Exception {
 
     this.mockMvc.perform(post("/api/v1/auth/login")
             .contentType(MediaType.APPLICATION_JSON)
@@ -66,7 +66,7 @@ public class AuthControllerTest {
   }
 
   @Test
-  public void shouldReturn401WhenLoginFailsWithInvalidCredentials() throws Exception {
+  void shouldReturn401WhenLoginFailsWithInvalidCredentials() throws Exception {
 
     this.mockMvc.perform(post("/api/v1/auth/login")
             .contentType(MediaType.APPLICATION_JSON)
@@ -79,7 +79,7 @@ public class AuthControllerTest {
 
   @Test
   @WithUserDetails("usertest@test.com")
-  public void shouldReturn403WhenNormalUserAccessesAdminProtectedResource() throws Exception {
+  void shouldReturn403WhenNormalUserAccessesAdminProtectedResource() throws Exception {
 
     this.mockMvc.perform(get("/admin")
             .contentType(MediaType.APPLICATION_JSON))
@@ -89,7 +89,7 @@ public class AuthControllerTest {
 
   @Test
   @WithUserDetails("admin@admin.com")
-  public void shouldReturnSuccessWhenAdminAccessesAdminProtectedResource() throws Exception {
+  void shouldReturnSuccessWhenAdminAccessesAdminProtectedResource() throws Exception {
 
     this.mockMvc.perform(get("/admin")
             .contentType(MediaType.APPLICATION_JSON))
