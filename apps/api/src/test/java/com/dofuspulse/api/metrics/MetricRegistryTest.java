@@ -12,14 +12,14 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 @DisplayName("Metric Registry Test")
-public class MetricRegistryTest {
+class MetricRegistryTest {
 
   @Autowired
   private MetricRegistry metricRegistry;
 
   @Test
   @DisplayName("Should register all metrics calculators as there are metric types")
-  public void shouldRegisterAllMetricsCalculators()
+  void shouldRegisterAllMetricsCalculators()
       throws NoSuchFieldException, IllegalAccessException {
     int metricsTypeCount = MetricType.values().length;
 

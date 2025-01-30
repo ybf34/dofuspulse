@@ -12,11 +12,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 @DisplayName("Profit Metrics Calculator Unit Tests")
-public class ProfitMetricsCalculatorUnitTest {
+class ProfitMetricsCalculatorUnitTest {
 
   @Test
   @DisplayName("Should calculate and return correct profit metrics")
-  public void shouldCalculateAndReturnCorrectProfitMetrics() {
+  void shouldCalculateAndReturnCorrectProfitMetrics() {
 
     ProfitMetricsCalculator calculator = new ProfitMetricsCalculator();
     ProfitMetricsParams params = ProfitMetricsScenarioFactory.correctProfitMetricsCalculationScenario();
@@ -33,7 +33,7 @@ public class ProfitMetricsCalculatorUnitTest {
 
   @Test
   @DisplayName("Should not return profit metrics if a craft cost is missing")
-  public void shouldNotReturnProfitsMetricsIfaCraftCostIsMissing() {
+  void shouldNotReturnProfitsMetricsIfaCraftCostIsMissing() {
 
     ProfitMetricsCalculator calculator = new ProfitMetricsCalculator();
     ProfitMetricsParams params = ProfitMetricsScenarioFactory.missingCraftCostScenario();

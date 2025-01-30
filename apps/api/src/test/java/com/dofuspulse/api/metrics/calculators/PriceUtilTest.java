@@ -8,10 +8,10 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 
-public class PriceUtilTest {
+class PriceUtilTest {
 
   @Test
-  public void shouldReturnMinimumUnitPriceAmongAllQuantities() {
+  void shouldReturnMinimumUnitPriceAmongAllQuantities() {
     List<Integer> prices = Arrays.asList(0, 1000, 10000, 30000);
     int minPrice = PriceUtil.getMinimumUnitPrice(prices);
 
