@@ -7,9 +7,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.SessionManagementConfigurer;
+import org.springframework.security.config.annotation.web.configurers.SessionManagementConfigurer.SessionFixationConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 
 @Configuration
@@ -19,11 +20,11 @@ public class WebSecurityConfig {
 
   private static final String[] WHITE_LIST_URLS = {
       "/api/v1/auth/**",
-      "/error",
-      "/api/v1/**"
+      "/error"
   };
 
   private final UnauthorizedHandler unauthorizedHandler;
+  private final CustomAccessDeniedHandler accessDeniedHandler;
 
   @Bean
   public SecurityFilterChain applicationSecurity(HttpSecurity http) throws Exception {
@@ -31,17 +32,19 @@ public class WebSecurityConfig {
     http.csrf(AbstractHttpConfigurer::disable)
         .cors(AbstractHttpConfigurer::disable)
         .sessionManagement((s) -> {
-          s.sessionFixation(SessionManagementConfigurer.SessionFixationConfigurer::newSession);
+          s.sessionFixation(SessionFixationConfigurer::newSession);
           s.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
         })
         .formLogin(AbstractHttpConfigurer::disable)
-        .exceptionHandling(c -> c.authenticationEntryPoint(unauthorizedHandler))
+        .exceptionHandling(exceptionHandling -> exceptionHandling
+            .authenticationEntryPoint(unauthorizedHandler)
+            .accessDeniedHandler(accessDeniedHandler))
         .securityMatcher("/**")
         .logout(logout -> logout
             .logoutUrl("/api/v1/auth/logout")
             .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler())
             .invalidateHttpSession(true)
-            .deleteCookies("JSESSIONID")
+            .addLogoutHandler(new CookieClearingLogoutHandler("JSESSIONID"))
             .permitAll()
         )
         .authorizeHttpRequests(registry -> registry

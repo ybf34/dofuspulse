@@ -19,8 +19,8 @@ public class GlobalExceptionHandler {
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ProblemDetail handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
 
-    List<ValidationError> errors = e.getBindingResult().getAllErrors().stream()
-        .map(error -> new ValidationError(error.getObjectName(), error.getDefaultMessage()))
+    List<ValidationError> errors = e.getBindingResult().getFieldErrors().stream()
+        .map(error -> new ValidationError(error.getField(), error.getDefaultMessage()))
         .collect(Collectors.toList());
 
     ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
@@ -42,8 +42,7 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(NoSuchElementException.class)
   public ProblemDetail handleNoSuchElementException(NoSuchElementException e) {
-    ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND,
-        e.getMessage());
+    ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND, e.getMessage());
     problem.setTitle("No such element found");
 
     return problem;
