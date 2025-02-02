@@ -34,17 +34,17 @@ class DailySalesCalculatorUnitTest {
   }
 
   /**
-   * Test that an item lives for 14 days in the market and then marked as expired to not conflict
+   * Test that an item lives for 28 days in the market and then marked as expired to not conflict
    * with the sold items.
    *
    * <p> A unique item in the market is identified by its unique effects and price. If an item in a
    * future snapshot (date) disappears from the market, it is either counted as expired if the item
-   * disappeared after 14 days since it was added or marked as sold if it disappears before the
+   * disappeared after 28 days (since entry date)  or marked as sold if it disappears before the
    * expiration date.</p>
    */
 
   @Test
-  @DisplayName("Should expire an item after 14 days in the market")
+  @DisplayName("Should expire an item after 28 days in the market")
   void itemShouldExpireAfter14daysInTheMarketIfNotBought() {
     DailySalesCalculator calculator = new DailySalesCalculator();
 
@@ -61,11 +61,11 @@ class DailySalesCalculatorUnitTest {
   }
 
   /**
-   * Test that an item is marked as sold if it disappears from the market before 14 days.
+   * Test that an item is marked as sold if it disappears from the market before 28 days.
    */
 
   @Test
-  @DisplayName("Should sell an item if it disappears before 14 days")
+  @DisplayName("Should sell an item if it disappears before 28 days")
   void itemShouldBeSoldIfItDisappearsBefore14Days() {
     DailySalesCalculator calculator = new DailySalesCalculator();
 

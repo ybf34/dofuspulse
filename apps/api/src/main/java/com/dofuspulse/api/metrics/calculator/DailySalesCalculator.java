@@ -74,13 +74,13 @@ public class DailySalesCalculator implements MetricCalculator<DailySalesParam, L
 
         if (!currentDayListings.contains(key)) {
           // Item was sold
-          if (date.isBefore(addedDate.plusDays(14))) {
+          if (date.isBefore(addedDate.plusDays(28))) {
             soldCount++;
             revenue += PriceUtil.getMinimumUnitPrice(key.prices());
             int duration = (int) ChronoUnit.DAYS.between(addedDate, date);
             totalSoldDuration += duration;
             it.remove();
-          } else if (date.isAfter(addedDate.plusDays(14))) {
+          } else if (date.isAfter(addedDate.plusDays(28))) {
             expiredCount++;
             it.remove();
           }
