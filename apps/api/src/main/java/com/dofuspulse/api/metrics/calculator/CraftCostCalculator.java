@@ -9,7 +9,7 @@ import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
@@ -41,18 +41,27 @@ public class CraftCostCalculator implements MetricCalculator<CraftCostParams, Li
     List<Long> ingredientIds = data.ingredientQuantityMap().keySet().stream().toList();
 
     return dates.stream().map(date -> {
-      List<Integer> craftCost = ingredientIds.stream().mapToInt(ingredientId -> {
+      List<Optional<Integer>> ingredientsCost = ingredientIds.stream().map(ingredientId -> {
 
-        ItemPrice priceForDate = priceMap.getOrDefault(ingredientId, Collections.emptyMap())
-            .get(date);
+        ItemPrice itemPrice = priceMap.getOrDefault(ingredientId, Collections.emptyMap()).get(date);
 
-        return (priceForDate != null) ? PriceUtil.getMinimumUnitPrice(priceForDate.getPrices())
-            * data.ingredientQuantityMap().get(ingredientId) : 0;
-      }).boxed().toList();
+        if (itemPrice == null) {
+          return Optional.<Integer>empty();
+        }
 
-      return craftCost.stream().anyMatch(cost -> cost == 0) ? null
-          : new CraftCost(date, craftCost.stream().mapToInt(Integer::intValue).sum());
+        int price = PriceUtil.getMinimumUnitPrice(itemPrice.getPrices());
+        int quantity = data.ingredientQuantityMap().get(ingredientId);
 
-    }).filter(Objects::nonNull).collect(Collectors.toList());
+        return price != 0 ? Optional.of(price * quantity) : Optional.<Integer>empty();
+
+      }).toList();
+
+      Optional<Integer> totalCost =
+          ingredientsCost.stream().anyMatch(Optional::isEmpty) ? Optional.empty()
+              : Optional.of(ingredientsCost.stream().mapToInt(c -> c.orElse(0)).sum());
+
+      return totalCost.map(craftCost -> new CraftCost(date, craftCost));
+
+    }).flatMap(Optional::stream).collect(Collectors.toList());
   }
 }

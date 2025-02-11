@@ -22,7 +22,7 @@ public class SalesScenarioFactory {
             .withEffects(Map.of("100", "1", "200", "2"))
             .build(),
         ItemSalesSnapshotBuilder.builder()
-            .withDate(baseDate.plusDays(17))
+            .withDate(baseDate.plusDays(30))
             .withItemId(2L)
             .withPrices(1)
             .withEffects(Map.of("100", "2", "200", "3"))
