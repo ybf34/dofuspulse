@@ -2,36 +2,42 @@ package com.dofuspulse.api.metrics;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+import com.dofuspulse.api.metrics.calculator.CraftCostCalculator;
+import com.dofuspulse.api.metrics.calculator.DailySalesCalculator;
+import com.dofuspulse.api.metrics.calculator.ItemPerformanceCalculator;
 import com.dofuspulse.api.metrics.calculator.MetricCalculator;
-import java.lang.reflect.Field;
+import com.dofuspulse.api.metrics.calculator.ProfitMetricsCalculator;
 import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
-@SpringBootTest
+@SpringBootTest(classes = {
+    MetricRegistry.class,
+    ProfitMetricsCalculator.class,
+    ItemPerformanceCalculator.class,
+    DailySalesCalculator.class,
+    CraftCostCalculator.class,
+})
 @DisplayName("Metric Registry Test")
+@ActiveProfiles("test")
 class MetricRegistryTest {
 
   @Autowired
   private MetricRegistry metricRegistry;
 
   @Test
-  @DisplayName("Should register all metrics calculators as there are metric types")
-  void shouldRegisterAllMetricsCalculators()
-      throws NoSuchFieldException, IllegalAccessException {
+  @DisplayName("Should register metric calculators for all metric types")
+  void shouldRegisterAllMetricsCalculators() {
     int metricsTypeCount = MetricType.values().length;
 
-    Field calculatorsField = MetricRegistry.class.getDeclaredField("calculators");
-    calculatorsField.setAccessible(true);
+    Map<MetricType, MetricCalculator<?, ?>> calculators = metricRegistry.getCalculators();
 
-    @SuppressWarnings("unchecked")
-    Map<MetricType, MetricCalculator<?, ?>> calculatorsMap = (Map<MetricType, MetricCalculator<?, ?>>) calculatorsField.get(
-        metricRegistry);
+    System.out.println(
+        "MetricType count: " + metricsTypeCount + "\nCalculators count: " + calculators.size());
 
-    System.out.println("MetricType count: " + metricsTypeCount);
-    assertEquals(metricsTypeCount, calculatorsMap.size());
-
+    assertEquals(metricsTypeCount, calculators.size());
   }
 }

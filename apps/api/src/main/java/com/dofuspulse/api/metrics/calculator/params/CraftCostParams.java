@@ -5,4 +5,4 @@ import java.util.List;
 import java.util.Map;
 
 public record CraftCostParams(List<ItemPrice> ingredientsPrices,
-                              Map<Long, Integer> ingredientQuantityMap) {}
+                              Map<Long, Integer> ingredientQuantityMap) implements BaseParams {}

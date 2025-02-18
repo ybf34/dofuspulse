@@ -1,13 +1,16 @@
 package com.dofuspulse.api.metrics;
 
 import com.dofuspulse.api.metrics.calculator.MetricCalculator;
+import com.dofuspulse.api.metrics.calculator.params.BaseParams;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import lombok.Getter;
 import org.springframework.stereotype.Component;
 
 @Component
+@Getter
 public class MetricRegistry {
 
   private final Map<MetricType, MetricCalculator<?, ?>> calculators;
@@ -17,7 +20,7 @@ public class MetricRegistry {
         .collect(Collectors.toMap(MetricCalculator::getType, Function.identity()));
   }
 
-  public <I, R> R calculate(MetricType metricType, I parameters) {
+  public <I extends BaseParams, R> R calculate(MetricType metricType, I parameters) {
 
     @SuppressWarnings("unchecked")
     MetricCalculator<I, R> calculator = (MetricCalculator<I, R>) calculators.get(metricType);
