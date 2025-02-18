@@ -1,10 +1,16 @@
 spring:
   application:
-    name: dtapi
+    name: ms-dofuspulse-api
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
   datasource:
     url: jdbc:postgresql://localhost:5432/dofuspulse
-    username: yassinebenfekih
-    password: admin
+    username: dofuspulse
+    password: aF9!xQ3r$P7&lK8z
   jpa:
     hibernate:
       ddl-auto: none
@@ -19,45 +25,47 @@ logging:
     root: INFO
 server:
   servlet:
-      session:
-        timeout: 1m
-        tracking-modes: cookie
-        cookie:
-          http-only: true
-
-
-
+    session:
+      timeout: 24h
+      tracking-modes: cookie
+      cookie:
+        http-only: true
   port: 8080
   tomcat:
     additional-tld-skip-patterns: '*.tld'
 
+---
+spring:
+  config:
+    activate:
+      on-profile: test
+  datasource:
+    url: jdbc:postgresql://localhost:5432/testdb
+    username: testdb
+    password: testdb
+  jpa:
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        generate_statistics: false
+logging:
+  level:
+    root: INFO
 
 ---
 spring:
-    config:
-        activate:
-            on-profile: local
-    devtools:
-        restart:
-            enabled: true
-
-
-    jpa:
-        properties:
-            hibernate:
-                format_sql: true
-                
-
----
-spring:
-    config:
-        activate:
-            on-profile: prod
-    datasource:
-        url: jdbc:postgresql://prod-db-server:5432/dofuspulse
-        username: dofuspulse
-        password: admin
-    jpa:
-        properties:
-            hibernate:
-                format_sql: true
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    url: jdbc:postgresql://prod-db-server:5432/dofuspulse
+    username: dofuspulse
+    password: admin
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
