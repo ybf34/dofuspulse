@@ -12,6 +12,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
+import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
+import org.springframework.security.web.context.SecurityContextRepository;
 
 @Configuration
 @EnableWebSecurity
@@ -20,6 +22,7 @@ public class WebSecurityConfig {
 
   private static final String[] WHITE_LIST_URLS = {
       "/api/v1/auth/**",
+      "/login/**",
       "/error"
   };
 
@@ -49,9 +52,15 @@ public class WebSecurityConfig {
         )
         .authorizeHttpRequests(registry -> registry
             .requestMatchers(WHITE_LIST_URLS).permitAll()
-            .requestMatchers("/admin").hasRole("ADMIN")
+            .requestMatchers("/api/v1/admin").hasRole("ADMIN")
             .anyRequest().authenticated());
 
     return http.build();
   }
+
+  @Bean
+  public SecurityContextRepository securityContextRepository() {
+    return new HttpSessionSecurityContextRepository();
+  }
+
 }

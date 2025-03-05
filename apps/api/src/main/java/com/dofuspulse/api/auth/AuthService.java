@@ -1,8 +1,10 @@
 package com.dofuspulse.api.auth;
 
 
+import com.dofuspulse.api.exception.UserAlreadyExistsException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.transaction.Transactional;
 import java.nio.CharBuffer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -10,7 +12,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Service;
 
@@ -21,16 +22,16 @@ public class AuthService {
   private final AuthenticationManager authenticationManager;
   private final UserService userService;
   private final PasswordEncoder passwordEncoder;
-  private final SecurityContextRepository scr = new HttpSessionSecurityContextRepository();
+  private final SecurityContextRepository scr;
 
-  public String loginAttempt(
+  public void loginAttempt(
       LoginRequest loginRequest,
       HttpServletRequest request,
       HttpServletResponse response) {
 
     var authenticationToken = new UsernamePasswordAuthenticationToken(
         loginRequest.getEmail(),
-        CharBuffer.wrap(loginRequest.getPassword())
+        loginRequest.getPassword()
     );
 
     var authentication = authenticationManager.authenticate(authenticationToken);
@@ -39,11 +40,15 @@ public class AuthService {
     context.setAuthentication(authentication);
 
     scr.saveContext(context, request, response);
-
-    return "Successfully logged in";
   }
 
+  @Transactional
   public String register(RegisterRequest request) {
+
+    if (userService.existsByEmail(request.getEmail())) {
+      throw new UserAlreadyExistsException(
+          "User already exists");
+    }
 
     var encodedPassword = passwordEncoder.encode(CharBuffer.wrap(request.getPassword()))
         .toCharArray();

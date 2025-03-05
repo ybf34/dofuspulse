@@ -1,9 +1,9 @@
 package com.dofuspulse.api.auth;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -14,7 +14,8 @@ public class CustomUserDetailsService implements UserDetailsService {
 
   @Override
   public UserDetails loadUserByUsername(String username) {
-    return userService.getUserByEmail(username)
-        .orElseThrow(() -> new BadCredentialsException("Bad credentials"));
+    return userService.findByEmail(username)
+        .orElseThrow(() ->
+            new UsernameNotFoundException("User with email " + username + " not found"));
   }
 }

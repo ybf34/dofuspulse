@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -64,6 +65,19 @@ public class GlobalExceptionHandler {
         "Authentication failed: invalid credentials provided.");
 
     problem.setTitle("Bad credentials");
+
+    return problem;
+  }
+
+  @ExceptionHandler(MissingServletRequestParameterException.class)
+  public ProblemDetail handleMissingServletRequestParameterException(
+      MissingServletRequestParameterException e) {
+
+    ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
+        "Missing request parameter");
+    problem.setTitle("Missing request parameter");
+
+    problem.setProperty("missing-parameter", e.getParameterName());
 
     return problem;
   }

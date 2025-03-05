@@ -1,8 +1,8 @@
-package com.dofuspulse.api.metrics.calculators.sales;
+package com.dofuspulse.api.metrics.calculators;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.dofuspulse.api.metrics.calculator.DailySalesCalculator;
 import com.dofuspulse.api.metrics.calculator.params.DailySalesParam;
@@ -30,7 +30,7 @@ class DailySalesCalculatorUnitTest {
     DailySalesCalculator calculator = new DailySalesCalculator();
     List<DailySales> dailySales = calculator.calculate(new DailySalesParam(List.of()));
 
-    assertTrue(dailySales.isEmpty());
+    assertThat(dailySales).isEmpty();
   }
 
   /**

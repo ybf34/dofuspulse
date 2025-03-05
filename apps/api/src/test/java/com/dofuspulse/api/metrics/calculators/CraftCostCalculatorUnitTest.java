@@ -1,4 +1,4 @@
-package com.dofuspulse.api.metrics.calculators.craftcost;
+package com.dofuspulse.api.metrics.calculators;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -19,7 +19,7 @@ class CraftCostCalculatorUnitTest {
   void shouldCalculateAndReturnCorrectCraftCostForEachDate() {
 
     CraftCostCalculator craftCostCalculator = new CraftCostCalculator();
-    CraftCostParams craftCostParams = CraftCostScenarioFactory.multipleIngredientsCraftHistoryScenario();
+    var craftCostParams = CraftCostScenarioFactory.multipleIngredientsCraftHistoryScenario();
 
     List<CraftCost> craftCosts = craftCostCalculator.calculate(craftCostParams);
 
@@ -35,7 +35,7 @@ class CraftCostCalculatorUnitTest {
    * missing for a date
    */
   @Test
-  @DisplayName("Should Return Empty Craft cost for the concerned date that misses ingredient prices")
+  @DisplayName("Should Return Empty Craft cost for the concerned date that misses ingredient price")
   void shouldReturnEmptyCraftCostIfMissingAnIngredientPrice() {
 
     CraftCostCalculator craftCostCalculator = new CraftCostCalculator();

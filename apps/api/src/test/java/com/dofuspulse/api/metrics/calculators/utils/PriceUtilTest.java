@@ -1,4 +1,4 @@
-package com.dofuspulse.api.metrics.calculators;
+package com.dofuspulse.api.metrics.calculators.utils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -6,7 +6,6 @@ import com.dofuspulse.api.metrics.calculator.utils.PriceUtil;
 import java.util.Arrays;
 import java.util.List;
 import org.junit.jupiter.api.Test;
-
 
 class PriceUtilTest {
 

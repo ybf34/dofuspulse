@@ -1,20 +1,18 @@
 package com.dofuspulse.api.auth;
 
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
-import lombok.Getter;
-
+import lombok.Data;
 
 @Builder
-@Getter
-
+@Data
 public class LoginRequest {
 
   @Email
-  @NotNull
+  @NotBlank
   private String email;
 
-  @NotNull
-  private char[] password;
+  @NotBlank
+  private String password;
 }

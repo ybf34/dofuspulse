@@ -57,12 +57,12 @@ public class CraftCostScenarioFactory {
             .withPrices(50, 500, 5000, 50000)
             .build(),
 
-//          Missing one ingredient price for date 2
-//          ItemPriceBuilder.builder()
-//              .withDate(LocalDate.of(2023, 1, 2))
-//              .withItemId(1L)
-//              .withPrices(100, 1000, 10000, 100000)
-//              .build(),
+        //  Missing one ingredient price for date 2
+        //  ItemPriceBuilder.builder()
+        //    .withDate(LocalDate.of(2023, 1, 2))
+        //    .withItemId(1L)
+        //    .withPrices(100, 1000, 10000, 100000)
+        //     .build()
 
         ItemPriceBuilder.builder()
             .withDate(LocalDate.of(2023, 1, 2))

@@ -33,13 +33,19 @@ public class ItemPriceBuilder {
   public ItemPrice build() {
     return new ItemPrice() {
       @Override
-      public Long getItemId() {return itemId;}
+      public Long getItemId() {
+        return itemId;
+      }
 
       @Override
-      public LocalDate getSnapshotDate() {return snapshotDate;}
+      public LocalDate getSnapshotDate() {
+        return snapshotDate;
+      }
 
       @Override
-      public List<Integer> getPrices() {return prices;}
+      public List<Integer> getPrices() {
+        return prices;
+      }
     };
   }
 }

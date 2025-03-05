@@ -8,9 +8,9 @@ spring:
     activate:
       on-profile: local
   datasource:
-    url: jdbc:postgresql://localhost:5432/dofuspulse
-    username: dofuspulse
-    password: aF9!xQ3r$P7&lK8z
+    url: jdbc:postgresql://localhost:5432/${DB_NAME:dofuspulse}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: none
@@ -19,10 +19,42 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+  session:
+    jdbc:
+      initialize-schema: always
+      schema: classpath:org/springframework/session/jdbc/schema-@@platform@@.sql
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID}
+            client-secret: ${GOOGLE_CLIENT_SECRET}
+            scope:
+              - email
+              - profile
+          discord:
+            client-id: ${DISCORD_CLIENT_ID}
+            client-secret: ${DISCORD_CLIENT_SECRET}
+            scope:
+              - identify
+              - email
+            redirect-uri: http://localhost:8080/login/oauth2/code/discord
+            client-name: Discord
+            client-authentication-method: client_secret_post
+            authorization-grant-type: authorization_code
+        provider:
+          discord:
+            authorization-uri: https://discord.com/api/oauth2/authorize
+            token-uri: https://discord.com/api/oauth2/token
+            user-info-uri: https://discord.com/api/users/@me
+            user-name-attribute: username
+
 logging:
   level:
     org.springframework.security: trace
     root: INFO
+
 server:
   servlet:
     session:
@@ -33,28 +65,6 @@ server:
   port: 8080
   tomcat:
     additional-tld-skip-patterns: '*.tld'
-
----
-spring:
-  config:
-    activate:
-      on-profile: test
-  datasource:
-    url: jdbc:postgresql://localhost:5432/testdb
-    username: testdb
-    password: testdb
-  jpa:
-    hibernate:
-      ddl-auto: create
-    show-sql: true
-    open-in-view: false
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        generate_statistics: false
-logging:
-  level:
-    root: INFO
 
 ---
 spring:

@@ -1,24 +1,20 @@
 package com.dofuspulse.api.auth;
 
-
+import com.dofuspulse.api.constraint.ExtendedEmailValidator;
 import com.dofuspulse.api.constraint.ValidPassword;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Builder;
 import lombok.Data;
-
 
 @Data
 @Builder
 public class RegisterRequest {
 
-  @Email
-  @NotNull
+  @ExtendedEmailValidator
+  @NotBlank
   private String email;
 
   @ValidPassword
-  @NotNull
   private char[] password;
 
-  private Role role;
 }

@@ -1,4 +1,4 @@
-package com.dofuspulse.api.metrics.calculators.profit;
+package com.dofuspulse.api.metrics.calculators;
 
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -19,7 +19,7 @@ class ProfitMetricsCalculatorUnitTest {
   void shouldCalculateAndReturnCorrectProfitMetrics() {
 
     ProfitMetricsCalculator calculator = new ProfitMetricsCalculator();
-    ProfitMetricsParams params = ProfitMetricsScenarioFactory.correctProfitMetricsCalculationScenario();
+    var params = ProfitMetricsScenarioFactory.correctProfitMetricsCalculationScenario();
 
     List<ProfitMetrics> profitMetrics = calculator.calculate(params);
 

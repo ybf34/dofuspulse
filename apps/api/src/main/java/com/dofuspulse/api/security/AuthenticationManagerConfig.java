@@ -12,7 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @RequiredArgsConstructor
-public class AuthConfig {
+public class AuthenticationManagerConfig {
 
   public final CustomUserDetailsService customUserDetailsService;
 

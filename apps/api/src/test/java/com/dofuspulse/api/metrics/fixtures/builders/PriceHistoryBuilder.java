@@ -25,11 +25,17 @@ public class PriceHistoryBuilder {
 
   public PriceHistory build() {
     return new PriceHistory() {
-      @Override
-      public LocalDate getSnapshotDate() {return snapshotDate;}
 
       @Override
-      public List<Integer> getPrices() {return prices;}
+      public LocalDate getSnapshotDate() {
+        return snapshotDate;
+      }
+
+      @Override
+      public List<Integer> getPrices() {
+        return prices;
+      }
+
     };
   }
 
