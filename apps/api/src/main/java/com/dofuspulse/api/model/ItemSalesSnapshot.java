@@ -1,12 +1,10 @@
 package com.dofuspulse.api.model;
 
-import io.hypersistence.utils.hibernate.type.array.ListArrayType;
-import io.hypersistence.utils.hibernate.type.json.JsonBinaryType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import java.time.LocalDate;
 import java.util.List;
@@ -15,7 +13,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
 @Getter
 @Setter
@@ -26,8 +25,7 @@ import org.hibernate.annotations.Type;
 public class ItemSalesSnapshot {
 
   @Id
-  @GeneratedValue(generator = "snapshot_id_seq")
-  @SequenceGenerator(name = "snapshot_id_seq", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "snapshot_id")
   private Long id;
 
@@ -37,11 +35,10 @@ public class ItemSalesSnapshot {
   @Column(name = "snapshot_date")
   private LocalDate snapshotDate;
 
-  @Type(JsonBinaryType.class)
   @Column(columnDefinition = "jsonb")
+  @JdbcTypeCode(SqlTypes.JSON)
   private Map<String, String> effects;
 
-  @Type(ListArrayType.class)
   @Column(name = "prices", columnDefinition = "integer[]")
   private List<Integer> prices;
 

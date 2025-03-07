@@ -61,6 +61,10 @@
       <optional>true</optional>
     </dependency>
     <dependency>
+      <groupId>org.liquibase</groupId>
+      <artifactId>liquibase-core</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
       <scope>runtime</scope>
@@ -128,6 +132,23 @@
           </excludes>
         </configuration>
         <groupId>org.springframework.boot</groupId>
+      </plugin>
+      <plugin>
+        <groupId>org.liquibase</groupId>
+        <artifactId>liquibase-maven-plugin</artifactId>
+        <version>${liquibase.version}</version>
+        <configuration>
+          <driver>org.postgresql.Driver</driver>
+          <!--suppress UnresolvedMavenProperty -->
+          <url>jdbc:postgresql://localhost:5432/${env.DB_NAME}</url>
+          <!--suppress UnresolvedMavenProperty -->
+          <username>${env.DB_USER}</username>
+          <!--suppress UnresolvedMavenProperty -->
+          <password>${env.DB_PASSWORD}</password>
+          <changeLogFile>src/main/resources/db/changelog/db.changelog-master.xml</changeLogFile>
+          <outputChangeLogFile>src/main/resources/liquibase-outputChangeLog.xml
+          </outputChangeLogFile>
+        </configuration>
       </plugin>
       <plugin>
         <artifactId>maven-surefire-plugin</artifactId>

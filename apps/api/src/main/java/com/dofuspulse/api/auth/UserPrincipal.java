@@ -8,9 +8,9 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import java.nio.CharBuffer;
@@ -38,8 +38,7 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 public class UserPrincipal implements UserDetails, OAuth2User {
 
   @Id
-  @GeneratedValue(generator = "users_seq")
-  @SequenceGenerator(name = "users_seq", allocationSize = 1)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
   @Column(unique = true)

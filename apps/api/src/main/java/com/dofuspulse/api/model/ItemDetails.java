@@ -1,6 +1,5 @@
 package com.dofuspulse.api.model;
 
-import io.hypersistence.utils.hibernate.type.array.ListArrayType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
@@ -10,7 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.Type;
+
 
 @Getter
 @Setter
@@ -35,15 +34,12 @@ public class ItemDetails {
   @Column(name = "item_type_id")
   private Long itemTypeId;
 
-  @Type(ListArrayType.class)
   @Column(name = "quantities", columnDefinition = "integer[]")
   private List<Integer> quantities;
 
-  @Type(ListArrayType.class)
-  @Column(name = "ingredient_ids", columnDefinition = "bigint[]")
+  @Column(name = "ingredient_ids")
   private List<Long> ingredientIds;
 
-  @Type(ListArrayType.class)
   @Column(name = "possibleeffects", columnDefinition = "integer[]")
   private List<Integer> possibleEffects;
 

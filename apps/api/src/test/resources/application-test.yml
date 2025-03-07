@@ -4,9 +4,12 @@ spring:
       auto-commit: false
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: validate
     show-sql: true
     open-in-view: false
+  liquibase:
+    change-log: classpath:db/changelog/db.changelog-master.xml
+    enabled: true
   security:
     oauth2:
       client:

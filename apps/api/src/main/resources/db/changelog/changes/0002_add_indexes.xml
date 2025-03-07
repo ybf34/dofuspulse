@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd"
+  objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+
+  <changeSet id="20250307-1" author="ybf34">
+    <createIndex tableName="item_sales_snapshots" indexName="idx_sales_item_id_date">
+      <column name="item_id"></column>
+      <column name="snapshot_date"></column>
+    </createIndex>
+  </changeSet>
+
+  <changeSet id="20250307-3" author="ybf34">
+    <createIndex tableName="item_details" indexName="idx_item_details_item_id">
+      <column name="item_id"></column>
+    </createIndex>
+  </changeSet>
+</databaseChangeLog>

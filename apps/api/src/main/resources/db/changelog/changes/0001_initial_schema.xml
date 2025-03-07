@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd"
+  objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+
+  <changeSet id="1741306834446-3" author="ybf34">
+    <createTable tableName="item_details">
+      <column name="item_id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="pk_item_details"/>
+      </column>
+      <column name="name" type="VARCHAR(255)"/>
+      <column name="icon_id" type="BIGINT"/>
+      <column name="level" type="BIGINT"/>
+      <column name="item_type_id" type="BIGINT"/>
+      <column name="quantities" type="integer[]"/>
+      <column name="ingredient_ids" type="bigint[]"/>
+      <column name="possibleeffects" type="integer[]"/>
+    </createTable>
+  </changeSet>
+  <changeSet id="1741306834446-4" author="ybf34">
+    <createTable tableName="item_sales_snapshots">
+      <column name="snapshot_id" type="BIGINT" autoIncrement="true">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="pk_item_sales_snapshots"/>
+      </column>
+      <column name="item_id" type="BIGINT"/>
+      <column name="snapshot_date" type="DATE"/>
+      <column name="effects" type="jsonb"/>
+      <column name="prices" type="integer[]"/>
+    </createTable>
+  </changeSet>
+  <changeSet id="1741306834446-5" author="ybf34">
+    <createTable tableName="item_types">
+      <column name="item_type_id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="pk_item_types"/>
+      </column>
+      <column name="name_id" type="VARCHAR(255)"/>
+    </createTable>
+  </changeSet>
+  <changeSet id="1741306834446-6" author="ybf34">
+    <createTable tableName="user_social_logins">
+      <column autoIncrement="true" name="id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="pk_user_social_logins"/>
+      </column>
+      <column name="user_id" type="BIGINT">
+        <constraints nullable="false"/>
+      </column>
+      <column name="provider" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="provider_id" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="created_at" type="DATETIME"/>
+      <column name="updated_at" type="DATETIME"/>
+    </createTable>
+  </changeSet>
+  <changeSet id="1741306834446-7" author="ybf34">
+    <createTable tableName="users">
+      <column name="id" type="BIGINT" autoIncrement="true">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="pk_users"/>
+      </column>
+      <column name="email" type="VARCHAR(255)"/>
+      <column name="password" type="VARCHAR(255)"/>
+      <column name="role" type="VARCHAR(255)"/>
+      <column name="created_at" type="DATETIME"/>
+      <column name="updated_at" type="DATETIME"/>
+    </createTable>
+  </changeSet>
+  <changeSet id="1741306834446-8" author="ybf34">
+    <addUniqueConstraint columnNames="provider, provider_id"
+      constraintName="uc_f5c25ece91b7944320d7d3255" tableName="user_social_logins"/>
+  </changeSet>
+  <changeSet id="1741306834446-9" author="ybf34">
+    <addUniqueConstraint columnNames="email" constraintName="uc_users_email" tableName="users"/>
+  </changeSet>
+  <changeSet id="1741306834446-10" author="ybf34">
+    <addForeignKeyConstraint baseColumnNames="user_id" baseTableName="user_social_logins"
+      constraintName="FK_USER_SOCIAL_LOGINS_ON_USER" referencedColumnNames="id"
+      referencedTableName="users"/>
+  </changeSet>
+</databaseChangeLog>
