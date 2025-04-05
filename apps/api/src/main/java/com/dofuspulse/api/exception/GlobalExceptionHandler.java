@@ -1,9 +1,9 @@
 package com.dofuspulse.api.exception;
 
-import com.dofuspulse.api.constraint.ValidationError;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -19,6 +19,7 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(MethodArgumentNotValidException.class)
   public ProblemDetail handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
+    record ValidationError(String name, String reason) {}
 
     List<ValidationError> errors = e.getBindingResult().getFieldErrors().stream()
         .map(error -> new ValidationError(error.getField(), error.getDefaultMessage()))
@@ -110,6 +111,16 @@ public class GlobalExceptionHandler {
         "Item not found");
     problem.setTitle("Item not found");
     problem.setProperty("message", e.getMessage());
+
+    return problem;
+  }
+
+  @ExceptionHandler(PropertyReferenceException.class)
+  public ProblemDetail handlePropertyReferenceException(PropertyReferenceException e) {
+
+    ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
+        "Invalid property provided");
+    problem.setTitle("Bad Request");
 
     return problem;
   }
