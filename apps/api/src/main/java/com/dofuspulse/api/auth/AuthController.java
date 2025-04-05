@@ -2,6 +2,7 @@ package com.dofuspulse.api.auth;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -20,7 +21,7 @@ public class AuthController {
 
   @PostMapping("/auth/login")
   public ResponseEntity<String> login(
-      @RequestBody @Validated LoginRequest loginRequest,
+      @RequestBody @Valid LoginRequest loginRequest,
       HttpServletRequest request,
       HttpServletResponse response) {
     authService.loginAttempt(loginRequest, request, response);

@@ -24,7 +24,7 @@ public class ProfitMetricsCalculator implements
 
   @Override
   public MetricType getType() {
-    return MetricType.PROFIT_MARGIN;
+    return MetricType.PROFIT_METRICS;
   }
 
   @Override

@@ -37,6 +37,10 @@ public class DailySalesCalculator implements MetricCalculator<DailySalesParam, L
   @Override
   public List<DailySales> calculate(DailySalesParam data) {
 
+    if (data.items() == null || data.items().isEmpty()) {
+      return List.of();
+    }
+
     Map<ListingKey, LocalDate> activeListings = new HashMap<>();
     Map<LocalDate, DailySales> dailyResults = new TreeMap<>();
 

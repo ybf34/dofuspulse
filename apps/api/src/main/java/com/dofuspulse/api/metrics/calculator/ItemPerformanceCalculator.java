@@ -10,6 +10,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.function.Function;
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ItemPerformanceCalculator implements
-    MetricCalculator<PerformanceMetricsParam, ItemPerformance> {
+    MetricCalculator<PerformanceMetricsParam, Optional<ItemPerformance>> {
 
   @Override
   public MetricType getType() {
@@ -31,7 +32,7 @@ public class ItemPerformanceCalculator implements
   }
 
   @Override
-  public ItemPerformance calculate(PerformanceMetricsParam data) {
+  public Optional<ItemPerformance> calculate(PerformanceMetricsParam data) {
 
     Map<LocalDate, DailySales> dailySalesMap = data.dailySales().stream()
         .collect(Collectors.toMap(DailySales::date, Function.identity()));
@@ -43,7 +44,7 @@ public class ItemPerformanceCalculator implements
         .collect(Collectors.toCollection(TreeSet::new));
 
     if (dates.isEmpty()) {
-      return new ItemPerformance(data.itemId(), 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+      return Optional.empty();
     }
 
     List<Double> profitMargins = new ArrayList<>();
@@ -90,7 +91,7 @@ public class ItemPerformanceCalculator implements
     double roiTrend = PerfUtil.calculateTrend(rois, dates);
     double craftCostTrend = PerfUtil.calculateTrend(craftCosts, dates);
 
-    return new ItemPerformance(
+    return Optional.of(new ItemPerformance(
         data.itemId(),
         totalItemsSold,
         salesVelocity,
@@ -105,6 +106,6 @@ public class ItemPerformanceCalculator implements
         roiTrend,
         avgSoldDuration,
         costPctChange
-    );
+    ));
   }
 }

@@ -5,6 +5,10 @@ import java.util.stream.IntStream;
 
 public class PriceUtil {
 
+  private PriceUtil() {
+    throw new AssertionError("Utility class cannot be instantiated.");
+  }
+
   /**
    * Calculates the minimum unit price among the item quantity/price pairs.
    *

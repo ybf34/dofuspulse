@@ -3,9 +3,9 @@ package com.dofuspulse.api.auth.oauth2;
 import com.dofuspulse.api.auth.Role;
 import com.dofuspulse.api.auth.UserPrincipal;
 import com.dofuspulse.api.auth.UserService;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor

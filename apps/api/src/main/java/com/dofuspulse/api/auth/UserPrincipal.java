@@ -70,11 +70,6 @@ public class UserPrincipal implements UserDetails, OAuth2User {
   }
 
   @Override
-  public <A> A getAttribute(String name) {
-    return (A) attributes.get(name);
-  }
-
-  @Override
   public Map<String, Object> getAttributes() {
     return this.attributes;
   }
