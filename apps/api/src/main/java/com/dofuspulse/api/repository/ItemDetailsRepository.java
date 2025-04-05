@@ -1,11 +1,10 @@
 package com.dofuspulse.api.repository;
 
 import com.dofuspulse.api.model.ItemDetails;
-import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
-public interface ItemDetailsRepository extends JpaRepository<ItemDetails, Long> {
-
-  <T> List<T> findAllByItemTypeId(Long itemTypeId, Class<T> type);
+public interface ItemDetailsRepository extends JpaRepository<ItemDetails, Long>,
+    JpaSpecificationExecutor<ItemDetails> {
 
 }
