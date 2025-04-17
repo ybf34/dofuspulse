@@ -19,29 +19,35 @@ public class ItemDetailsSpecification {
     };
   }
 
-  public static Specification<ItemDetails> hasTypeIdIn(List<Long> typeIds) {
-    return (root, query, cb) -> {
-      if (typeIds == null || typeIds.isEmpty()) {
+  public static Specification<ItemDetails> hasTypeFilters(
+      List<Long> typeIds,
+      List<String> typeNames) {
+    return ((root, query, cb) -> {
+      Predicate typeIdPredicate = null;
+      Predicate typeNamePredicate = null;
+
+      if (typeIds != null && !typeIds.isEmpty()) {
+        typeIdPredicate = root.get("itemTypeId").in(typeIds);
+      }
+
+      if (typeNames != null && !typeNames.isEmpty()) {
+        Subquery<Long> subquery = query.subquery(Long.class);
+        Root<ItemType> itemTypeRoot = subquery.from(ItemType.class);
+        subquery.select(itemTypeRoot.get("id"))
+            .where(itemTypeRoot.get("name").in(typeNames));
+        typeNamePredicate = root.get("itemTypeId").in(subquery);
+      }
+
+      if (typeIdPredicate != null && typeNamePredicate != null) {
+        return cb.or(typeIdPredicate, typeNamePredicate);
+      } else if (typeIdPredicate != null) {
+        return typeIdPredicate;
+      } else if (typeNamePredicate != null) {
+        return typeNamePredicate;
+      } else {
         return cb.conjunction();
       }
-      return root.get("itemTypeId").in(typeIds);
-    };
-  }
-
-  public static Specification<ItemDetails> hasTypeNameIn(List<String> typeNames) {
-    return (root, query, cb) -> {
-      if (typeNames == null || typeNames.isEmpty()) {
-        return cb.conjunction();
-      }
-      assert query != null;
-      Subquery<Long> subquery = query.subquery(Long.class);
-      Root<ItemType> itemTypeRoot = subquery.from(ItemType.class);
-      subquery.select(itemTypeRoot
-              .get("id"))
-          .where(itemTypeRoot.get("name").in(typeNames));
-
-      return root.get("itemTypeId").in(subquery);
-    };
+    });
   }
 
   public static Specification<ItemDetails> hasLevelBetween(Long minLevel, Long maxLevel) {

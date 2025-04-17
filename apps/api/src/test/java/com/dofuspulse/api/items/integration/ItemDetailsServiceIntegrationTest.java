@@ -34,7 +34,7 @@ public class ItemDetailsServiceIntegrationTest extends PostgresIntegrationTestCo
   @BeforeEach
   void setUp() {
     itemDetailsRepository.deleteAll();
-    mockItemDetails = ItemTestDataFactory.createMockItemDetails();
+    mockItemDetails = ItemTestDataFactory.createMockItemDetails(1L, List.of(), List.of(14L));
     itemDetailsRepository.save(mockItemDetails);
 
     itemDetailsService = new ItemDetailsServiceImpl(itemDetailsRepository);
@@ -65,7 +65,7 @@ public class ItemDetailsServiceIntegrationTest extends PostgresIntegrationTestCo
   @DisplayName("should return item details by filters params")
   void shouldFindAllItemsWithValidFilters() {
 
-    ItemDetailsSearchCriteria itemDetailsFiltersParams = ItemTestDataFactory.createValidTestItemSearchCriteria();
+    var itemDetailsFiltersParams = ItemTestDataFactory.createValidTestItemSearchCriteria();
 
     Page<ItemDetailsDto> itemsDetailsPage = itemDetailsService.findAll(itemDetailsFiltersParams,
         Pageable.ofSize(20));
@@ -92,7 +92,11 @@ public class ItemDetailsServiceIntegrationTest extends PostgresIntegrationTestCo
   @Test
   void shouldReturnEmptyPageWhenNoItemsFound() {
 
-    ItemDetailsSearchCriteria itemDetailsFiltersParams = ItemTestDataFactory.createValidTestItemSearchCriteria();
+    ItemDetailsSearchCriteria itemDetailsFiltersParams = ItemDetailsSearchCriteria
+        .builder()
+        .types(List.of(1L))
+        .ingredient(15L)
+        .build();
 
     Page<ItemDetailsDto> itemsDetailsPage = itemDetailsService.findAll(itemDetailsFiltersParams,
         Pageable.ofSize(20));
@@ -108,11 +112,11 @@ public class ItemDetailsServiceIntegrationTest extends PostgresIntegrationTestCo
             Page::getContent
         )
         .containsExactly(
-            1L,
-            1,
+            0L,
+            0,
             20,
             0,
-            List.of(new ItemDetailsDto(mockItemDetails))
+            List.of()
         );
   }
 

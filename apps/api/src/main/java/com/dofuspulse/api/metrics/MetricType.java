@@ -4,5 +4,5 @@ public enum MetricType {
   PROFIT_METRICS,
   CRAFT_COST,
   DAILY_SALES,
-  ITEM_PERFORMANCE,
+  PERFORMANCE,
 }

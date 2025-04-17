@@ -46,7 +46,7 @@ public class ItemDetailsControllerUnitTest {
   void shouldReturnItemDetailsByIdWith200Status() {
 
     ItemDetailsDto mockItemDetails = new ItemDetailsDto(
-        ItemTestDataFactory.createMockItemDetails());
+        ItemTestDataFactory.createMockItemDetails(1L, List.of(), List.of()));
 
     when(itemDetailsService.findById(1L)).thenReturn(Optional.of(mockItemDetails));
 
@@ -77,7 +77,7 @@ public class ItemDetailsControllerUnitTest {
   void shouldReturnItemDetailsPageWhenGivenValidFiltersWith200Status() {
 
     ItemDetailsDto mockItemDetails = new ItemDetailsDto(
-        ItemTestDataFactory.createMockItemDetails());
+        ItemTestDataFactory.createMockItemDetails(1L, List.of(), List.of()));
 
     Page<ItemDetailsDto> mockItemDetailsPage = new PageImpl<>(
         List.of(mockItemDetails),

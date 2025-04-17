@@ -4,8 +4,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.dofuspulse.api.metrics.calculator.CraftCostCalculator;
 import com.dofuspulse.api.metrics.calculator.DailySalesCalculator;
-import com.dofuspulse.api.metrics.calculator.ItemPerformanceCalculator;
 import com.dofuspulse.api.metrics.calculator.MetricCalculator;
+import com.dofuspulse.api.metrics.calculator.PerformanceCalculator;
 import com.dofuspulse.api.metrics.calculator.ProfitMetricsCalculator;
 import java.util.Map;
 import org.junit.jupiter.api.DisplayName;
@@ -16,7 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest(classes = {
     MetricRegistry.class,
     ProfitMetricsCalculator.class,
-    ItemPerformanceCalculator.class,
+    PerformanceCalculator.class,
     DailySalesCalculator.class,
     CraftCostCalculator.class,
 })

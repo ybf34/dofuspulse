@@ -41,4 +41,17 @@ public class ProfitMetricsScenarioFactory {
             //,new CraftCost(LocalDate.of(2023, 1, 2), 900)
         ));
   }
+
+  public static ProfitMetricsParams missingItemPriceScenario() {
+    return new ProfitMetricsParams(List.of(
+        ItemPriceBuilder.builder()
+            .withDate(LocalDate.of(2023, 1, 2))
+            .withPrices(9000, 0, 0, 0)
+            .build()
+    ),
+        List.of(
+            new CraftCost(LocalDate.of(2023, 1, 1), 1000),
+            new CraftCost(LocalDate.of(2023, 1, 2), 900)
+        ));
+  }
 }

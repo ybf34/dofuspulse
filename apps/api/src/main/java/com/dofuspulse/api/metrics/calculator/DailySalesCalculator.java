@@ -11,18 +11,17 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.TreeMap;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 @Component
 public class DailySalesCalculator implements MetricCalculator<DailySalesParam, List<DailySales>> {
+
+  private static final int LISTING_EXPIRATION_DAYS = 28;
 
   @Override
   public MetricType getType() {
@@ -37,84 +36,90 @@ public class DailySalesCalculator implements MetricCalculator<DailySalesParam, L
   @Override
   public List<DailySales> calculate(DailySalesParam data) {
 
-    if (data.items() == null || data.items().isEmpty()) {
+    if (data.itemMarketEntries() == null || data.itemMarketEntries().isEmpty()) {
       return List.of();
     }
 
-    Map<ListingKey, LocalDate> activeListings = new HashMap<>();
-    Map<LocalDate, DailySales> dailyResults = new TreeMap<>();
+    List<DailySales> dailySalesByDate = new ArrayList<>();
+    Map<MarketEntryKey, LocalDate> activeListings = new HashMap<>();
 
-    Map<LocalDate, List<ItemSalesSnapshot>> salesData = data.items().stream()
+    Map<LocalDate, List<ItemSalesSnapshot>> itemsMarketEntriesPerDate = data.itemMarketEntries()
+        .stream()
         .sorted(Comparator.comparing(ItemSalesSnapshot::getSnapshotDate))
         .collect(Collectors.groupingBy(ItemSalesSnapshot::getSnapshotDate));
 
-    salesData.entrySet().stream().sorted(Entry.comparingByKey())
+    itemsMarketEntriesPerDate.entrySet()
+        .stream()
+        .sorted(Entry.comparingByKey())
         .forEach(dailySales -> {
 
           var date = dailySales.getKey();
-          Set<ListingKey> currentDayListings = new HashSet<>();
-          int dailyListings = 0;
+          Set<MarketEntryKey> currentDayListings = new HashSet<>();
+          int listingCount = 0;
 
           for (ItemSalesSnapshot snapshot : dailySales.getValue()) {
             int effectsHash = snapshot.getEffects().hashCode();
 
-            ListingKey key = new ListingKey(snapshot.getItemId(), snapshot.getPrices(),
+            MarketEntryKey itemMarketEntryKey = new MarketEntryKey(
+                snapshot.getItemId(),
+                snapshot.getPrices(),
                 effectsHash);
-            currentDayListings.add(key);
-            dailyListings++;
+
+            currentDayListings.add(itemMarketEntryKey);
+            listingCount++;
           }
 
           int soldCount = 0;
           int expiredCount = 0;
-          AtomicInteger addedCount = new AtomicInteger();
+          int addedCount = 0;
           int totalSoldDuration = 0;
           int revenue = 0;
 
-          Iterator<Entry<ListingKey, LocalDate>> it = activeListings.entrySet().iterator();
-          while (it.hasNext()) {
-            Map.Entry<ListingKey, LocalDate> entry = it.next();
-            ListingKey key = entry.getKey();
+          var activeListingsIterator = activeListings.entrySet()
+              .iterator();
+          while (activeListingsIterator.hasNext()) {
+            Map.Entry<MarketEntryKey, LocalDate> entry = activeListingsIterator.next();
+            MarketEntryKey key = entry.getKey();
             LocalDate addedDate = entry.getValue();
 
             if (!currentDayListings.contains(key)) {
               // Item was sold
-              if (date.isBefore(addedDate.plusDays(28))) {
+              if (date.isBefore(addedDate.plusDays(LISTING_EXPIRATION_DAYS))) {
                 soldCount++;
                 revenue += PriceUtil.getMinimumUnitPrice(key.prices());
                 int duration = (int) ChronoUnit.DAYS.between(addedDate, date);
                 totalSoldDuration += duration;
-                it.remove();
-              } else if (date.isAfter(addedDate.plusDays(28))) {
+                activeListingsIterator.remove();
+              } else if (date.isAfter(addedDate.plusDays(LISTING_EXPIRATION_DAYS))) {
                 expiredCount++;
-                it.remove();
+                activeListingsIterator.remove();
               }
             }
           }
 
-          currentDayListings.forEach(key -> {
-            if (!activeListings.containsKey(key)) {
-              addedCount.getAndIncrement();
-              activeListings.put(key, date);
+          for (MarketEntryKey listing : currentDayListings) {
+            if (!activeListings.containsKey(listing)) {
+              addedCount++;
+              activeListings.put(listing, date);
             }
-          });
+          }
 
           double avgSoldDuration = soldCount > 0 ? (double) totalSoldDuration / soldCount : 0.0;
 
-          dailyResults.put(date,
+          dailySalesByDate.add(
               new DailySales(
                   date,
                   soldCount,
-                  addedCount.get(),
+                  addedCount,
                   expiredCount,
                   avgSoldDuration,
-                  dailyListings,
+                  listingCount,
                   revenue));
         });
 
-    return new ArrayList<>(dailyResults.values());
+    return dailySalesByDate;
   }
 
-  record ListingKey(long itemId, List<Integer> prices, int effectsHash) {}
-
+  record MarketEntryKey(long itemId, List<Integer> prices, int effectsHash) {}
 
 }

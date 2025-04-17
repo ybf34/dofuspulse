@@ -6,7 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 
-public class SalesScenarioFactory {
+public class DailySalesScenarioFactory {
 
   /**
    * Mock data for an item added on Day 1 that expires on Day 15 (14-day window). The second

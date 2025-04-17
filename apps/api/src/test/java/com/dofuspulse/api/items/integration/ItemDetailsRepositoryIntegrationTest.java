@@ -6,6 +6,7 @@ import com.dofuspulse.api.PostgresIntegrationTestContainer;
 import com.dofuspulse.api.items.fixtures.ItemTestDataFactory;
 import com.dofuspulse.api.model.ItemDetails;
 import com.dofuspulse.api.repository.ItemDetailsRepository;
+import java.util.List;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,7 +26,7 @@ public class ItemDetailsRepositoryIntegrationTest extends PostgresIntegrationTes
   void setUp() {
     itemDetailsRepository.deleteAll();
 
-    mockItemDetails = ItemTestDataFactory.createMockItemDetails();
+    mockItemDetails = ItemTestDataFactory.createMockItemDetails(1L, List.of(), List.of());
     itemDetailsRepository.save(mockItemDetails);
   }
 
