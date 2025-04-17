@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.dofuspulse.api.metrics.calculator.DailySalesCalculator;
 import com.dofuspulse.api.metrics.calculator.params.DailySalesParam;
-import com.dofuspulse.api.metrics.fixtures.scenarios.SalesScenarioFactory;
+import com.dofuspulse.api.metrics.fixtures.scenarios.DailySalesScenarioFactory;
 import com.dofuspulse.api.projections.DailySales;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -48,7 +48,7 @@ class DailySalesCalculatorUnitTest {
   void itemShouldExpireAfter14daysInTheMarketIfNotBought() {
     DailySalesCalculator calculator = new DailySalesCalculator();
 
-    DailySalesParam params = SalesScenarioFactory.expiredListingsScenario();
+    DailySalesParam params = DailySalesScenarioFactory.expiredListingsScenario();
 
     List<DailySales> dailySales = calculator.calculate(params);
 
@@ -69,7 +69,7 @@ class DailySalesCalculatorUnitTest {
   void itemShouldBeSoldIfItDisappearsBefore14Days() {
     DailySalesCalculator calculator = new DailySalesCalculator();
 
-    DailySalesParam params = SalesScenarioFactory.soldListingsScenario();
+    DailySalesParam params = DailySalesScenarioFactory.soldListingsScenario();
 
     List<DailySales> dailySales = calculator.calculate(params);
 

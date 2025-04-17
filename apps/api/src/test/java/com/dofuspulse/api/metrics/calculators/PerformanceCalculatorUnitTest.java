@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.dofuspulse.api.metrics.calculator.ItemPerformanceCalculator;
+import com.dofuspulse.api.metrics.calculator.PerformanceCalculator;
 import com.dofuspulse.api.metrics.calculator.params.PerformanceMetricsParam;
 import com.dofuspulse.api.metrics.fixtures.scenarios.PerformanceScenarioFactory;
 import com.dofuspulse.api.projections.ItemPerformance;
@@ -21,7 +21,7 @@ public class PerformanceCalculatorUnitTest {
     //given
     PerformanceMetricsParam param = PerformanceScenarioFactory.emptyDataScenario();
 
-    ItemPerformanceCalculator calculator = new ItemPerformanceCalculator();
+    PerformanceCalculator calculator = new PerformanceCalculator();
     //when
     Optional<ItemPerformance> itemPerformanceOpt = calculator.calculate(param);
 
@@ -35,7 +35,7 @@ public class PerformanceCalculatorUnitTest {
     //given
     PerformanceMetricsParam param = PerformanceScenarioFactory.validItemPerformanceScenario();
 
-    ItemPerformanceCalculator calculator = new ItemPerformanceCalculator();
+    PerformanceCalculator calculator = new PerformanceCalculator();
     //when
     Optional<ItemPerformance> itemPerformanceOpt = calculator.calculate(param);
 

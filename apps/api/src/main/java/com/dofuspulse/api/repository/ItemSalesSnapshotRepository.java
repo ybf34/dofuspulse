@@ -20,11 +20,10 @@ public interface ItemSalesSnapshotRepository extends JpaRepository<ItemSalesSnap
       @Param("startDate") LocalDate startDate,
       @Param("endDate") LocalDate endDate);
 
-  <T> List<T> findAllByItemIdInAndSnapshotDateIsBetween(
+  List<ItemSalesSnapshot> findAllByItemIdInAndSnapshotDateIsBetween(
       List<Long> itemId,
       LocalDate startDate,
-      LocalDate endDate,
-      Class<T> type);
+      LocalDate endDate);
 
   @Query("SELECT DISTINCT " + "iss1.itemId as itemId, " + "iss1.snapshotDate as snapshotDate, "
       + "iss1.prices as prices " + "FROM ItemSalesSnapshot iss1 " + "WHERE iss1.itemId IN :itemIds "

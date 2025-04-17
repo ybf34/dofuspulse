@@ -44,4 +44,18 @@ class ProfitMetricsCalculatorUnitTest {
     // as a craft cost is missing to perform the second day metrics calculation
     assertEquals(1, profitMetrics.size());
   }
+
+
+  @Test
+  @DisplayName("Should not return profit metrics for one date if one item price is missing")
+  void shouldNotReturnProfitsMetricsIfItemPriceMissingForADate() {
+
+    ProfitMetricsCalculator calculator = new ProfitMetricsCalculator();
+    ProfitMetricsParams params = ProfitMetricsScenarioFactory.missingItemPriceScenario();
+
+    List<ProfitMetrics> profitMetrics = calculator.calculate(params);
+
+    assertEquals(1, profitMetrics.size());
+  }
+
 }

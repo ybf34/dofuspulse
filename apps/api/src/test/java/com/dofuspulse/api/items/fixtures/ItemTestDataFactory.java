@@ -19,16 +19,19 @@ public class ItemTestDataFactory {
     return mockItemType;
   }
 
-  public static ItemDetails createMockItemDetails() {
+  public static ItemDetails createMockItemDetails(
+      Long id,
+      List<Integer> quantities,
+      List<Long> ingredientIds) {
     ItemDetails mockItemDetails = new ItemDetails();
 
-    mockItemDetails.setId(1L);
+    mockItemDetails.setId(id);
     mockItemDetails.setName("Amulette X");
     mockItemDetails.setIconId(12000L);
     mockItemDetails.setLevel(200L);
     mockItemDetails.setItemTypeId(1L);
-    mockItemDetails.setIngredientIds(List.of(12L, 13L, 14L));
-    mockItemDetails.setQuantities(List.of(12, 3, 9));
+    mockItemDetails.setIngredientIds(ingredientIds);
+    mockItemDetails.setQuantities(quantities);
     mockItemDetails.setPossibleEffects(List.of(111, 112));
 
     return mockItemDetails;
@@ -40,8 +43,15 @@ public class ItemTestDataFactory {
   }
 
   public static ItemDetailsSearchCriteria createInvalidTestItemSearchCriteria() {
-    return ItemDetailsSearchCriteria.builder().name("X").minLevel(0L).maxLevel(300L)
-        .types(List.of(1L)).ingredient(14L).effect(111).build();
+    return ItemDetailsSearchCriteria
+        .builder()
+        .name("X")
+        .minLevel(0L)
+        .maxLevel(300L)
+        .types(List.of(1L))
+        .ingredient(14L)
+        .effect(111)
+        .build();
   }
 
   public static MultiValueMap<String, String> createItemDetailsQueryParams(ItemDetailsSearchCriteria filters) {

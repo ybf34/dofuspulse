@@ -18,12 +18,12 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ItemPerformanceCalculator implements
+public class PerformanceCalculator implements
     MetricCalculator<PerformanceMetricsParam, Optional<ItemPerformance>> {
 
   @Override
   public MetricType getType() {
-    return MetricType.ITEM_PERFORMANCE;
+    return MetricType.PERFORMANCE;
   }
 
   @Override
@@ -40,7 +40,9 @@ public class ItemPerformanceCalculator implements
     Map<LocalDate, ProfitMetrics> profitMetricsMap = data.profitMetrics().stream()
         .collect(Collectors.toMap(ProfitMetrics::snapshotDate, Function.identity()));
 
-    Set<LocalDate> dates = dailySalesMap.keySet().stream().filter(profitMetricsMap::containsKey)
+    Set<LocalDate> dates = dailySalesMap.keySet()
+        .stream()
+        .filter(profitMetricsMap::containsKey)
         .collect(Collectors.toCollection(TreeSet::new));
 
     if (dates.isEmpty()) {

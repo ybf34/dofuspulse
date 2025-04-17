@@ -36,7 +36,8 @@ public class ItemDetailsServiceUnitTest {
   @Test
   void shouldReturnItemDetailsById() {
     //given
-    ItemDetails mockItemDetails = ItemTestDataFactory.createMockItemDetails();
+    ItemDetails mockItemDetails = ItemTestDataFactory.createMockItemDetails(1L, List.of(),
+        List.of());
     when(itemDetailsRepository.findById(1L)).thenReturn(Optional.of(mockItemDetails));
 
     //when
@@ -68,7 +69,8 @@ public class ItemDetailsServiceUnitTest {
   void shouldReturnItemDetailsPageWhenFiltered() {
     //given
     Pageable pageable = Pageable.ofSize(20);
-    ItemDetails mockItemDetails = ItemTestDataFactory.createMockItemDetails();
+    ItemDetails mockItemDetails = ItemTestDataFactory.createMockItemDetails(1L, List.of(),
+        List.of());
     Page<ItemDetails> mockItemDetailsPage = new PageImpl<>(List.of(mockItemDetails), pageable, 1);
 
     when(itemDetailsRepository.findAll(any(Specification.class), any(Pageable.class))).thenReturn(
