@@ -3,7 +3,7 @@ package com.dofuspulse.api.metrics.calculator;
 import com.dofuspulse.api.metrics.MetricType;
 import com.dofuspulse.api.metrics.calculator.params.DailySalesParam;
 import com.dofuspulse.api.metrics.calculator.utils.PriceUtil;
-import com.dofuspulse.api.model.ItemSalesSnapshot;
+import com.dofuspulse.api.model.ItemMarketEntry;
 import com.dofuspulse.api.projections.DailySales;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -43,10 +43,10 @@ public class DailySalesCalculator implements MetricCalculator<DailySalesParam, L
     List<DailySales> dailySalesByDate = new ArrayList<>();
     Map<MarketEntryKey, LocalDate> activeListings = new HashMap<>();
 
-    Map<LocalDate, List<ItemSalesSnapshot>> itemsMarketEntriesPerDate = data.itemMarketEntries()
+    Map<LocalDate, List<ItemMarketEntry>> itemsMarketEntriesPerDate = data.itemMarketEntries()
         .stream()
-        .sorted(Comparator.comparing(ItemSalesSnapshot::getSnapshotDate))
-        .collect(Collectors.groupingBy(ItemSalesSnapshot::getSnapshotDate));
+        .sorted(Comparator.comparing(ItemMarketEntry::getEntryDate))
+        .collect(Collectors.groupingBy(ItemMarketEntry::getEntryDate));
 
     itemsMarketEntriesPerDate.entrySet()
         .stream()
@@ -57,7 +57,7 @@ public class DailySalesCalculator implements MetricCalculator<DailySalesParam, L
           Set<MarketEntryKey> currentDayListings = new HashSet<>();
           int listingCount = 0;
 
-          for (ItemSalesSnapshot snapshot : dailySales.getValue()) {
+          for (ItemMarketEntry snapshot : dailySales.getValue()) {
             int effectsHash = snapshot.getEffects().hashCode();
 
             MarketEntryKey itemMarketEntryKey = new MarketEntryKey(

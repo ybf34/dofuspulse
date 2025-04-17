@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+  <changeSet id="20250417-1" author="ybf34">
+    <renameTable oldTableName="item_sales_snapshots" newTableName="item_market_entry"/>
+  </changeSet>
+
+  <changeSet id="20250417-2" author="ybf34">
+    <renameColumn tableName="item_market_entry" oldColumnName="snapshot_id"
+      newColumnName="entry_id"/>
+    <renameColumn tableName="item_market_entry" oldColumnName="snapshot_date"
+      newColumnName="entry_date"/>
+  </changeSet>
+
+
+</databaseChangeLog>

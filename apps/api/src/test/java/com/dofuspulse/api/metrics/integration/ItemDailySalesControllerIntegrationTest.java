@@ -3,11 +3,11 @@ package com.dofuspulse.api.metrics.integration;
 import com.dofuspulse.api.PostgresIntegrationTestContainer;
 import com.dofuspulse.api.items.dto.ItemDetailsSearchCriteria;
 import com.dofuspulse.api.items.fixtures.ItemTestDataFactory;
-import com.dofuspulse.api.metrics.fixtures.ItemSalesTestDataFactory;
+import com.dofuspulse.api.metrics.fixtures.ItemMarketEntryTestDataFactory;
 import com.dofuspulse.api.model.ItemDetails;
-import com.dofuspulse.api.model.ItemSalesSnapshot;
+import com.dofuspulse.api.model.ItemMarketEntry;
 import com.dofuspulse.api.repository.ItemDetailsRepository;
-import com.dofuspulse.api.repository.ItemSalesSnapshotRepository;
+import com.dofuspulse.api.repository.ItemMarketEntryRepository;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,22 +39,22 @@ public class ItemDailySalesControllerIntegrationTest extends PostgresIntegration
   ItemDetailsRepository itemDetailsRepository;
 
   @Autowired
-  ItemSalesSnapshotRepository itemSalesSnapshotRepository;
+  ItemMarketEntryRepository itemMarketEntryRepository;
 
   @BeforeEach
   void setUp() {
     itemDetailsRepository.deleteAll();
-    itemSalesSnapshotRepository.deleteAll();
+    itemMarketEntryRepository.deleteAll();
 
     mockItemDetails = ItemTestDataFactory.createMockItemDetails(1L, List.of(), List.of());
     itemDetailsRepository.save(mockItemDetails);
 
-    List<ItemSalesSnapshot> itemMarketListings = ItemSalesTestDataFactory
+    List<ItemMarketEntry> itemMarketListings = ItemMarketEntryTestDataFactory
         .createMockItemMarketListing(
             mockItemDetails.getId(), 100000, "1",
             startDate, endDate);
 
-    itemSalesSnapshotRepository.saveAll(itemMarketListings);
+    itemMarketEntryRepository.saveAll(itemMarketListings);
   }
 
   @Test

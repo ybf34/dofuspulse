@@ -16,7 +16,7 @@ import com.dofuspulse.api.metrics.MetricRegistry;
 import com.dofuspulse.api.metrics.MetricType;
 import com.dofuspulse.api.metrics.calculator.params.CraftCostParams;
 import com.dofuspulse.api.metrics.calculator.params.ProfitMetricsParams;
-import com.dofuspulse.api.metrics.fixtures.ItemSalesTestDataFactory;
+import com.dofuspulse.api.metrics.fixtures.ItemMarketEntryTestDataFactory;
 import com.dofuspulse.api.metrics.service.ItemProfitMetricsServiceImpl;
 import com.dofuspulse.api.model.ItemDetails;
 import com.dofuspulse.api.projections.CraftCost;
@@ -24,7 +24,7 @@ import com.dofuspulse.api.projections.ItemPrice;
 import com.dofuspulse.api.projections.ProfitMetrics;
 import com.dofuspulse.api.projections.ProfitMetricsList;
 import com.dofuspulse.api.repository.ItemDetailsRepository;
-import com.dofuspulse.api.repository.ItemSalesSnapshotRepository;
+import com.dofuspulse.api.repository.ItemMarketEntryRepository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +57,7 @@ public class ItemProfitMetricsServiceUnitTest {
   @Mock
   ItemDetailsRepository itemDetailsRepository;
   @Mock
-  ItemSalesSnapshotRepository itemSalesSnapshotRepository;
+  ItemMarketEntryRepository itemMarketEntryRepository;
   @Mock
   MetricRegistry metricRegistry;
 
@@ -114,17 +114,17 @@ public class ItemProfitMetricsServiceUnitTest {
     );
 
     List<Long> ingredientsIds = ingredientQuantityMap.keySet().stream().toList();
-    List<ItemPrice> mockAllIngredientsPrices = ItemSalesTestDataFactory.mockIngredientsPrices(
+    List<ItemPrice> mockAllIngredientsPrices = ItemMarketEntryTestDataFactory.mockIngredientsPrices(
         ingredientsIds, startDate, endDate);
-    List<ItemPrice> mockItemPriceHistory = ItemSalesTestDataFactory.mockItemPriceHistory(
+    List<ItemPrice> mockItemPriceHistory = ItemMarketEntryTestDataFactory.mockItemPriceHistory(
         mockItemDetails.getId(), startDate, endDate);
 
     when(itemDetailsRepository.findById(mockItemDetails.getId()))
         .thenReturn(Optional.of(mockItemDetails));
-    when(itemSalesSnapshotRepository.getItemsSnapshotsByIdsInDateRange(eq(ingredientsIds),
+    when(itemMarketEntryRepository.getItemsSnapshotsByIdsInDateRange(eq(ingredientsIds),
         eq(startDate), eq(endDate)))
         .thenReturn(mockAllIngredientsPrices);
-    when(itemSalesSnapshotRepository.getPriceHistoryInDateRangeForItems(
+    when(itemMarketEntryRepository.getPriceHistoryInDateRangeForItems(
         eq(List.of(mockItemDetails.getId())), eq(startDate), eq(endDate)))
         .thenReturn(mockItemPriceHistory);
     when(metricRegistry.calculate(eq(MetricType.CRAFT_COST), any(CraftCostParams.class)))
@@ -144,9 +144,9 @@ public class ItemProfitMetricsServiceUnitTest {
         .usingRecursiveFieldByFieldElementComparator()
         .isEqualTo(mockProfitMetrics);
 
-    verify(itemSalesSnapshotRepository, times(1)).getItemsSnapshotsByIdsInDateRange(
+    verify(itemMarketEntryRepository, times(1)).getItemsSnapshotsByIdsInDateRange(
         eq(ingredientQuantityMap.keySet().stream().toList()), eq(startDate), eq(endDate));
-    verify(itemSalesSnapshotRepository, times(1)).getPriceHistoryInDateRangeForItems(
+    verify(itemMarketEntryRepository, times(1)).getPriceHistoryInDateRangeForItems(
         eq(List.of(mockItemDetails.getId())), eq(startDate), eq(endDate));
     verify(metricRegistry, times(1)).calculate(eq(MetricType.CRAFT_COST),
         craftCostParamsCaptor.capture());
@@ -188,18 +188,18 @@ public class ItemProfitMetricsServiceUnitTest {
 
     List<Long> ingredientsIds = ingredientQuantityMap.keySet().stream().toList();
 
-    List<ItemPrice> mockAllIngredientsPrices = ItemSalesTestDataFactory.mockIngredientsPrices(
+    List<ItemPrice> mockAllIngredientsPrices = ItemMarketEntryTestDataFactory.mockIngredientsPrices(
         ingredientsIds, startDate, endDate);
 
-    List<ItemPrice> mockItemPriceHistory = ItemSalesTestDataFactory.mockItemPriceHistory(
+    List<ItemPrice> mockItemPriceHistory = ItemMarketEntryTestDataFactory.mockItemPriceHistory(
         craftableItemDetails.getId(), startDate, endDate);
 
     when(itemDetailsRepository.findAll(any(Specification.class)))
         .thenReturn(List.of(craftableItemDetails, notCraftableItemDetails));
-    when(itemSalesSnapshotRepository.getItemsSnapshotsByIdsInDateRange(eq(ingredientsIds),
+    when(itemMarketEntryRepository.getItemsSnapshotsByIdsInDateRange(eq(ingredientsIds),
         eq(startDate), eq(endDate)))
         .thenReturn(mockAllIngredientsPrices);
-    when(itemSalesSnapshotRepository.getPriceHistoryInDateRangeForItems(
+    when(itemMarketEntryRepository.getPriceHistoryInDateRangeForItems(
         eq(List.of(craftableItemDetails.getId())), eq(startDate), eq(endDate)))
         .thenReturn(mockItemPriceHistory);
     when(metricRegistry.calculate(eq(MetricType.CRAFT_COST), any(CraftCostParams.class)))
@@ -224,12 +224,12 @@ public class ItemProfitMetricsServiceUnitTest {
 
     verify(itemDetailsRepository, times(1)).findAll(any(Specification.class));
 
-    verify(itemSalesSnapshotRepository, times(1)).getItemsSnapshotsByIdsInDateRange(
+    verify(itemMarketEntryRepository, times(1)).getItemsSnapshotsByIdsInDateRange(
         eq(ingredientsIds),
         eq(startDate),
         eq(endDate));
 
-    verify(itemSalesSnapshotRepository, times(1)).getPriceHistoryInDateRangeForItems(
+    verify(itemMarketEntryRepository, times(1)).getPriceHistoryInDateRangeForItems(
         eq(List.of(craftableItemDetails.getId())),
         eq(startDate),
         eq(endDate));

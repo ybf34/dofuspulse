@@ -8,11 +8,11 @@ import com.dofuspulse.api.metrics.MetricType;
 import com.dofuspulse.api.metrics.calculator.params.DailySalesParam;
 import com.dofuspulse.api.metrics.service.contract.ItemDailySalesService;
 import com.dofuspulse.api.model.ItemDetails;
-import com.dofuspulse.api.model.ItemSalesSnapshot;
+import com.dofuspulse.api.model.ItemMarketEntry;
 import com.dofuspulse.api.projections.DailySales;
 import com.dofuspulse.api.projections.DailySalesList;
 import com.dofuspulse.api.repository.ItemDetailsRepository;
-import com.dofuspulse.api.repository.ItemSalesSnapshotRepository;
+import com.dofuspulse.api.repository.ItemMarketEntryRepository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,7 +24,7 @@ import org.springframework.stereotype.Service;
 public class ItemDailySalesServiceImpl implements ItemDailySalesService {
 
   private final ItemDetailsRepository idr;
-  private final ItemSalesSnapshotRepository isr;
+  private final ItemMarketEntryRepository isr;
   private final MetricRegistry metricRegistry;
 
   @Override
@@ -36,7 +36,7 @@ public class ItemDailySalesServiceImpl implements ItemDailySalesService {
     idr.findById(itemId)
         .orElseThrow(() -> new ItemNotFoundException("Item with id " + itemId + " not found"));
 
-    List<ItemSalesSnapshot> salesData = isr.findAllByItemIdInAndSnapshotDateIsBetween(
+    List<ItemMarketEntry> salesData = isr.findAllByItemIdInAndEntryDateIsBetween(
         List.of(itemId), startDate, endDate);
 
     return metricRegistry.calculate(MetricType.DAILY_SALES,
@@ -56,11 +56,11 @@ public class ItemDailySalesServiceImpl implements ItemDailySalesService {
       return List.of();
     }
 
-    var itemsSalesData = isr.findAllByItemIdInAndSnapshotDateIsBetween(
+    var itemsSalesData = isr.findAllByItemIdInAndEntryDateIsBetween(
             items.stream().map(ItemDetails::getId).toList(),
             startDate, endDate)
         .stream()
-        .collect(Collectors.groupingBy(ItemSalesSnapshot::getItemId));
+        .collect(Collectors.groupingBy(ItemMarketEntry::getItemId));
 
     return items.parallelStream()
         .filter(item -> itemsSalesData.containsKey(item.getId()))

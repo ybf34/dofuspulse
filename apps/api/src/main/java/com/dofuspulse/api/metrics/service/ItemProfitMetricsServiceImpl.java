@@ -15,7 +15,7 @@ import com.dofuspulse.api.projections.ItemPrice;
 import com.dofuspulse.api.projections.ProfitMetrics;
 import com.dofuspulse.api.projections.ProfitMetricsList;
 import com.dofuspulse.api.repository.ItemDetailsRepository;
-import com.dofuspulse.api.repository.ItemSalesSnapshotRepository;
+import com.dofuspulse.api.repository.ItemMarketEntryRepository;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -31,7 +31,7 @@ import org.springframework.stereotype.Service;
 public class ItemProfitMetricsServiceImpl implements ItemProfitMetricsService {
 
   private final ItemDetailsRepository idr;
-  private final ItemSalesSnapshotRepository isr;
+  private final ItemMarketEntryRepository isr;
   private final MetricRegistry metricRegistry;
 
   @Override

@@ -21,19 +21,19 @@ import org.hibernate.type.SqlTypes;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "item_sales_snapshots")
-public class ItemSalesSnapshot {
+@Table(name = "item_market_entry")
+public class ItemMarketEntry {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "snapshot_id")
+  @Column(name = "entry_id")
   private Long id;
 
   @Column(name = "item_id")
   private Long itemId;
 
-  @Column(name = "snapshot_date")
-  private LocalDate snapshotDate;
+  @Column(name = "entry_date")
+  private LocalDate entryDate;
 
   @Column(columnDefinition = "jsonb")
   @JdbcTypeCode(SqlTypes.JSON)

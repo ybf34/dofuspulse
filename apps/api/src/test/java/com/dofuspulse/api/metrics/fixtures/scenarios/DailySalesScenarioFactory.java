@@ -1,7 +1,7 @@
 package com.dofuspulse.api.metrics.fixtures.scenarios;
 
 import com.dofuspulse.api.metrics.calculator.params.DailySalesParam;
-import com.dofuspulse.api.metrics.fixtures.builders.ItemSalesSnapshotBuilder;
+import com.dofuspulse.api.metrics.fixtures.builders.ItemMarketEntryBuilder;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
@@ -15,13 +15,13 @@ public class DailySalesScenarioFactory {
   public static DailySalesParam expiredListingsScenario() {
     LocalDate baseDate = LocalDate.of(2023, 1, 1);
     return new DailySalesParam(List.of(
-        ItemSalesSnapshotBuilder.builder()
+        ItemMarketEntryBuilder.builder()
             .withItemId(2L)
             .withDate(baseDate)
             .withPrices(1000)
             .withEffects(Map.of("100", "1", "200", "2"))
             .build(),
-        ItemSalesSnapshotBuilder.builder()
+        ItemMarketEntryBuilder.builder()
             .withDate(baseDate.plusDays(30))
             .withItemId(2L)
             .withPrices(1)
@@ -37,13 +37,13 @@ public class DailySalesScenarioFactory {
   public static DailySalesParam soldListingsScenario() {
 
     return new DailySalesParam(List.of(
-        ItemSalesSnapshotBuilder.builder()
+        ItemMarketEntryBuilder.builder()
             .withItemId(1L)
             .withDate(LocalDate.of(2023, 1, 1))
             .withPrices(1000)
             .withEffects(Map.of("100", "1", "200", "2"))
             .build(),
-        ItemSalesSnapshotBuilder.builder()
+        ItemMarketEntryBuilder.builder()
             .withDate(LocalDate.of(2023, 1, 2))
             .withItemId(1L)
             .withPrices(2000)

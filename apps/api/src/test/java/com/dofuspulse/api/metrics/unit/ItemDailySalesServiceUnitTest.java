@@ -14,14 +14,14 @@ import com.dofuspulse.api.items.fixtures.ItemTestDataFactory;
 import com.dofuspulse.api.metrics.MetricRegistry;
 import com.dofuspulse.api.metrics.MetricType;
 import com.dofuspulse.api.metrics.calculator.params.DailySalesParam;
-import com.dofuspulse.api.metrics.fixtures.ItemSalesTestDataFactory;
+import com.dofuspulse.api.metrics.fixtures.ItemMarketEntryTestDataFactory;
 import com.dofuspulse.api.metrics.service.ItemDailySalesServiceImpl;
 import com.dofuspulse.api.model.ItemDetails;
-import com.dofuspulse.api.model.ItemSalesSnapshot;
+import com.dofuspulse.api.model.ItemMarketEntry;
 import com.dofuspulse.api.projections.DailySales;
 import com.dofuspulse.api.projections.DailySalesList;
 import com.dofuspulse.api.repository.ItemDetailsRepository;
-import com.dofuspulse.api.repository.ItemSalesSnapshotRepository;
+import com.dofuspulse.api.repository.ItemMarketEntryRepository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
@@ -43,7 +43,7 @@ public class ItemDailySalesServiceUnitTest {
   @Mock
   ItemDetailsRepository itemDetailsRepository;
   @Mock
-  ItemSalesSnapshotRepository itemSalesSnapshotRepository;
+  ItemMarketEntryRepository itemMarketEntryRepository;
   @Mock
   MetricRegistry metricRegistry;
 
@@ -57,7 +57,7 @@ public class ItemDailySalesServiceUnitTest {
     ItemDetails mockItemDetails = ItemTestDataFactory.createMockItemDetails(1L, List.of(),
         List.of());
 
-    var mockItemMarketEntries = ItemSalesTestDataFactory.createMockItemMarketListing(
+    var mockItemMarketEntries = ItemMarketEntryTestDataFactory.createMockItemMarketListing(
         mockItemDetails.getId(), 100, "1", startDate, endDate);
 
     List<DailySales> mockExpectedComputedSalesHistory = List.of(
@@ -68,7 +68,7 @@ public class ItemDailySalesServiceUnitTest {
     when(itemDetailsRepository.findById(
         mockItemDetails.getId())).thenReturn(Optional.of(mockItemDetails));
 
-    when(itemSalesSnapshotRepository.findAllByItemIdInAndSnapshotDateIsBetween(
+    when(itemMarketEntryRepository.findAllByItemIdInAndEntryDateIsBetween(
         List.of(mockItemDetails.getId()), startDate, endDate)).thenReturn(mockItemMarketEntries);
 
     when(metricRegistry.calculate(MetricType.DAILY_SALES,
@@ -84,7 +84,7 @@ public class ItemDailySalesServiceUnitTest {
         .usingRecursiveFieldByFieldElementComparator()
         .isEqualTo(mockExpectedComputedSalesHistory);
 
-    verify(itemSalesSnapshotRepository, times(1)).findAllByItemIdInAndSnapshotDateIsBetween(
+    verify(itemMarketEntryRepository, times(1)).findAllByItemIdInAndEntryDateIsBetween(
         eq(List.of(mockItemDetails.getId())), eq(startDate), eq(endDate));
 
     verify(metricRegistry, times(1)).calculate(eq(MetricType.DAILY_SALES),
@@ -103,13 +103,13 @@ public class ItemDailySalesServiceUnitTest {
 
     when(itemDetailsRepository.findAll(any(Specification.class))).thenReturn(mockItemsDetails);
 
-    List<ItemSalesSnapshot> itemMarketEntries =
-        ItemSalesTestDataFactory.createMockItemMarketListing(
+    List<ItemMarketEntry> itemMarketEntries =
+        ItemMarketEntryTestDataFactory.createMockItemMarketListing(
             mockItemsDetails.getFirst().getId(), 100, "1", startDate, endDate);
 
     List<Long> itemIds = mockItemsDetails.stream().map(ItemDetails::getId).toList();
 
-    when(itemSalesSnapshotRepository.findAllByItemIdInAndSnapshotDateIsBetween(itemIds, startDate,
+    when(itemMarketEntryRepository.findAllByItemIdInAndEntryDateIsBetween(itemIds, startDate,
         endDate))
         .thenReturn(itemMarketEntries);
 
@@ -161,7 +161,7 @@ public class ItemDailySalesServiceUnitTest {
         );
 
     verify(itemDetailsRepository, times(1)).findAll(any(Specification.class));
-    verify(itemSalesSnapshotRepository, times(1)).findAllByItemIdInAndSnapshotDateIsBetween(
+    verify(itemMarketEntryRepository, times(1)).findAllByItemIdInAndEntryDateIsBetween(
         eq(itemIds),
         eq(startDate),
         eq(endDate));
@@ -188,7 +188,7 @@ public class ItemDailySalesServiceUnitTest {
         .isEmpty();
 
     verify(itemDetailsRepository, times(1)).findAll(any(Specification.class));
-    verify(itemSalesSnapshotRepository, times(0)).findAllByItemIdInAndSnapshotDateIsBetween(any(),
+    verify(itemMarketEntryRepository, times(0)).findAllByItemIdInAndEntryDateIsBetween(any(),
         any(), any());
     verify(metricRegistry, times(0)).calculate(any(), any());
   }
