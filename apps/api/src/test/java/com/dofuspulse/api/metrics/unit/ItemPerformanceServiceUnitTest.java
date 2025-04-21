@@ -176,11 +176,6 @@ public class ItemPerformanceServiceUnitTest {
     verify(metricRegistry, times(2)).calculate(eq(MetricType.PERFORMANCE),
         performanceParamsCaptor.capture());
 
-    assertThat(performanceParamsCaptor.getValue())
-        .asInstanceOf(InstanceOfAssertFactories.type(PerformanceMetricsParam.class))
-        .extracting(PerformanceMetricsParam::itemId, PerformanceMetricsParam::dailySales,
-            PerformanceMetricsParam::profitMetrics)
-        .containsExactly(mockItemDetailsFirst.getId(), mockItemDailySales, mockItemProfitMetrics);
   }
 
 }

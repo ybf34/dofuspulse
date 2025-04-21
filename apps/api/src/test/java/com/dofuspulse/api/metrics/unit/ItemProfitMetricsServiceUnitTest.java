@@ -121,7 +121,7 @@ public class ItemProfitMetricsServiceUnitTest {
 
     when(itemDetailsRepository.findById(mockItemDetails.getId()))
         .thenReturn(Optional.of(mockItemDetails));
-    when(itemMarketEntryRepository.getItemsSnapshotsByIdsInDateRange(eq(ingredientsIds),
+    when(itemMarketEntryRepository.getPriceHistoryInDateRangeForItems(eq(ingredientsIds),
         eq(startDate), eq(endDate)))
         .thenReturn(mockAllIngredientsPrices);
     when(itemMarketEntryRepository.getPriceHistoryInDateRangeForItems(
@@ -144,7 +144,7 @@ public class ItemProfitMetricsServiceUnitTest {
         .usingRecursiveFieldByFieldElementComparator()
         .isEqualTo(mockProfitMetrics);
 
-    verify(itemMarketEntryRepository, times(1)).getItemsSnapshotsByIdsInDateRange(
+    verify(itemMarketEntryRepository, times(1)).getPriceHistoryInDateRangeForItems(
         eq(ingredientQuantityMap.keySet().stream().toList()), eq(startDate), eq(endDate));
     verify(itemMarketEntryRepository, times(1)).getPriceHistoryInDateRangeForItems(
         eq(List.of(mockItemDetails.getId())), eq(startDate), eq(endDate));
@@ -196,7 +196,7 @@ public class ItemProfitMetricsServiceUnitTest {
 
     when(itemDetailsRepository.findAll(any(Specification.class)))
         .thenReturn(List.of(craftableItemDetails, notCraftableItemDetails));
-    when(itemMarketEntryRepository.getItemsSnapshotsByIdsInDateRange(eq(ingredientsIds),
+    when(itemMarketEntryRepository.getPriceHistoryInDateRangeForItems(eq(ingredientsIds),
         eq(startDate), eq(endDate)))
         .thenReturn(mockAllIngredientsPrices);
     when(itemMarketEntryRepository.getPriceHistoryInDateRangeForItems(
@@ -224,7 +224,7 @@ public class ItemProfitMetricsServiceUnitTest {
 
     verify(itemDetailsRepository, times(1)).findAll(any(Specification.class));
 
-    verify(itemMarketEntryRepository, times(1)).getItemsSnapshotsByIdsInDateRange(
+    verify(itemMarketEntryRepository, times(1)).getPriceHistoryInDateRangeForItems(
         eq(ingredientsIds),
         eq(startDate),
         eq(endDate));

@@ -53,7 +53,7 @@ public class ItemProfitMetricsServiceImpl implements ItemProfitMetricsService {
     Map<Long, Integer> ingredientQuantityMap = IntStream.range(0, ingredientIds.size()).boxed()
         .collect(Collectors.toMap(ingredientIds::get, quantities::get));
 
-    List<ItemPrice> ingredientsPrices = isr.getItemsSnapshotsByIdsInDateRange(ingredientIds,
+    List<ItemPrice> ingredientsPrices = isr.getPriceHistoryInDateRangeForItems(ingredientIds,
         startDate, endDate);
 
     List<ItemPrice> itemPrices = isr.getPriceHistoryInDateRangeForItems(List.of(itemId), startDate,
@@ -90,7 +90,7 @@ public class ItemProfitMetricsServiceImpl implements ItemProfitMetricsService {
         .flatMap(List::stream)
         .toList();
 
-    Map<Long, List<ItemPrice>> itemsIngredientsPrices = isr.getItemsSnapshotsByIdsInDateRange(
+    Map<Long, List<ItemPrice>> itemsIngredientsPrices = isr.getPriceHistoryInDateRangeForItems(
             allUniqueIngredientsIds,
             startDate,
             endDate)

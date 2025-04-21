@@ -24,13 +24,4 @@ public interface ItemMarketEntryRepository extends JpaRepository<ItemMarketEntry
       List<Long> itemId,
       LocalDate startDate,
       LocalDate endDate);
-
-  @Query("SELECT DISTINCT " + "iss1.itemId as itemId, " + "iss1.entryDate as snapshotDate, "
-      + "iss1.prices as prices " + "FROM ItemMarketEntry iss1 " + "WHERE iss1.itemId IN :itemIds "
-      + "AND iss1.entryDate BETWEEN :startDate AND :endDate " + "ORDER BY iss1.entryDate")
-  List<ItemPrice> getItemsSnapshotsByIdsInDateRange(
-      @Param("itemIds") List<Long> itemIds,
-      @Param("startDate") LocalDate startDate,
-      @Param("endDate") LocalDate endDate);
-
 }
