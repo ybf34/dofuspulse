@@ -3,7 +3,7 @@ package com.dofuspulse.api.metrics.integration;
 import com.dofuspulse.api.PostgresIntegrationTestContainer;
 import com.dofuspulse.api.items.dto.ItemDetailsSearchCriteria;
 import com.dofuspulse.api.items.fixtures.ItemTestDataFactory;
-import com.dofuspulse.api.metrics.fixtures.ItemMarketEntryTestDataFactory;
+import com.dofuspulse.api.market.fixtures.ItemMarketEntryTestDataFactory;
 import com.dofuspulse.api.model.ItemDetails;
 import com.dofuspulse.api.model.ItemMarketEntry;
 import com.dofuspulse.api.repository.ItemDetailsRepository;
