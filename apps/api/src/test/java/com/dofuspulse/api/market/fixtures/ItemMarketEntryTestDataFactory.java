@@ -1,4 +1,4 @@
-package com.dofuspulse.api.metrics.fixtures;
+package com.dofuspulse.api.market.fixtures;
 
 import com.dofuspulse.api.metrics.fixtures.builders.ItemPriceBuilder;
 import com.dofuspulse.api.model.ItemMarketEntry;
@@ -60,9 +60,10 @@ public class ItemMarketEntryTestDataFactory {
 
   public static List<ItemPrice> mockItemPriceHistory(
       Long itemId,
+      Integer price,
       LocalDate startDate,
       LocalDate endDate) {
-    return ItemMarketEntryTestDataFactory.createMockItemMarketListing(itemId, 1000, "1", startDate,
+    return ItemMarketEntryTestDataFactory.createMockItemMarketListing(itemId, price, "1", startDate,
             endDate)
         .stream()
         .map(snapshot -> ItemPriceBuilder.builder()
@@ -73,4 +74,5 @@ public class ItemMarketEntryTestDataFactory {
         .toList();
   }
 
+  public record TestItemPriceDto(Long itemId, LocalDate snapshotDate, List<Integer> prices) {}
 }

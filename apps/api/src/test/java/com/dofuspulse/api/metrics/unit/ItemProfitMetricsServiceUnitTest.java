@@ -12,11 +12,11 @@ import com.dofuspulse.api.exception.ItemNotFoundException;
 import com.dofuspulse.api.exception.NotCraftableItemException;
 import com.dofuspulse.api.items.dto.ItemDetailsSearchCriteria;
 import com.dofuspulse.api.items.fixtures.ItemTestDataFactory;
+import com.dofuspulse.api.market.fixtures.ItemMarketEntryTestDataFactory;
 import com.dofuspulse.api.metrics.MetricRegistry;
 import com.dofuspulse.api.metrics.MetricType;
 import com.dofuspulse.api.metrics.calculator.params.CraftCostParams;
 import com.dofuspulse.api.metrics.calculator.params.ProfitMetricsParams;
-import com.dofuspulse.api.metrics.fixtures.ItemMarketEntryTestDataFactory;
 import com.dofuspulse.api.metrics.service.ItemProfitMetricsServiceImpl;
 import com.dofuspulse.api.model.ItemDetails;
 import com.dofuspulse.api.projections.CraftCost;
@@ -117,7 +117,7 @@ public class ItemProfitMetricsServiceUnitTest {
     List<ItemPrice> mockAllIngredientsPrices = ItemMarketEntryTestDataFactory.mockIngredientsPrices(
         ingredientsIds, startDate, endDate);
     List<ItemPrice> mockItemPriceHistory = ItemMarketEntryTestDataFactory.mockItemPriceHistory(
-        mockItemDetails.getId(), startDate, endDate);
+        mockItemDetails.getId(), 100, startDate, endDate);
 
     when(itemDetailsRepository.findById(mockItemDetails.getId()))
         .thenReturn(Optional.of(mockItemDetails));
@@ -192,7 +192,7 @@ public class ItemProfitMetricsServiceUnitTest {
         ingredientsIds, startDate, endDate);
 
     List<ItemPrice> mockItemPriceHistory = ItemMarketEntryTestDataFactory.mockItemPriceHistory(
-        craftableItemDetails.getId(), startDate, endDate);
+        craftableItemDetails.getId(), 100, startDate, endDate);
 
     when(itemDetailsRepository.findAll(any(Specification.class)))
         .thenReturn(List.of(craftableItemDetails, notCraftableItemDetails));
