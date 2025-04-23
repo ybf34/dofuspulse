@@ -121,7 +121,7 @@
         <configuration>
           <driver>org.postgresql.Driver</driver>
           <!--suppress UnresolvedMavenProperty -->
-          <url>jdbc:postgresql://localhost:5432/${env.DB_NAME}</url>
+          <url>jdbc:postgresql://${env.DB_HOST}:5432/${env.DB_NAME}</url>
           <!--suppress UnresolvedMavenProperty -->
           <username>${env.DB_USER}</username>
           <!--suppress UnresolvedMavenProperty -->
@@ -140,6 +140,10 @@
           </argLine>
         </configuration>
         <groupId>org.apache.maven.plugins</groupId>
+      </plugin>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
       </plugin>
     </plugins>
   </build>
