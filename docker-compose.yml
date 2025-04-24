@@ -1,14 +1,14 @@
 version: '3.8'
 
 services:
-
   api:
     image: dofuspulse:latest
     ports:
       - "8080:8080"
     environment:
       - SPRING_PROFILES_ACTIVE=local
-      - DB_HOST=postgres
+      - APP_HOST=${APP_HOST}
+      - DB_HOST=${DB_HOST}
       - DB_NAME=${DB_NAME}
       - DB_USER=${DB_USER}
       - DB_PASSWORD=${DB_PASSWORD}
@@ -16,12 +16,11 @@ services:
       - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
       - DISCORD_CLIENT_ID=${DISCORD_CLIENT_ID}
       - DISCORD_CLIENT_SECRET=${DISCORD_CLIENT_SECRET}
-
     depends_on:
       - postgres
 
   postgres:
-    image: postgres:latest
+    image: postgres:17.3-alpine
     ports:
       - "5432:5432"
     environment:
@@ -32,7 +31,7 @@ services:
       - db_data:/var/lib/postgresql/data
 
 volumes:
-    db_data:
+  db_data:
 
 
 

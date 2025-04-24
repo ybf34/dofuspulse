@@ -1,15 +1,19 @@
-FROM maven:3-eclipse-temurin-21 AS build
+FROM maven:3.9.4-eclipse-temurin-21 AS build
 WORKDIR /opt/app
+RUN --mount=type=bind,source=pom.xml,target=pom.xml,readonly \
+    --mount=type=cache,target=/root/.m2 \
+    mvn dependency:go-offline
 COPY src ./src
-COPY pom.xml .
-RUN --mount=type=cache,target=/root/.m2 mvn package -DskipTests
+RUN --mount=type=bind,source=pom.xml,target=pom.xml,readonly \
+    --mount=type=cache,target=/root/.m2 \
+    mvn package -DskipTests
 
 RUN jar xf target/api-0.0.1-SNAPSHOT.jar
-RUN jdeps --ignore-missing-deps -q  \
-    --recursive  \
-    --multi-release 21  \
-    --print-module-deps  \
-    --class-path 'BOOT-INF/lib/*'  \
+RUN jdeps --ignore-missing-deps -q \
+    --recursive \
+    --multi-release 21 \
+    --print-module-deps \
+    --class-path 'BOOT-INF/lib/*' \
     target/*.jar > deps.info
 RUN jlink \
     --verbose \
@@ -30,11 +34,11 @@ ENV JAVA_HOME=/opt/java/jdk21
 ENV PATH=$JAVA_HOME/bin:$PATH
 COPY --from=build /customjre $JAVA_HOME
 WORKDIR /opt/app
-COPY --from=extractor --chown=65532:65532 /opt/app/dependencies/ ./
-COPY --from=extractor --chown=65532:65532 /opt/app/spring-boot-loader/ ./
-COPY --from=extractor --chown=65532:65532 /opt/app/snapshot-dependencies/ ./
-COPY --from=extractor --chown=65532:65532 /opt/app/application/ ./
+COPY --from=extractor /opt/app/dependencies/ ./
+COPY --from=extractor /opt/app/spring-boot-loader/ ./
+COPY --from=extractor /opt/app/snapshot-dependencies/ ./
+COPY --from=extractor /opt/app/application/ ./
 
-USER nonroot
+USER 65532
 
-ENTRYPOINT ["java","-XX:+UseParallelGC","-XX:MaxRAMPercentage=75","org.springframework.boot.loader.launch.JarLauncher"]
+ENTRYPOINT ["java", "-XX:+UseParallelGC", "-XX:MaxRAMPercentage=75", "org.springframework.boot.loader.launch.JarLauncher"]
