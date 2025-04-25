@@ -29,6 +29,7 @@ spring:
           discord:
             client-id: ${DISCORD_CLIENT_ID}
             client-secret: ${DISCORD_CLIENT_SECRET}
+            redirect-uri: http://${APP_HOST}:8080/login/oauth2/code/discord
             scope:
               - identify
               - email
@@ -60,29 +61,29 @@ spring:
       on-profile: local
   jpa:
     show-sql: true
-  security:
-    oauth2:
-      client:
-        registration:
-          discord:
-            redirect-uri: http://${APP_HOST}:8080/login/oauth2/code/discord
 logging:
   level:
     org.springframework.security: trace
     root: INFO
-
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
 ---
 spring:
   config:
     activate:
       on-profile: prod
-  security:
-    oauth2:
-      client:
-        registration:
-          discord:
-            redirect-uri: https://${APP_HOST}:8080/login/oauth2/code/discord
 logging:
   level:
     root: INFO
+management:
+  server:
+    port: 8081
+    address: 127.0.0.1
+  endpoints:
+    web:
+      exposure:
+        include: '*'
 
