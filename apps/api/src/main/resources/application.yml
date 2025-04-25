@@ -1,21 +1,14 @@
 spring:
   application:
     name: ms-dofuspulse-api
-
----
-spring:
-  config:
-    activate:
-      on-profile: local
   datasource:
-    url: jdbc:postgresql://localhost:5432/${DB_NAME:dofuspulse}
+    url: jdbc:postgresql://${DB_HOST:postgres}:5432/${DB_NAME:dofuspulse}
     username: ${DB_USER}
     password: ${DB_PASSWORD}
   jpa:
+    open-in-view: false
     hibernate:
       ddl-auto: validate
-    show-sql: true
-    open-in-view: false
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.xml
     enabled: true
@@ -36,10 +29,10 @@ spring:
           discord:
             client-id: ${DISCORD_CLIENT_ID}
             client-secret: ${DISCORD_CLIENT_SECRET}
+            redirect-uri: http://${APP_HOST}:8080/login/oauth2/code/discord
             scope:
               - identify
               - email
-            redirect-uri: http://localhost:8080/login/oauth2/code/discord
             client-name: Discord
             client-authentication-method: client_secret_post
             authorization-grant-type: authorization_code
@@ -49,12 +42,6 @@ spring:
             token-uri: https://discord.com/api/oauth2/token
             user-info-uri: https://discord.com/api/users/@me
             user-name-attribute: username
-
-logging:
-  level:
-    org.springframework.security: trace
-    root: INFO
-
 server:
   servlet:
     session:
@@ -63,6 +50,7 @@ server:
       cookie:
         http-only: true
         max-age: 168h
+        secure: true
   tomcat:
     additional-tld-skip-patterns: '*.tld'
 
@@ -70,12 +58,32 @@ server:
 spring:
   config:
     activate:
-      on-profile: prod
-  datasource:
-    url: jdbc:postgresql://prod-db-server:5432/dofuspulse
-    username: dofuspulse
-    password: admin
+      on-profile: local
   jpa:
-    properties:
-      hibernate:
-        format_sql: true
+    show-sql: true
+logging:
+  level:
+    org.springframework.security: trace
+    root: INFO
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+---
+spring:
+  config:
+    activate:
+      on-profile: prod
+logging:
+  level:
+    root: INFO
+management:
+  server:
+    port: 8081
+    address: 127.0.0.1
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+

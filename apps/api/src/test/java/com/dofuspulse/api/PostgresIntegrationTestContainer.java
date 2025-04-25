@@ -1,6 +1,5 @@
 package com.dofuspulse.api;
 
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
@@ -10,7 +9,6 @@ import org.testcontainers.containers.PostgreSQLContainer;
  * it dynamically for integration tests.
  */
 
-@ActiveProfiles("test")
 public abstract class PostgresIntegrationTestContainer {
 
   /**
