@@ -23,7 +23,7 @@ public class WebSecurityConfig {
   private static final String[] WHITE_LIST_URLS = {
       "/api/v1/auth/**",
       "/login/**",
-      "actuator/**",
+      "/actuator/**",
       "/error"
   };
 
