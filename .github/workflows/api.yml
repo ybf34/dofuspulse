@@ -20,6 +20,7 @@ on:
 env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}/api
+  SPRING_PROFILES_ACTIVE: prod
 
 jobs:
   test-and-build-image:
@@ -46,7 +47,7 @@ jobs:
           cache: maven
 
       - name: Run all tests
-        run: mvn -B test
+        run: mvn -B test -Dspring.profiles.active=${{ env.SPRING_PROFILES_ACTIVE }}
 
       - name: Log in to the Container registry
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
