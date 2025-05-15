@@ -2,5 +2,14 @@ package com.dofuspulse.api.projections;
 
 import java.time.LocalDate;
 
+/**
+ * Projection interface for CraftCost.
+ */
+public interface CraftCost {
 
-public record CraftCost(LocalDate snapshotDate, int craftCost) {}
+  Long getItemId();
+
+  LocalDate getSnapshotDate();
+
+  int getCraftCost();
+}

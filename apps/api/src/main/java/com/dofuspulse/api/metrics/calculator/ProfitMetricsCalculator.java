@@ -31,7 +31,7 @@ public class ProfitMetricsCalculator implements
   public List<ProfitMetrics> calculate(ProfitMetricsParams data) {
 
     Map<LocalDate, Integer> craftCostMap = data.craftCosts().stream()
-        .collect(Collectors.toMap(CraftCost::snapshotDate, CraftCost::craftCost));
+        .collect(Collectors.toMap(CraftCost::getSnapshotDate, CraftCost::getCraftCost));
 
     return data.itemPrices().stream()
         .map(item -> {

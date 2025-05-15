@@ -16,22 +16,33 @@
       <column name="level" type="BIGINT"/>
       <column name="item_type_id" type="BIGINT"/>
       <column name="quantities" type="integer[]"/>
-      <column name="ingredient_ids" type="bigint[]"/>
+      <column name="ingredient_ids" type="integer[]"/>
       <column name="possibleeffects" type="integer[]"/>
     </createTable>
   </changeSet>
-  <changeSet id="1741306834446-4" author="ybf34">
-    <createTable tableName="item_sales_snapshots">
-      <column name="snapshot_id" type="BIGINT" autoIncrement="true">
-        <constraints nullable="false" primaryKey="true" primaryKeyName="pk_item_sales_snapshots"/>
+
+  <changeSet author="ybf34" id="1741306834446-8">
+    <createTable tableName="item_market_entry">
+      <column name="entry_id" type="UUID">
+        <constraints nullable="true"/>
+      </column>
+      <column name="entry_date" type="DATE">
+        <constraints nullable="false"/>
       </column>
       <column name="item_id" type="BIGINT"/>
-      <column name="snapshot_date" type="DATE"/>
       <column name="effects" type="jsonb"/>
       <column name="prices" type="integer[]"/>
     </createTable>
   </changeSet>
+
   <changeSet id="1741306834446-5" author="ybf34">
+    <addPrimaryKey
+      columnNames="entry_id, entry_date"
+      constraintName="pk_item_market_entry"
+      tableName="item_market_entry"/>
+  </changeSet>
+
+  <changeSet author="ybf34" id="1741306834446-11">
     <createTable tableName="item_types">
       <column name="item_type_id" type="BIGINT">
         <constraints nullable="false" primaryKey="true" primaryKeyName="pk_item_types"/>
@@ -69,7 +80,7 @@
       <column name="updated_at" type="DATETIME"/>
     </createTable>
   </changeSet>
-  <changeSet id="1741306834446-8" author="ybf34">
+  <changeSet author="ybf34" id="1741306834446-22">
     <addUniqueConstraint columnNames="provider, provider_id"
       constraintName="uc_f5c25ece91b7944320d7d3255" tableName="user_social_logins"/>
   </changeSet>

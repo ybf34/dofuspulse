@@ -4,6 +4,7 @@ import com.dofuspulse.api.model.ItemMarketEntry;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class ItemMarketEntryBuilder {
 
@@ -38,6 +39,6 @@ public class ItemMarketEntryBuilder {
   }
 
   public ItemMarketEntry build() {
-    return new ItemMarketEntry(snapshotId, itemId, snapshotDate, effects, prices);
+    return new ItemMarketEntry(UUID.randomUUID(), itemId, snapshotDate, effects, prices);
   }
 }

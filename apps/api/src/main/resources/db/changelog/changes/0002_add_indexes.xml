@@ -6,10 +6,10 @@
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.29.xsd"
   objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
 
-  <changeSet id="20250307-1" author="ybf34">
-    <createIndex tableName="item_sales_snapshots" indexName="idx_sales_item_id_date">
+  <changeSet author="ybf34" id="20250307-99">
+    <createIndex indexName="idx_market_entry_item_id_date" tableName="item_market_entry">
       <column name="item_id"></column>
-      <column name="snapshot_date"></column>
+      <column name="entry_date"></column>
     </createIndex>
   </changeSet>
 
@@ -18,4 +18,14 @@
       <column name="item_id"></column>
     </createIndex>
   </changeSet>
+
+
+  <changeSet author="ybf34" id="20250511-1784564569">
+    <sql>
+      CREATE INDEX idx_market_entry_entry_date_item_id_prices1
+        ON item_market_entry (entry_date, item_id, ( prices[1]));
+    </sql>
+  </changeSet>
+
+
 </databaseChangeLog>

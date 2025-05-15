@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 public class ItemMarketEntryTestDataFactory {
 
@@ -17,6 +18,7 @@ public class ItemMarketEntryTestDataFactory {
       String effect) {
 
     ItemMarketEntry mockItemMarketEntry = new ItemMarketEntry();
+    mockItemMarketEntry.setId(UUID.randomUUID());
     mockItemMarketEntry.setEntryDate(date);
     mockItemMarketEntry.setItemId(itemId);
     mockItemMarketEntry.setPrices(List.of(price));
@@ -39,23 +41,6 @@ public class ItemMarketEntryTestDataFactory {
       startDate = startDate.plusDays(1);
     }
     return itemMarketListing;
-  }
-
-  public static List<ItemPrice> mockIngredientsPrices(
-      List<Long> ingredientIds,
-      LocalDate startDate,
-      LocalDate endDate) {
-    return ingredientIds.stream()
-        .flatMap(id -> ItemMarketEntryTestDataFactory.createMockItemMarketListing(id, 100, "i",
-                startDate,
-                endDate)
-            .stream()
-            .map(snapshot -> ItemPriceBuilder.builder()
-                .withItemId(snapshot.getItemId())
-                .withPrices(snapshot.getPrices().getFirst())
-                .withDate(snapshot.getEntryDate())
-                .build()))
-        .toList();
   }
 
   public static List<ItemPrice> mockItemPriceHistory(

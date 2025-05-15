@@ -1,8 +1,8 @@
 package com.dofuspulse.api.metrics.fixtures.scenarios;
 
 import com.dofuspulse.api.metrics.calculator.params.ProfitMetricsParams;
+import com.dofuspulse.api.metrics.fixtures.builders.CraftCostBuilder;
 import com.dofuspulse.api.metrics.fixtures.builders.ItemPriceBuilder;
-import com.dofuspulse.api.projections.CraftCost;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -20,8 +20,14 @@ public class ProfitMetricsScenarioFactory {
             .build()
     ),
         List.of(
-            new CraftCost(LocalDate.of(2023, 1, 1), 1000),
-            new CraftCost(LocalDate.of(2023, 1, 2), 900)
+            CraftCostBuilder.builder()
+                .withDate(LocalDate.of(2023, 1, 1))
+                .withCraftCost(1000)
+                .build(),
+            CraftCostBuilder.builder()
+                .withDate(LocalDate.of(2023, 1, 2))
+                .withCraftCost(900)
+                .build()
         ));
   }
 
@@ -37,7 +43,10 @@ public class ProfitMetricsScenarioFactory {
             .build()
     ),
         List.of(
-            new CraftCost(LocalDate.of(2023, 1, 1), 1000)
+            CraftCostBuilder.builder()
+                .withDate(LocalDate.of(2023, 1, 1))
+                .withCraftCost(1000)
+                .build()
             //,new CraftCost(LocalDate.of(2023, 1, 2), 900)
         ));
   }
@@ -50,8 +59,14 @@ public class ProfitMetricsScenarioFactory {
             .build()
     ),
         List.of(
-            new CraftCost(LocalDate.of(2023, 1, 1), 1000),
-            new CraftCost(LocalDate.of(2023, 1, 2), 900)
+            CraftCostBuilder.builder()
+                .withDate(LocalDate.of(2023, 1, 1))
+                .withCraftCost(900)
+                .build(),
+            CraftCostBuilder.builder()
+                .withDate(LocalDate.of(2023, 1, 2))
+                .withCraftCost(1000)
+                .build()
         ));
   }
 }

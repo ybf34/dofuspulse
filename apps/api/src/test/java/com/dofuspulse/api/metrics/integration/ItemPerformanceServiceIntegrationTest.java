@@ -7,7 +7,6 @@ import com.dofuspulse.api.items.dto.ItemDetailsSearchCriteria;
 import com.dofuspulse.api.items.fixtures.ItemTestDataFactory;
 import com.dofuspulse.api.market.fixtures.ItemMarketEntryTestDataFactory;
 import com.dofuspulse.api.metrics.MetricRegistry;
-import com.dofuspulse.api.metrics.calculator.CraftCostCalculator;
 import com.dofuspulse.api.metrics.calculator.DailySalesCalculator;
 import com.dofuspulse.api.metrics.calculator.PerformanceCalculator;
 import com.dofuspulse.api.metrics.calculator.ProfitMetricsCalculator;
@@ -38,8 +37,6 @@ import org.springframework.context.annotation.Import;
     ProfitMetricsCalculator.class,
     PerformanceCalculator.class,
     DailySalesCalculator.class,
-    CraftCostCalculator.class,
-
 })
 public class ItemPerformanceServiceIntegrationTest extends PostgresIntegrationTestContainer {
 

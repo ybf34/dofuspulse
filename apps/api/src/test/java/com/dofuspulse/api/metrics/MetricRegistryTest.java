@@ -2,7 +2,6 @@ package com.dofuspulse.api.metrics;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import com.dofuspulse.api.metrics.calculator.CraftCostCalculator;
 import com.dofuspulse.api.metrics.calculator.DailySalesCalculator;
 import com.dofuspulse.api.metrics.calculator.MetricCalculator;
 import com.dofuspulse.api.metrics.calculator.PerformanceCalculator;
@@ -17,8 +16,7 @@ import org.springframework.boot.test.context.SpringBootTest;
     MetricRegistry.class,
     ProfitMetricsCalculator.class,
     PerformanceCalculator.class,
-    DailySalesCalculator.class,
-    CraftCostCalculator.class,
+    DailySalesCalculator.class
 })
 @DisplayName("Metric Registry Test")
 class MetricRegistryTest {

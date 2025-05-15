@@ -17,10 +17,10 @@ services:
       - DISCORD_CLIENT_ID=${DISCORD_CLIENT_ID}
       - DISCORD_CLIENT_SECRET=${DISCORD_CLIENT_SECRET}
     depends_on:
-      - postgres
+      - timescaledb
 
-  postgres:
-    image: postgres:17.3-alpine
+  timescaledb:
+    image: timescale/timescaledb:latest-pg17
     ports:
       - "5432:5432"
     environment:
