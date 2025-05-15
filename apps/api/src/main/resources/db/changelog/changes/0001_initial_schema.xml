@@ -42,6 +42,13 @@
       tableName="item_market_entry"/>
   </changeSet>
 
+  <changeSet author="ybf34" id="ts-1">
+    <sql>
+      SELECT create_hypertable('item_market_entry', 'entry_date',
+                               chunk_time_interval => INTERVAL '1 day');
+    </sql>
+  </changeSet>
+
   <changeSet author="ybf34" id="1741306834446-11">
     <createTable tableName="item_types">
       <column name="item_type_id" type="BIGINT">

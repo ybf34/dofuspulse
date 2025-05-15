@@ -3,6 +3,7 @@ package com.dofuspulse.api;
 import org.springframework.test.context.DynamicPropertyRegistry;
 import org.springframework.test.context.DynamicPropertySource;
 import org.testcontainers.containers.PostgreSQLContainer;
+import org.testcontainers.utility.DockerImageName;
 
 /**
  * This class sets up a PostgreSQL container and configures Spring Boot's datasource to connect to
@@ -16,8 +17,11 @@ public abstract class PostgresIntegrationTestContainer {
    * across all tests that extend this class.
    */
 
-  static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(
-      "postgres:17.3-alpine");
+  static final DockerImageName TIMESCALE_IMAGE = DockerImageName
+      .parse("timescale/timescaledb:latest-pg17")
+      .asCompatibleSubstituteFor("postgres");
+
+  static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(TIMESCALE_IMAGE);
 
   static {
     postgres.start();
