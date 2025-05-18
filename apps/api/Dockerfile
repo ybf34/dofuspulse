@@ -41,4 +41,10 @@ COPY --from=extractor /opt/app/application/ ./
 
 USER 65532
 
-ENTRYPOINT ["java", "-XX:+UseParallelGC", "-XX:MaxRAMPercentage=75", "org.springframework.boot.loader.launch.JarLauncher"]
+ENTRYPOINT [
+  "java",
+  "-XX:+UseG1GC",
+  "-XX:+UseStringDeduplication",
+  "-XX:MaxRAMPercentage=75",
+  "org.springframework.boot.loader.launch.JarLauncher"
+]
