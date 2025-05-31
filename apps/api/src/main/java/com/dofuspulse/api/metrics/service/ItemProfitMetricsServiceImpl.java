@@ -16,22 +16,22 @@ import com.dofuspulse.api.projections.ProfitMetricsList;
 import com.dofuspulse.api.repository.ItemDetailsRepository;
 import com.dofuspulse.api.repository.ItemMarketEntryRepository;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class ItemProfitMetricsServiceImpl implements ItemProfitMetricsService {
 
   private final ItemDetailsRepository idr;
-  private final ItemMarketEntryRepository isr;
+  private final ItemMarketEntryRepository imr;
   private final MetricRegistry metricRegistry;
 
   @Override
+  @Transactional(readOnly = true)
   public List<ProfitMetrics> getItemProfitMetricsHistory(
       Long itemId,
       LocalDate startDate,
@@ -46,55 +46,44 @@ public class ItemProfitMetricsServiceImpl implements ItemProfitMetricsService {
       throw new NotCraftableItemException("Item with id " + itemId + " is not craftable");
     }
 
-    List<ItemPrice> itemPrices = isr.getPriceHistoryInDateRangeForItems(List.of(itemId), startDate,
+    List<ItemPrice> itemPrices = imr.getPriceHistoryInDateRangeForItems(List.of(itemId), startDate,
         endDate);
 
-    List<CraftCost> itemCraftCosts = isr.getItemCraftCost(List.of(itemId), startDate, endDate);
+    List<CraftCost> itemCraftCosts = imr.getItemCraftCost(List.of(itemId), startDate, endDate);
 
     return metricRegistry.calculate(MetricType.PROFIT_METRICS,
         new ProfitMetricsParams(itemPrices, itemCraftCosts));
   }
 
   @Override
+  @Transactional(readOnly = true)
   public List<ProfitMetricsList> getItemsProfitMetricsHistory(
       ItemDetailsSearchCriteria params,
       LocalDate startDate,
       LocalDate endDate) {
 
-    List<ItemDetails> craftableItems = idr.findAll(
+    List<Long> craftableItemsIds = idr.findAll(
             ItemDetailsSpecificationBuilder.buildSpecification(params))
         .stream()
         .filter(item -> item.getIngredientIds() != null)
-        .toList();
-
-    List<Long> craftableItemsIds = craftableItems.stream()
         .map(ItemDetails::getId)
         .toList();
 
-    Map<Long, List<CraftCost>> itemsCraftCosts = isr.getItemCraftCost(
-            craftableItemsIds,
-            startDate,
-            endDate)
-        .stream()
-        .collect(Collectors.groupingBy(CraftCost::getItemId));
+    List<ProfitMetricsList> itemProfitMetricsList = new ArrayList<>();
 
-    Map<Long, List<ItemPrice>> itemsPrices = isr.getPriceHistoryInDateRangeForItems(
-            craftableItemsIds, startDate, endDate)
-        .stream()
-        .collect(Collectors.groupingBy(ItemPrice::getItemId));
+    for (Long itemId : craftableItemsIds) {
+      List<CraftCost> itemCraftCosts = imr.getItemCraftCost(List.of(itemId), startDate, endDate);
+      List<ItemPrice> itemPrices = imr.getPriceHistoryInDateRangeForItems(List.of(itemId),
+          startDate, endDate);
 
-    return craftableItems.parallelStream()
-        .filter(item -> itemsPrices.containsKey(item.getId()) && itemsCraftCosts.containsKey(
-            item.getId()))
-        .map(item -> {
+      if (itemPrices.isEmpty() || itemCraftCosts.isEmpty()) {continue;}
 
-          List<CraftCost> itemCraftCosts = itemsCraftCosts.get(item.getId());
+      List<ProfitMetrics> itemProfitMetrics = metricRegistry.calculate(
+          MetricType.PROFIT_METRICS,
+          new ProfitMetricsParams(itemPrices, itemCraftCosts));
 
-          List<ProfitMetrics> itemProfitMetrics = metricRegistry.calculate(
-              MetricType.PROFIT_METRICS,
-              new ProfitMetricsParams(itemsPrices.get(item.getId()), itemCraftCosts));
-
-          return Optional.of(new ProfitMetricsList(item.getId(), itemProfitMetrics));
-        }).flatMap(Optional::stream).toList();
+      itemProfitMetricsList.add(new ProfitMetricsList(itemId, itemProfitMetrics));
+    }
+    return itemProfitMetricsList;
   }
 }

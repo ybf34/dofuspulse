@@ -17,9 +17,9 @@ import com.dofuspulse.api.metrics.MetricType;
 import com.dofuspulse.api.metrics.calculator.params.DailySalesParam;
 import com.dofuspulse.api.metrics.service.ItemDailySalesServiceImpl;
 import com.dofuspulse.api.model.ItemDetails;
-import com.dofuspulse.api.model.ItemMarketEntry;
 import com.dofuspulse.api.projections.DailySales;
 import com.dofuspulse.api.projections.DailySalesList;
+import com.dofuspulse.api.projections.ItemMarketEntryProjection;
 import com.dofuspulse.api.repository.ItemDetailsRepository;
 import com.dofuspulse.api.repository.ItemMarketEntryRepository;
 import java.time.LocalDate;
@@ -58,7 +58,15 @@ public class ItemDailySalesServiceUnitTest {
         List.of());
 
     var mockItemMarketEntries = ItemMarketEntryTestDataFactory.createMockItemMarketListing(
-        mockItemDetails.getId(), 100, "1", startDate, endDate);
+            mockItemDetails.getId(), 100, "1", startDate, endDate)
+        .stream()
+        .map(entry -> new ItemMarketEntryProjection(
+            entry.getItemId(),
+            entry.getEntryDate(),
+            entry.getPrices(),
+            entry.getEffects()
+        ))
+        .toList();
 
     List<DailySales> mockExpectedComputedSalesHistory = List.of(
         new DailySales(startDate, 0, 10, 0, 0, 10, 0),
@@ -103,13 +111,22 @@ public class ItemDailySalesServiceUnitTest {
 
     when(itemDetailsRepository.findAll(any(Specification.class))).thenReturn(mockItemsDetails);
 
-    List<ItemMarketEntry> itemMarketEntries =
+    List<ItemMarketEntryProjection> itemMarketEntries =
         ItemMarketEntryTestDataFactory.createMockItemMarketListing(
-            mockItemsDetails.getFirst().getId(), 100, "1", startDate, endDate);
+                mockItemsDetails.getFirst().getId(), 100, "1", startDate, endDate)
+            .stream()
+            .map(entry -> new ItemMarketEntryProjection(
+                entry.getItemId(),
+                entry.getEntryDate(),
+                entry.getPrices(),
+                entry.getEffects()
+            ))
+            .toList();
 
     List<Long> itemIds = mockItemsDetails.stream().map(ItemDetails::getId).toList();
 
-    when(itemMarketEntryRepository.findAllByItemIdInAndEntryDateIsBetween(itemIds, startDate,
+    when(itemMarketEntryRepository.findAllByItemIdInAndEntryDateIsBetween(
+        List.of(itemIds.getFirst()), startDate,
         endDate))
         .thenReturn(itemMarketEntries);
 
@@ -161,10 +178,10 @@ public class ItemDailySalesServiceUnitTest {
         );
 
     verify(itemDetailsRepository, times(1)).findAll(any(Specification.class));
-    verify(itemMarketEntryRepository, times(1)).findAllByItemIdInAndEntryDateIsBetween(
-        eq(itemIds),
-        eq(startDate),
-        eq(endDate));
+    verify(itemMarketEntryRepository).findAllByItemIdInAndEntryDateIsBetween(
+        eq(List.of(1L)), eq(startDate), eq(endDate));
+    verify(itemMarketEntryRepository).findAllByItemIdInAndEntryDateIsBetween(
+        eq(List.of(2L)), eq(startDate), eq(endDate));
     verify(metricRegistry, times(1)).calculate(eq(MetricType.DAILY_SALES),
         any(DailySalesParam.class));
 

@@ -2,7 +2,7 @@ spring:
   application:
     name: ms-dofuspulse-api
   datasource:
-    url: jdbc:postgresql://${DB_HOST:postgres}:5432/${DB_NAME:dofuspulse}
+    url: jdbc:postgresql://${DB_HOST:postgres}:5432/${DB_NAME:dofuspulse}?prepareThreshold=0
     username: ${DB_USER}
     password: ${DB_PASSWORD}
   jpa:
@@ -65,7 +65,7 @@ spring:
           discord:
             redirect-uri: http://${APP_HOST}:8080/login/oauth2/code/discord
   jpa:
-    show-sql: true
+    show-sql: false
 logging:
   level:
     org.springframework.security: trace

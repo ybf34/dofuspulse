@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.dofuspulse.api.PostgresIntegrationTestContainer;
 import com.dofuspulse.api.market.fixtures.ItemMarketEntryTestDataFactory;
 import com.dofuspulse.api.model.ItemMarketEntry;
+import com.dofuspulse.api.projections.ItemMarketEntryProjection;
 import com.dofuspulse.api.projections.ItemPrice;
 import com.dofuspulse.api.repository.ItemMarketEntryRepository;
 import java.time.LocalDate;
@@ -42,7 +43,7 @@ public class ItemMarketEntryRepositoryIntegrationTest extends PostgresIntegratio
   @Test
   void shouldReturnAllItemMarketEntriesByItemIdAndInDateRange() {
 
-    List<ItemMarketEntry> itemMarketEntries = itemMarketEntryRepository.findAllByItemIdInAndEntryDateIsBetween(
+    List<ItemMarketEntryProjection> itemMarketEntries = itemMarketEntryRepository.findAllByItemIdInAndEntryDateIsBetween(
         List.of(mockItemId), startDate, endDate);
 
     assertThat(itemMarketEntries)

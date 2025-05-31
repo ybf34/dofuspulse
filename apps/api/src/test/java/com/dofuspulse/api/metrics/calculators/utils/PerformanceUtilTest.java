@@ -18,27 +18,62 @@ public class PerformanceUtilTest {
     assertEquals(1.235, PerfUtil.round(1.23456));
     assertEquals(-1.234, PerfUtil.round(-1.23412));
     assertEquals(0.0, PerfUtil.round(0.0));
+    assertEquals(1.235, PerfUtil.round(1.2345));
   }
 
   @Test
-  void shouldReturnPositiveTrend() {
-    List<Double> values = Arrays.asList(1.0, 2.0, 3.0);
-    Set<LocalDate> dates = createDates();
-    assertTrue(PerfUtil.calculateTrend(values, dates) > 0);
+  void shouldCalculateCorrectPositiveTrend() {
+
+    double[] values = {10.0, 20.0, 30.0};
+    Set<LocalDate> dates = createConsecutiveDates();
+
+    double trend = PerfUtil.calculateTrend(values, dates);
+    assertTrue(trend > 0);
+
+    assertEquals(0.5, trend, 0.001);
   }
 
   @Test
-  void shouldReturnNegativeTrend() {
-    List<Double> values = Arrays.asList(3.0, 2.0, 1.0);
-    Set<LocalDate> dates = createDates();
-    assertTrue(PerfUtil.calculateTrend(values, dates) < 0);
+  void shouldCalculateCorrectNegativeTrend() {
+    double[] values = {30.0, 20.0, 10.0};
+    Set<LocalDate> dates = createConsecutiveDates();
+
+    double trend = PerfUtil.calculateTrend(values, dates);
+    assertTrue(trend < 0);
+    assertEquals(-0.5, trend, 0.001);
   }
 
   @Test
-  void shouldReturnZeroTrend() {
-    List<Double> values = Arrays.asList(2.0, 2.0, 2.0);
-    Set<LocalDate> dates = createDates();
+  void shouldReturnZeroTrendForConstantValues() {
+    double[] values = {25.0, 25.0, 25.0};
+    Set<LocalDate> dates = createConsecutiveDates();
     assertEquals(0.0, PerfUtil.calculateTrend(values, dates));
+  }
+
+  @Test
+  void shouldHandleEmptyArrays() {
+    double[] values = {};
+    Set<LocalDate> dates = new TreeSet<>();
+    assertEquals(0.0, PerfUtil.calculateTrend(values, dates));
+  }
+
+  @Test
+  void shouldHandleSingleDataPoint() {
+    double[] values = {100.0};
+    Set<LocalDate> dates = new TreeSet<>(List.of(LocalDate.of(2023, 1, 1)));
+    assertEquals(0.0, PerfUtil.calculateTrend(values, dates));
+  }
+
+  @Test
+  void shouldHandleNonConsecutiveDates() {
+    double[] values = {10.0, 30.0};
+    Set<LocalDate> dates = new TreeSet<>(Arrays.asList(
+        LocalDate.of(2023, 1, 1),
+        LocalDate.of(2023, 1, 11)
+    ));
+
+    double trend = PerfUtil.calculateTrend(values, dates);
+    assertTrue(trend > 0, "Should handle non-consecutive dates correctly");
   }
 
   @Test
@@ -47,16 +82,37 @@ public class PerformanceUtilTest {
     assertEquals(-10.0, PerfUtil.calculatePctChange(90, 100));
     assertEquals(0.0, PerfUtil.calculatePctChange(100, 100));
     assertEquals(0.0, PerfUtil.calculatePctChange(50, 0));
-    assertEquals(16.667, PerfUtil.calculatePctChange(116.6666, 100));
+
+    assertEquals(20.0, PerfUtil.calculatePctChange(120, 100));
+    assertEquals(-50.0, PerfUtil.calculatePctChange(50, 100));
+
+    double result = PerfUtil.calculatePctChange(116.6666, 100);
+    assertEquals(16.667, result, 0.001);
   }
 
-  private Set<LocalDate> createDates() {
+  @Test
+  void shouldCalculateTrendWithRealWorldData() {
+    // Simulate 5 days of profit margins declining
+    double[] profitMargins = {1000.0, 950.0, 900.0, 850.0, 800.0};
+    Set<LocalDate> dates = new TreeSet<>(Arrays.asList(
+        LocalDate.of(2023, 1, 1),
+        LocalDate.of(2023, 1, 2),
+        LocalDate.of(2023, 1, 3),
+        LocalDate.of(2023, 1, 4),
+        LocalDate.of(2023, 1, 5)
+    ));
+
+    double trend = PerfUtil.calculateTrend(profitMargins, dates);
+    assertTrue(trend < 0);
+
+    assertEquals(-0.25, trend, 0.001);
+  }
+
+  private Set<LocalDate> createConsecutiveDates() {
     return new TreeSet<>(Arrays.asList(
         LocalDate.of(2023, 1, 1),
         LocalDate.of(2023, 1, 2),
         LocalDate.of(2023, 1, 3)
     ));
   }
-
-
 }

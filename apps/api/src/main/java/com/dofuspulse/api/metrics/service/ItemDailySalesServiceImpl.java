@@ -8,26 +8,28 @@ import com.dofuspulse.api.metrics.MetricType;
 import com.dofuspulse.api.metrics.calculator.params.DailySalesParam;
 import com.dofuspulse.api.metrics.service.contract.ItemDailySalesService;
 import com.dofuspulse.api.model.ItemDetails;
-import com.dofuspulse.api.model.ItemMarketEntry;
 import com.dofuspulse.api.projections.DailySales;
 import com.dofuspulse.api.projections.DailySalesList;
+import com.dofuspulse.api.projections.ItemMarketEntryProjection;
 import com.dofuspulse.api.repository.ItemDetailsRepository;
 import com.dofuspulse.api.repository.ItemMarketEntryRepository;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
 public class ItemDailySalesServiceImpl implements ItemDailySalesService {
 
   private final ItemDetailsRepository idr;
-  private final ItemMarketEntryRepository isr;
+  private final ItemMarketEntryRepository imr;
   private final MetricRegistry metricRegistry;
 
   @Override
+  @Transactional(readOnly = true)
   public List<DailySales> getItemDailySalesHistory(
       Long itemId,
       LocalDate startDate,
@@ -36,41 +38,47 @@ public class ItemDailySalesServiceImpl implements ItemDailySalesService {
     idr.findById(itemId)
         .orElseThrow(() -> new ItemNotFoundException("Item with id " + itemId + " not found"));
 
-    List<ItemMarketEntry> salesData = isr.findAllByItemIdInAndEntryDateIsBetween(
+    List<ItemMarketEntryProjection> itemMarketEntries = imr.findAllByItemIdInAndEntryDateIsBetween(
         List.of(itemId), startDate, endDate);
 
     return metricRegistry.calculate(MetricType.DAILY_SALES,
-        new DailySalesParam(salesData));
+        new DailySalesParam(itemMarketEntries));
   }
 
   @Override
+  @Transactional(readOnly = true)
   public List<DailySalesList> getItemsDailySalesHistory(
       ItemDetailsSearchCriteria params,
       LocalDate startDate,
       LocalDate endDate) {
 
-    List<ItemDetails> items = idr.findAll(
-        ItemDetailsSpecificationBuilder.buildSpecification(params));
+    List<Long> itemsIds = idr.findAll(
+            ItemDetailsSpecificationBuilder.buildSpecification(params))
+        .stream()
+        .map(ItemDetails::getId)
+        .toList();
 
-    if (items.isEmpty()) {
+    if (itemsIds.isEmpty()) {
       return List.of();
     }
 
-    var itemsSalesData = isr.findAllByItemIdInAndEntryDateIsBetween(
-            items.stream().map(ItemDetails::getId).toList(),
-            startDate, endDate)
-        .stream()
-        .collect(Collectors.groupingBy(ItemMarketEntry::getItemId));
+    List<DailySalesList> itemDailySalesLists = new ArrayList<>();
+    for (Long itemId : itemsIds) {
 
-    return items.parallelStream()
-        .filter(item -> itemsSalesData.containsKey(item.getId()))
-        .map(item -> {
-          List<DailySales> itemDailySales = metricRegistry.calculate(MetricType.DAILY_SALES,
-              new DailySalesParam(itemsSalesData.get(item.getId())));
+      List<ItemMarketEntryProjection> itemMarketEntries = imr.findAllByItemIdInAndEntryDateIsBetween(
+          List.of(itemId), startDate, endDate);
 
-          return new DailySalesList(item.getId(), itemDailySales);
-        })
-        .toList();
+      if (itemMarketEntries.isEmpty()) {
+        continue;
+      }
+
+      List<DailySales> itemDailySales = metricRegistry.calculate(
+          MetricType.DAILY_SALES,
+          new DailySalesParam(itemMarketEntries));
+
+      itemDailySalesLists.add(new DailySalesList(itemId, itemDailySales));
+    }
+    return itemDailySalesLists;
   }
 
 }

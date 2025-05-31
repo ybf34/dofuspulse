@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.Collections;
-import java.util.List;
 import java.util.Set;
 
 public class PerfUtil {
@@ -28,60 +26,55 @@ public class PerfUtil {
   /**
    * Calculates the trend (slope) of a metric over time using linear regression.
    *
-   * @param values The list of metric values.
+   * @param values The array of metric values.
    * @param dates  The list of dates corresponding to the values.
    * @return The trend (slope) of the metric over time.
    */
-  public static double calculateTrend(List<Double> values, Set<LocalDate> dates) {
-    if (values.isEmpty() || dates.isEmpty()) {
+  public static double calculateTrend(double[] values, Set<LocalDate> dates) {
+    if (values.length == 0 || dates.isEmpty() || values.length != dates.size()) {
       return 0.0;
     }
 
-    double min = Collections.min(values);
-    double max = Collections.max(values);
+    double min = values[0];
+    double max = values[0];
+
+    for (double value : values) {
+      if (value < min) {min = value;}
+      if (value > max) {max = value;}
+    }
 
     if (min == max) {
       return 0.0;
     }
-    // Normalize values to a 0–1 scale
-
-    List<Double> normalizedValues = values.stream().map(value -> (value - min) / (max - min))
-        .toList();
-
-    return round(calculateSlope(normalizedValues, dates));
+    return round(calculateSlope(values, dates, min, max));
   }
 
-  /**
-   * Calculates the slope of the best-fit line using linear regression.
-   *
-   * @param x The independent variable (e.g., time).
-   * @param y The dependent variable (e.g., metric values).
-   * @return The slope of the best-fit line.
-   */
-
-  private static double calculateSlope(List<Double> values, Set<LocalDate> dates) {
-    int n = values.size();
+  private static double calculateSlope(
+      double[] values,
+      Set<LocalDate> dates,
+      double min,
+      double max) {
+    int n = values.length;
     if (n < 2) {
       return 0.0;
     }
 
     LocalDate startDate = dates.iterator().next();
-
-    List<Long> daysSinceStart = dates.stream().map(date -> ChronoUnit.DAYS.between(startDate, date))
-        .toList();
-
+    double range = max - min;
     double sumX = 0;
     double sumY = 0;
     double sumXY = 0;
     double sumX2 = 0;
 
-    for (int i = 0; i < n; i++) {
-      double x = daysSinceStart.get(i);
-      double y = values.get(i);
+    int index = 0;
+    for (LocalDate date : dates) {
+      double x = ChronoUnit.DAYS.between(startDate, date);
+      double y = (values[index] - min) / range;
       sumX += x;
       sumY += y;
       sumXY += x * y;
       sumX2 += x * x;
+      index++;
     }
 
     return (n * sumXY - sumX * sumY) / (n * sumX2 - sumX * sumX);
@@ -89,10 +82,6 @@ public class PerfUtil {
 
   /**
    * Calculates the percentage change from an average.
-   *
-   * @param currentValue The latest value.
-   * @param average      The average value.
-   * @return The percentage deviation.
    */
   public static double calculatePctChange(double currentValue, double average) {
     if (average == 0) {
@@ -101,5 +90,4 @@ public class PerfUtil {
 
     return round(((currentValue - average) / average) * 100);
   }
-
 }

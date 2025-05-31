@@ -3,19 +3,17 @@ package com.dofuspulse.api.metrics.calculator;
 import com.dofuspulse.api.metrics.MetricType;
 import com.dofuspulse.api.metrics.calculator.params.DailySalesParam;
 import com.dofuspulse.api.metrics.calculator.utils.PriceUtil;
-import com.dofuspulse.api.model.ItemMarketEntry;
 import com.dofuspulse.api.projections.DailySales;
+import com.dofuspulse.api.projections.ItemMarketEntryProjection;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
-import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -35,91 +33,98 @@ public class DailySalesCalculator implements MetricCalculator<DailySalesParam, L
 
   @Override
   public List<DailySales> calculate(DailySalesParam data) {
+    List<ItemMarketEntryProjection> marketEntries = data.itemMarketEntries();
 
-    if (data.itemMarketEntries() == null || data.itemMarketEntries().isEmpty()) {
+    if (marketEntries.isEmpty()) {
       return List.of();
     }
 
-    List<DailySales> dailySalesByDate = new ArrayList<>();
+    List<DailySales> itemDailySalesByDate = new ArrayList<>();
     Map<MarketEntryKey, LocalDate> activeListings = new HashMap<>();
 
-    Map<LocalDate, List<ItemMarketEntry>> itemsMarketEntriesPerDate = data.itemMarketEntries()
-        .stream()
-        .sorted(Comparator.comparing(ItemMarketEntry::getEntryDate))
-        .collect(Collectors.groupingBy(ItemMarketEntry::getEntryDate));
+    LocalDate currentDay = marketEntries.getFirst().getEntryDate();
+    List<ItemMarketEntryProjection> currentDayEntries = new ArrayList<>();
 
-    itemsMarketEntriesPerDate.entrySet()
-        .stream()
-        .sorted(Entry.comparingByKey())
-        .forEach(dailySales -> {
+    for (ItemMarketEntryProjection entry : marketEntries) {
+      LocalDate entryDate = entry.getEntryDate();
 
-          var date = dailySales.getKey();
-          Set<MarketEntryKey> currentDayListings = new HashSet<>();
-          int listingCount = 0;
+      if (!entryDate.equals(currentDay)) {
+        processDay(currentDay, currentDayEntries, activeListings, itemDailySalesByDate);
+        currentDayEntries.clear();
+        currentDay = entryDate;
+      }
+      currentDayEntries.add(entry);
+    }
 
-          for (ItemMarketEntry snapshot : dailySales.getValue()) {
-            int effectsHash = snapshot.getEffects().hashCode();
+    // Process remaining entries for the last day
+    processDay(currentDay, currentDayEntries, activeListings, itemDailySalesByDate);
+    return itemDailySalesByDate;
+  }
 
-            MarketEntryKey itemMarketEntryKey = new MarketEntryKey(
-                snapshot.getItemId(),
-                snapshot.getPrices(),
-                effectsHash);
+  private void processDay(
+      LocalDate date,
+      List<ItemMarketEntryProjection> entries,
+      Map<MarketEntryKey, LocalDate> activeListings,
+      List<DailySales> dailySalesByDate) {
 
-            currentDayListings.add(itemMarketEntryKey);
-            listingCount++;
-          }
+    Set<MarketEntryKey> currentDayListings = new HashSet<>();
 
-          int soldCount = 0;
-          int expiredCount = 0;
-          int addedCount = 0;
-          int totalSoldDuration = 0;
-          int revenue = 0;
+    for (ItemMarketEntryProjection snapshot : entries) {
+      int effectsHash = snapshot.getEffects().hashCode();
+      MarketEntryKey itemMarketEntryKey = new MarketEntryKey(
+          snapshot.getItemId(),
+          snapshot.getPrices(),
+          effectsHash);
+      currentDayListings.add(itemMarketEntryKey);
+    }
 
-          var activeListingsIterator = activeListings.entrySet()
-              .iterator();
-          while (activeListingsIterator.hasNext()) {
-            Map.Entry<MarketEntryKey, LocalDate> entry = activeListingsIterator.next();
-            MarketEntryKey key = entry.getKey();
-            LocalDate addedDate = entry.getValue();
+    int soldCount = 0;
+    int expiredCount = 0;
+    int addedCount = 0;
+    int totalSoldDuration = 0;
+    int revenue = 0;
 
-            if (!currentDayListings.contains(key)) {
-              // Item was sold
-              if (date.isBefore(addedDate.plusDays(LISTING_EXPIRATION_DAYS))) {
-                soldCount++;
-                revenue += PriceUtil.getMinimumUnitPrice(key.prices());
-                int duration = (int) ChronoUnit.DAYS.between(addedDate, date);
-                totalSoldDuration += duration;
-                activeListingsIterator.remove();
-              } else if (date.isAfter(addedDate.plusDays(LISTING_EXPIRATION_DAYS))) {
-                expiredCount++;
-                activeListingsIterator.remove();
-              }
-            }
-          }
+    Iterator<Map.Entry<MarketEntryKey, LocalDate>> activeListingIterator =
+        activeListings.entrySet().iterator();
 
-          for (MarketEntryKey listing : currentDayListings) {
-            if (!activeListings.containsKey(listing)) {
-              addedCount++;
-              activeListings.put(listing, date);
-            }
-          }
+    while (activeListingIterator.hasNext()) {
+      Map.Entry<MarketEntryKey, LocalDate> entry = activeListingIterator.next();
+      MarketEntryKey key = entry.getKey();
+      LocalDate addedDate = entry.getValue();
 
-          double avgSoldDuration = soldCount > 0 ? (double) totalSoldDuration / soldCount : 0.0;
+      if (!currentDayListings.contains(key)) {
+        LocalDate expirationDate = addedDate.plusDays(LISTING_EXPIRATION_DAYS);
+        if (date.isBefore(expirationDate) || date.isEqual(expirationDate)) {
+          soldCount++;
+          revenue += PriceUtil.getMinimumUnitPrice(key.prices());
+          int duration = (int) ChronoUnit.DAYS.between(addedDate, date);
+          totalSoldDuration += duration;
+        } else if (date.isAfter(expirationDate)) {
+          expiredCount++;
+        }
+        activeListingIterator.remove();
+      }
+    }
 
-          dailySalesByDate.add(
-              new DailySales(
-                  date,
-                  soldCount,
-                  addedCount,
-                  expiredCount,
-                  avgSoldDuration,
-                  listingCount,
-                  revenue));
-        });
+    for (MarketEntryKey listing : currentDayListings) {
+      if (!activeListings.containsKey(listing)) {
+        addedCount++;
+        activeListings.put(listing, date);
+      }
+    }
 
-    return dailySalesByDate;
+    double avgSoldDuration = soldCount > 0 ? (double) totalSoldDuration / soldCount : 0.0;
+
+    dailySalesByDate.add(
+        new DailySales(
+            date,
+            soldCount,
+            addedCount,
+            expiredCount,
+            avgSoldDuration,
+            currentDayListings.size(),
+            revenue));
   }
 
   record MarketEntryKey(long itemId, List<Integer> prices, int effectsHash) {}
-
 }

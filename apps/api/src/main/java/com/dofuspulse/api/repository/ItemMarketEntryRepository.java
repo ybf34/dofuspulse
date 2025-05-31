@@ -2,6 +2,7 @@ package com.dofuspulse.api.repository;
 
 import com.dofuspulse.api.model.ItemMarketEntry;
 import com.dofuspulse.api.projections.CraftCost;
+import com.dofuspulse.api.projections.ItemMarketEntryProjection;
 import com.dofuspulse.api.projections.ItemPrice;
 import java.time.LocalDate;
 import java.util.List;
@@ -21,10 +22,18 @@ public interface ItemMarketEntryRepository extends JpaRepository<ItemMarketEntry
       @Param("startDate") LocalDate startDate,
       @Param("endDate") LocalDate endDate);
 
-  List<ItemMarketEntry> findAllByItemIdInAndEntryDateIsBetween(
-      List<Long> itemId,
-      LocalDate startDate,
-      LocalDate endDate);
+  @Query("""
+          SELECT new com.dofuspulse.api.projections.ItemMarketEntryProjection(
+              s.itemId, s.entryDate, s.prices, s.effects)
+          FROM ItemMarketEntry s
+          WHERE s.itemId IN (:itemIds) 
+            AND s.entryDate BETWEEN :startDate AND :endDate
+          ORDER BY s.entryDate ASC
+      """)
+  List<ItemMarketEntryProjection> findAllByItemIdInAndEntryDateIsBetween(
+      @Param("itemIds") List<Long> itemIds,
+      @Param("startDate") LocalDate startDate,
+      @Param("endDate") LocalDate endDate);
 
   @Query(value = """
       WITH item_ingredients AS (

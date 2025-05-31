@@ -22,6 +22,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -33,6 +34,7 @@ public class ItemPerformanceServiceImpl implements ItemPerformanceService {
   private final MetricRegistry metricRegistry;
 
   @Override
+  @Transactional(readOnly = true)
   public Optional<ItemPerformance> getItemPerformanceMetrics(
       Long itemId,
       LocalDate startDate,
@@ -47,6 +49,7 @@ public class ItemPerformanceServiceImpl implements ItemPerformanceService {
   }
 
   @Override
+  @Transactional(readOnly = true)
   public List<ItemPerformance> getItemsPerformanceMetrics(
       ItemDetailsSearchCriteria params,
       LocalDate startDate,
