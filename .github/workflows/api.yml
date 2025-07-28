@@ -21,6 +21,8 @@ env:
   REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}/api
   SPRING_PROFILES_ACTIVE: prod
+  APP_HOST: localhost
+  FRONTEND_HOST: localhost:5173
 
 jobs:
   test-and-build-image:
