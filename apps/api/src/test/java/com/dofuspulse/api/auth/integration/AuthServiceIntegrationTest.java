@@ -32,7 +32,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @SpringBootTest
 @Transactional
 @DisplayName("Auth service integration test")
-@Disabled
 public class AuthServiceIntegrationTest extends PostgresIntegrationTestContainer {
 
   static String testEmail = "test@test.com";
