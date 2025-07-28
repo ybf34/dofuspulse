@@ -1,7 +1,10 @@
 package com.dofuspulse.api.security;
 
 
+import java.util.Arrays;
+import java.util.Collections;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,6 +17,10 @@ import org.springframework.security.web.authentication.logout.CookieClearingLogo
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
 
 @Configuration
 @EnableWebSecurity
@@ -30,11 +37,14 @@ public class WebSecurityConfig {
   private final UnauthorizedHandler unauthorizedHandler;
   private final CustomAccessDeniedHandler accessDeniedHandler;
 
+  @Value("${app.FRONTEND_HOST}")
+  private String frontendHost;
+
   @Bean
   public SecurityFilterChain applicationSecurity(HttpSecurity http) throws Exception {
 
     http.csrf(AbstractHttpConfigurer::disable)
-        .cors(AbstractHttpConfigurer::disable)
+        .cors(cors -> cors.configurationSource(corsConfigurationSource()))
         .sessionManagement((s) -> {
           s.sessionFixation(SessionFixationConfigurer::newSession);
           s.sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);
@@ -57,6 +67,21 @@ public class WebSecurityConfig {
             .anyRequest().authenticated());
 
     return http.build();
+  }
+
+  @Bean
+  public CorsConfigurationSource corsConfigurationSource() {
+    UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    CorsConfiguration config = new CorsConfiguration();
+
+    config.setAllowCredentials(true);
+    config.setAllowedOrigins(Collections.singletonList(frontendHost));
+    config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+    config.setAllowedHeaders(Collections.singletonList("*"));
+    config.setMaxAge(3600L);
+
+    source.registerCorsConfiguration("/**", config);
+    return source;
   }
 
   @Bean

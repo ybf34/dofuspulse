@@ -31,6 +31,7 @@ public class ItemDetailsSpecification {
       }
 
       if (typeNames != null && !typeNames.isEmpty()) {
+        assert query != null;
         Subquery<Long> subquery = query.subquery(Long.class);
         Root<ItemType> itemTypeRoot = subquery.from(ItemType.class);
         subquery.select(itemTypeRoot.get("id"))
@@ -73,16 +74,6 @@ public class ItemDetailsSpecification {
       }
       return cb.isTrue(cb.function("array_contains", Boolean.class, root.get("ingredientIds"),
           cb.literal(ingredientId)));
-    };
-  }
-
-  public static Specification<ItemDetails> hasEffect(Integer effectId) {
-    return (root, query, cb) -> {
-      if (effectId == null) {
-        return cb.conjunction();
-      }
-      return cb.isTrue(cb.function("array_contains", Boolean.class, root.get("possibleEffects"),
-          cb.literal(effectId)));
     };
   }
 }

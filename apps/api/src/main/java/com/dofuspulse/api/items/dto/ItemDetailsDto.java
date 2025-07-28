@@ -3,8 +3,8 @@ package com.dofuspulse.api.items.dto;
 import com.dofuspulse.api.model.ItemDetails;
 import java.util.List;
 
-public record ItemDetailsDto(Long id, String name, Long level, Long itemTypeId,
-                             List<Long> ingredientIds, List<Integer> possibleEffects) {
+public record ItemDetailsDto(Long id, String name, Long level, Long itemTypeId, Long iconId,
+                             List<Long> ingredientIds, List<ItemEffectDto> possibleEffects) {
 
 
   public ItemDetailsDto(ItemDetails itemDetails) {
@@ -12,7 +12,11 @@ public record ItemDetailsDto(Long id, String name, Long level, Long itemTypeId,
         itemDetails.getName(),
         itemDetails.getLevel(),
         itemDetails.getItemTypeId(),
+        itemDetails.getIconId(),
         itemDetails.getIngredientIds(),
-        itemDetails.getPossibleEffects());
+        itemDetails.getPossibleEffects()
+            .stream()
+            .map(ItemEffectDto::new)
+            .toList());
   }
 }

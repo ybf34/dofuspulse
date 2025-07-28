@@ -1,5 +1,6 @@
 package com.dofuspulse.api.items.controller;
 
+import com.dofuspulse.api.exception.ApiResponseDocumentation;
 import com.dofuspulse.api.items.dto.ItemTypeDto;
 import com.dofuspulse.api.items.service.contract.ItemTypeService;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
+@ApiResponseDocumentation
 public class ItemTypeController {
 
   private final ItemTypeService itemTypeService;

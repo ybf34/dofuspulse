@@ -1,5 +1,6 @@
 package com.dofuspulse.api.market.controller;
 
+import com.dofuspulse.api.exception.ApiResponseDocumentation;
 import com.dofuspulse.api.market.service.contract.ItemPriceHistoryService;
 import com.dofuspulse.api.projections.ItemPrice;
 import java.time.LocalDate;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
+@ApiResponseDocumentation
 public class ItemPriceHistoryController {
 
   private final ItemPriceHistoryService itemPriceHistoryService;

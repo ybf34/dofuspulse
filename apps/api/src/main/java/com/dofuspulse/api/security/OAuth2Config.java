@@ -2,6 +2,7 @@ package com.dofuspulse.api.security;
 
 import com.dofuspulse.api.auth.oauth2.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,6 +16,9 @@ public class OAuth2Config {
 
   private final CustomOAuth2UserService customOAuth2UserService;
 
+  @Value("${app.FRONTEND_HOST}")
+  private String frontendHost;
+
   @Bean
   public SecurityFilterChain OAuth2SecurityFilterChain(HttpSecurity http) throws Exception {
     http
@@ -25,6 +29,8 @@ public class OAuth2Config {
                     userInfoEndpoint
                         .userService(customOAuth2UserService)
                 )
+                .defaultSuccessUrl(frontendHost)
+                .failureUrl(frontendHost + "/login?error=access_denied")
         );
     return http.build();
   }

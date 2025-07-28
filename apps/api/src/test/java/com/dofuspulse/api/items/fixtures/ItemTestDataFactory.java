@@ -32,7 +32,7 @@ public class ItemTestDataFactory {
     mockItemDetails.setItemTypeId(1L);
     mockItemDetails.setIngredientIds(ingredientIds);
     mockItemDetails.setQuantities(quantities);
-    mockItemDetails.setPossibleEffects(List.of(111, 112));
+    mockItemDetails.setPossibleEffects(List.of());
 
     return mockItemDetails;
   }
@@ -64,9 +64,6 @@ public class ItemTestDataFactory {
       queryParams.add("types",
           filters.types().stream().map(String::valueOf).collect(Collectors.joining(",")));
     }
-    if (filters.effect() != null) {
-      queryParams.add("effect", String.valueOf(filters.effect()));
-    }
     if (filters.ingredient() != null) {
       queryParams.add("ingredient", String.valueOf(filters.ingredient()));
     }
@@ -86,9 +83,6 @@ public class ItemTestDataFactory {
             ItemTestDataFactory.createItemDetailsQueryParams(
                 ItemDetailsSearchCriteria.builder().minLevel(0L).maxLevel(300L).types(List.of(1L))
                     .build())),
-        Arguments.of("Null item type",
-            ItemTestDataFactory.createItemDetailsQueryParams(
-                ItemDetailsSearchCriteria.builder().build())),
         Arguments.of("Name exceed max characters", ItemTestDataFactory.createItemDetailsQueryParams(
             ItemDetailsSearchCriteria.builder().name("A".repeat(101)).types(List.of(1L)).build())));
   }

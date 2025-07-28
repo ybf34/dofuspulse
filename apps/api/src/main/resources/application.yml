@@ -1,3 +1,5 @@
+app:
+  FRONTEND_HOST: http://${FRONTEND_HOST}
 spring:
   application:
     name: ms-dofuspulse-api
@@ -54,6 +56,8 @@ server:
     additional-tld-skip-patterns: '*.tld'
 
 ---
+app:
+  FRONTEND_HOST: http://${FRONTEND_HOST}
 spring:
   config:
     activate:
@@ -76,6 +80,8 @@ management:
       exposure:
         include: '*'
 ---
+app:
+  FRONTEND_HOST: https://${FRONTEND_HOST}
 spring:
   config:
     activate:

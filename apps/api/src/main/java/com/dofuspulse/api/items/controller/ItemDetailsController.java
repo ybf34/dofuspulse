@@ -1,5 +1,6 @@
 package com.dofuspulse.api.items.controller;
 
+import com.dofuspulse.api.exception.ApiResponseDocumentation;
 import com.dofuspulse.api.items.dto.ItemDetailsDto;
 import com.dofuspulse.api.items.dto.ItemDetailsSearchCriteria;
 import com.dofuspulse.api.items.service.contract.ItemDetailsService;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
+@ApiResponseDocumentation
 public class ItemDetailsController {
 
   private final ItemDetailsService itemDetailsService;

@@ -1,8 +1,10 @@
 package com.dofuspulse.api.model;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -40,7 +42,6 @@ public class ItemDetails {
   @Column(name = "ingredient_ids")
   private List<Long> ingredientIds;
 
-  @Column(name = "possibleeffects", columnDefinition = "integer[]")
-  private List<Integer> possibleEffects;
-
+  @OneToMany(mappedBy = "itemDetails", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<ItemEffect> possibleEffects;
 }

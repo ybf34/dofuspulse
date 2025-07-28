@@ -1,5 +1,6 @@
 package com.dofuspulse.api.metrics.controller;
 
+import com.dofuspulse.api.exception.ApiResponseDocumentation;
 import com.dofuspulse.api.items.dto.ItemDetailsSearchCriteria;
 import com.dofuspulse.api.metrics.service.contract.ItemProfitMetricsService;
 import com.dofuspulse.api.projections.ProfitMetrics;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
+@ApiResponseDocumentation
 public class ItemProfitMetricsController {
 
   private final ItemProfitMetricsService itemProfitMetricsService;
