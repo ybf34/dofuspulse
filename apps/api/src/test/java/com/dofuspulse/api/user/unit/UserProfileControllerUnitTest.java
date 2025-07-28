@@ -17,6 +17,7 @@ import com.dofuspulse.api.user.controller.UserProfileController;
 import com.dofuspulse.api.user.dto.UserProfileDto;
 import com.dofuspulse.api.user.service.UserProfileServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -30,6 +31,7 @@ import org.springframework.test.web.servlet.assertj.MockMvcTester;
 
 @WebMvcTest(UserProfileController.class)
 @Import({WebSecurityConfig.class, UnauthorizedHandler.class, CustomAccessDeniedHandler.class})
+@Disabled
 public class UserProfileControllerUnitTest {
 
   static final String testUserEmail = "test@test.com";

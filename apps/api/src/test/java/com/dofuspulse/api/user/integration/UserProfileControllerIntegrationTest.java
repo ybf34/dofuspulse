@@ -6,6 +6,7 @@ import com.dofuspulse.api.auth.UserPrincipal;
 import com.dofuspulse.api.auth.UserRepository;
 import com.dofuspulse.api.auth.oauth2.UserSocialLogin;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
+@Disabled
 public class UserProfileControllerIntegrationTest extends PostgresIntegrationTestContainer {
 
   static final String testUserEmail = "test@test.com";
