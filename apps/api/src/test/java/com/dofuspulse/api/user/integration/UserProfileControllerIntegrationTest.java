@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-@Disabled
 public class UserProfileControllerIntegrationTest extends PostgresIntegrationTestContainer {
 
   static final String testUserEmail = "test@test.com";

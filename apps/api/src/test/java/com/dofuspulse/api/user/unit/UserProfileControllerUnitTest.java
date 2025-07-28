@@ -31,7 +31,6 @@ import org.springframework.test.web.servlet.assertj.MockMvcTester;
 
 @WebMvcTest(UserProfileController.class)
 @Import({WebSecurityConfig.class, UnauthorizedHandler.class, CustomAccessDeniedHandler.class})
-@Disabled
 public class UserProfileControllerUnitTest {
 
   static final String testUserEmail = "test@test.com";
