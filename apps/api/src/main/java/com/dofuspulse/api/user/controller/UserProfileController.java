@@ -1,6 +1,7 @@
 package com.dofuspulse.api.user.controller;
 
 import com.dofuspulse.api.auth.UserPrincipal;
+import com.dofuspulse.api.exception.ApiResponseDocumentation;
 import com.dofuspulse.api.user.dto.UserProfileDto;
 import com.dofuspulse.api.user.service.UserProfileServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
+@ApiResponseDocumentation
 public class UserProfileController {
 
   private final UserProfileServiceImpl userProfileService;

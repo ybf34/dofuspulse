@@ -5,6 +5,8 @@
 
   <include file="changes/0001_initial_schema.xml" relativeToChangelogFile="true"/>
   <include file="changes/0002_add_indexes.xml" relativeToChangelogFile="true"/>
-  <include file="changes/0003-add-item-effects.xml" relativeToChangelogFile="true"/>
+  <include file="changes/0003_add_item_effects.xml" relativeToChangelogFile="true"/>
+  <include file="changes/0004_character_class.xml" relativeToChangelogFile="true"/>
+  <include file="changes/0005_gear_set.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

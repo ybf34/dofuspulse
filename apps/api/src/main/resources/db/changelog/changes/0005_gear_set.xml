@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+  <changeSet author="ybf34" id="0004-gear-set">
+    <createTable tableName="gear_set">
+      <column autoIncrement="true" name="id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="pk_gear_set"/>
+      </column>
+      <column name="title" type="VARCHAR(255)"/>
+      <column name="tags" type="varchar[]"/>
+      <column name="user_id" type="BIGINT">
+        <constraints foreignKeyName="fk_gear_set_user" nullable="false"
+          references="users(id)"/>
+      </column>
+      <column name="character_class_id" type="BIGINT">
+        <constraints foreignKeyName="fk_gear_set_character_class"
+          references="character_class(id)"/>
+      </column>
+      <column name="character_gender" type="VARCHAR(1)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+  </changeSet>
+
+  <changeSet author="ybf34" id="0004-gear-set-slot-type">
+    <createTable tableName="gear_set_slot_type">
+      <column autoIncrement="true" name="id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="pk_gear_set_slot_type"/>
+      </column>
+      <column name="name" type="VARCHAR(255)"/>
+    </createTable>
+  </changeSet>
+
+  <changeSet author="ybf34" id="0004-gear-set-slot">
+
+    <createTable tableName="gear_set_slot">
+      <column autoIncrement="true" name="id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="pk_gear_set_slot"/>
+      </column>
+      <column name="gear_set_id" type="BIGINT">
+        <constraints foreignKeyName="fk_gear_set_slot_gear_set" nullable="false"
+          references="gear_set(id)"/>
+      </column>
+      <column name="item_id" type="BIGINT">
+        <constraints foreignKeyName="fk_gear_set_slot_item_details"
+          references="item_details(item_id)"/>
+      </column>
+      <column name="gear_set_slot_type_id" type="BIGINT">
+        <constraints foreignKeyName="fk_gear_set_slot_slot_type" nullable="false"
+          references="gear_set_slot_type(id)"/>
+      </column>
+    </createTable>
+
+    <addUniqueConstraint
+      columnNames="gear_set_id, gear_set_slot_type_id"
+      constraintName="uc_gearset_slot_type_unique"
+      tableName="gear_set_slot"/>
+
+  </changeSet>
+
+  <changeSet author="ybf34" id="0004-slot-type-item-types">
+
+    <createTable tableName="slot_type_item_types">
+      <column name="slot_type_id" type="BIGINT">
+        <constraints foreignKeyName="fk_slot_type_item_types_slot_type" nullable="false"
+          references="gear_set_slot_type(id)"/>
+      </column>
+      <column name="item_type_id" type="BIGINT">
+        <constraints foreignKeyName="fk_slot_type_item_types_item_type" nullable="false"
+          references="item_types(item_type_id)"/>
+      </column>
+    </createTable>
+
+    <addUniqueConstraint
+      columnNames="slot_type_id, item_type_id"
+      constraintName="uc_slot_type_item_type_unique"
+      tableName="slot_type_item_types"/>
+  </changeSet>
+
+</databaseChangeLog>

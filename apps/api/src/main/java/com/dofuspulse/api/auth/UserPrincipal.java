@@ -1,6 +1,7 @@
 package com.dofuspulse.api.auth;
 
 import com.dofuspulse.api.auth.oauth2.UserSocialLogin;
+import com.dofuspulse.api.model.GearSet;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -13,6 +14,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
+import java.io.Serial;
 import java.nio.CharBuffer;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -37,6 +39,9 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 @Table(name = "USERS")
 public class UserPrincipal implements UserDetails, OAuth2User {
 
+  @Serial
+  private static final long serialVersionUID = 1L;
+
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
@@ -52,6 +57,9 @@ public class UserPrincipal implements UserDetails, OAuth2User {
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<UserSocialLogin> socialLogins;
+
+  @OneToMany(mappedBy = "userPrincipal", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<GearSet> gearSets;
 
   @CreationTimestamp
   private Instant createdAt;

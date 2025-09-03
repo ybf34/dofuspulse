@@ -104,6 +104,17 @@ public class GlobalExceptionHandler {
     return problem;
   }
 
+  @ExceptionHandler(ItemTypeIncompatibilityException.class)
+  public ProblemDetail handleItemTypeIncompatibilityException(
+      ItemTypeIncompatibilityException e) {
+    ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.NOT_FOUND,
+        "");
+    problem.setTitle("Item type incompatible for that slot type");
+    problem.setProperty("message", e.getMessage());
+
+    return problem;
+  }
+
   @ExceptionHandler(ItemNotFoundException.class)
   public ProblemDetail handleItemNotFoundException(
       ItemNotFoundException e) {

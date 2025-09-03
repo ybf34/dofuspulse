@@ -8,46 +8,37 @@
     <dropColumn columnName="possibleeffects" tableName="item_details"/>
   </changeSet>
 
-  <changeSet author="ybf34" id="26072025-01">
+  <changeSet author="ybf34" id="0003-effect">
     <createTable tableName="effect">
-      <column name="effect_id" type="bigint">
-        <constraints nullable="false" primaryKeyName="pk_effect"/>
+      <column name="effect_id" type="BIGINT">
+        <constraints nullable="false" primaryKey="true" primaryKeyName="pk_effect"/>
       </column>
-      <column name="description_template" type="varchar"/>
+      <column name="description_template" type="VARCHAR"/>
     </createTable>
   </changeSet>
 
-  <changeSet author="ybf34" id="26072025-02">
-    <addPrimaryKey columnNames="effect_id" constraintName="pk_effect" tableName="effect"/>
-  </changeSet>
-
-  <changeSet author="ybf34" id="26072025-02-item-effect-table">
+  <changeSet author="ybf34" id="0003-item-effect">
 
     <createTable tableName="item_effect">
-      <column autoIncrement="true" name="id" type="bigint">
+      <column autoIncrement="true" name="id" type="BIGINT">
         <constraints nullable="false" primaryKey="true" primaryKeyName="pk_item_effect"/>
       </column>
-
-      <column name="item_id" type="bigint">
+      <column name="item_id" type="BIGINT">
         <constraints foreignKeyName="fk_item_effect_item_details" nullable="false"
           references="item_details(item_id)"/>
       </column>
-
-      <column name="effect_id" type="bigint">
+      <column name="effect_id" type="BIGINT">
         <constraints foreignKeyName="fk_item_effect_effect" nullable="false"
           references="effect(effect_id)"/>
       </column>
-
-      <column name="min_value" type="integer"/>
-      <column name="max_value" type="integer"/>
-
+      <column name="min_value" type="INTEGER"/>
+      <column name="max_value" type="INTEGER"/>
     </createTable>
 
     <addUniqueConstraint
       columnNames="item_id, effect_id"
       constraintName="uq_item_effect_item_id_effect_id"
       tableName="item_effect"/>
-
   </changeSet>
 
 </databaseChangeLog>
