@@ -5,10 +5,10 @@
  * API documentation
  * OpenAPI spec version: 1.0
  */
-import type {ItemDetailsSearchCriteria} from "./itemDetailsSearchCriteria";
-import type {Pageable} from "./pageable";
+import type { ItemDetailsSearchCriteria } from "./itemDetailsSearchCriteria";
+import type { Pageable } from "./pageable";
 
 export type GetAllItemDetailsParams = {
-  params: ItemDetailsSearchCriteria;
-  pageable: Pageable;
+	params: ItemDetailsSearchCriteria;
+	pageable: Pageable;
 };

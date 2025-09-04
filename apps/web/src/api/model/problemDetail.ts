@@ -5,13 +5,13 @@
  * API documentation
  * OpenAPI spec version: 1.0
  */
-import type {ProblemDetailProperties} from "./problemDetailProperties";
+import type { ProblemDetailProperties } from "./problemDetailProperties";
 
 export interface ProblemDetail {
-  type?: string;
-  title?: string;
-  status?: number;
-  detail?: string;
-  instance?: string;
-  properties?: ProblemDetailProperties;
+	type?: string;
+	title?: string;
+	status?: number;
+	detail?: string;
+	instance?: string;
+	properties?: ProblemDetailProperties;
 }

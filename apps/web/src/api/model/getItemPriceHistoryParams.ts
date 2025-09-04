@@ -7,6 +7,6 @@
  */
 
 export type GetItemPriceHistoryParams = {
-  startDate: string;
-  endDate: string;
+	startDate: string;
+	endDate: string;
 };

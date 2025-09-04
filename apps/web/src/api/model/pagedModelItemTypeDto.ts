@@ -5,10 +5,10 @@
  * API documentation
  * OpenAPI spec version: 1.0
  */
-import type {ItemTypeDto} from "./itemTypeDto";
-import type {PageMetadata} from "./pageMetadata";
+import type { ItemTypeDto } from "./itemTypeDto";
+import type { PageMetadata } from "./pageMetadata";
 
 export interface PagedModelItemTypeDto {
-  content?: ItemTypeDto[];
-  page?: PageMetadata;
+	content?: ItemTypeDto[];
+	page?: PageMetadata;
 }

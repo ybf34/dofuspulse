@@ -7,6 +7,6 @@
  */
 
 export interface EffectDto {
-  id?: number;
-  description_template?: string;
+	id?: number;
+	description_template?: string;
 }

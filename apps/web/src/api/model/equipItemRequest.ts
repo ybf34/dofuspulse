@@ -7,6 +7,6 @@
  */
 
 export interface EquipItemRequest {
-  slotTypeId: number;
-  itemId: number;
+	slotTypeId: number;
+	itemId: number;
 }

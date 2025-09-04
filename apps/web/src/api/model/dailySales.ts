@@ -7,11 +7,11 @@
  */
 
 export interface DailySales {
-  date?: string;
-  sold?: number;
-  added?: number;
-  expired?: number;
-  avgSoldDuration?: number;
-  listingCount?: number;
-  revenue?: number;
+	date?: string;
+	sold?: number;
+	added?: number;
+	expired?: number;
+	avgSoldDuration?: number;
+	listingCount?: number;
+	revenue?: number;
 }

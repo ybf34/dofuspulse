@@ -5,10 +5,10 @@
  * API documentation
  * OpenAPI spec version: 1.0
  */
-import type {ItemDetailsSearchCriteria} from "./itemDetailsSearchCriteria";
+import type { ItemDetailsSearchCriteria } from "./itemDetailsSearchCriteria";
 
 export type GetItemsPerformanceMetricsParams = {
-  params: ItemDetailsSearchCriteria;
-  startDate: string;
-  endDate: string;
+	params: ItemDetailsSearchCriteria;
+	startDate: string;
+	endDate: string;
 };

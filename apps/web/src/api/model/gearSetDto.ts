@@ -5,14 +5,14 @@
  * API documentation
  * OpenAPI spec version: 1.0
  */
-import type {CharacterClassDto} from "./characterClassDto";
-import type {GearSetSlotDto} from "./gearSetSlotDto";
+import type { CharacterClassDto } from "./characterClassDto";
+import type { GearSetSlotDto } from "./gearSetSlotDto";
 
 export interface GearSetDto {
-  id?: number;
-  title?: string;
-  characterClass?: CharacterClassDto;
-  characterGender?: string;
-  tags?: string[];
-  slots?: GearSetSlotDto[];
+	id?: number;
+	title?: string;
+	characterClass?: CharacterClassDto;
+	characterGender?: string;
+	tags?: string[];
+	slots?: GearSetSlotDto[];
 }

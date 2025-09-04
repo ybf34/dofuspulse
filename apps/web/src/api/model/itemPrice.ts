@@ -7,7 +7,7 @@
  */
 
 export interface ItemPrice {
-  itemId?: number;
-  prices?: number[];
-  snapshotDate?: string;
+	itemId?: number;
+	prices?: number[];
+	snapshotDate?: string;
 }

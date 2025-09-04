@@ -7,6 +7,6 @@
  */
 
 export interface UserSocialLoginDto {
-  provider?: string;
-  providerId?: string;
+	provider?: string;
+	providerId?: string;
 }

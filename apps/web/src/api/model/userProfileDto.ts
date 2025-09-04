@@ -6,16 +6,16 @@
  * OpenAPI spec version: 1.0
  */
 
-import type {UserProfileDtoAttributes} from "./userProfileDtoAttributes";
-import type {UserProfileDtoRole} from "./userProfileDtoRole";
-import type {UserSocialLoginDto} from "./userSocialLoginDto";
+import type { UserProfileDtoAttributes } from "./userProfileDtoAttributes";
+import type { UserProfileDtoRole } from "./userProfileDtoRole";
+import type { UserSocialLoginDto } from "./userSocialLoginDto";
 
 export interface UserProfileDto {
-  id?: number;
-  email?: string;
-  role?: UserProfileDtoRole;
-  socials?: UserSocialLoginDto[];
-  attributes?: UserProfileDtoAttributes;
-  createdAt?: string;
-  updatedAt?: string;
+	id?: number;
+	email?: string;
+	role?: UserProfileDtoRole;
+	socials?: UserSocialLoginDto[];
+	attributes?: UserProfileDtoAttributes;
+	createdAt?: string;
+	updatedAt?: string;
 }

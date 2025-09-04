@@ -5,9 +5,9 @@
  * API documentation
  * OpenAPI spec version: 1.0
  */
-import type {ProfitMetrics} from "./profitMetrics";
+import type { ProfitMetrics } from "./profitMetrics";
 
 export interface ProfitMetricsList {
-  itemId?: number;
-  profitMetrics?: ProfitMetrics[];
+	itemId?: number;
+	profitMetrics?: ProfitMetrics[];
 }

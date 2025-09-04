@@ -5,10 +5,10 @@
  * API documentation
  * OpenAPI spec version: 1.0
  */
-import type {ItemTypeDto} from "./itemTypeDto";
+import type { ItemTypeDto } from "./itemTypeDto";
 
 export interface GearSetSlotTypeDto {
-  id?: number;
-  name?: string;
-  itemTypes?: ItemTypeDto[];
+	id?: number;
+	name?: string;
+	itemTypes?: ItemTypeDto[];
 }

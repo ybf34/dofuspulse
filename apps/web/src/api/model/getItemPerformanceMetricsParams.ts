@@ -7,6 +7,6 @@
  */
 
 export type GetItemPerformanceMetricsParams = {
-  startDate: string;
-  endDate: string;
+	startDate: string;
+	endDate: string;
 };

@@ -7,5 +7,5 @@
  */
 
 export interface CharacterClassDto {
-  name?: string;
+	name?: string;
 }

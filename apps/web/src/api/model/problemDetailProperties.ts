@@ -7,5 +7,5 @@
  */
 
 export type ProblemDetailProperties = {
-  [key: string]: { [key: string]: unknown };
+	[key: string]: { [key: string]: unknown };
 };

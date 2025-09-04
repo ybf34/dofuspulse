@@ -7,6 +7,6 @@
  */
 
 export type GetItemSalesHistoryParams = {
-  startDate: string;
-  endDate: string;
+	startDate: string;
+	endDate: string;
 };

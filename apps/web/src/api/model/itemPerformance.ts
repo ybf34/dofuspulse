@@ -7,18 +7,18 @@
  */
 
 export interface ItemPerformance {
-  itemId?: number;
-  salesVolume?: number;
-  salesVelocity?: number;
-  avgCraftCost?: number;
-  avgListingPrice?: number;
-  avgDailyProfitMargin?: number;
-  profitMarginTrend?: number;
-  craftCostTrend?: number;
-  priceTrend?: number;
-  salesTrend?: number;
-  listingsTrend?: number;
-  roiTrend?: number;
-  avgSoldDuration?: number;
-  craftCostPctChangeFromAvg?: number;
+	itemId?: number;
+	salesVolume?: number;
+	salesVelocity?: number;
+	avgCraftCost?: number;
+	avgListingPrice?: number;
+	avgDailyProfitMargin?: number;
+	profitMarginTrend?: number;
+	craftCostTrend?: number;
+	priceTrend?: number;
+	salesTrend?: number;
+	listingsTrend?: number;
+	roiTrend?: number;
+	avgSoldDuration?: number;
+	craftCostPctChangeFromAvg?: number;
 }

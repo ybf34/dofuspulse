@@ -7,23 +7,23 @@
  */
 
 export interface ItemDetailsSearchCriteria {
-  /**
-   * @minLength 0
-   * @maxLength 100
-   */
-  name?: string;
-  types?: number[];
-  typesNames?: string[];
-  effect?: number;
-  ingredient?: number;
-  /**
-   * @minimum 1
-   * @maximum 200
-   */
-  minLevel?: number;
-  /**
-   * @minimum 1
-   * @maximum 200
-   */
-  maxLevel?: number;
+	/**
+	 * @minLength 0
+	 * @maxLength 100
+	 */
+	name?: string;
+	types?: number[];
+	typesNames?: string[];
+	effect?: number;
+	ingredient?: number;
+	/**
+	 * @minimum 1
+	 * @maximum 200
+	 */
+	minLevel?: number;
+	/**
+	 * @minimum 1
+	 * @maximum 200
+	 */
+	maxLevel?: number;
 }

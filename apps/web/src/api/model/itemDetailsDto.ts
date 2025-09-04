@@ -5,14 +5,14 @@
  * API documentation
  * OpenAPI spec version: 1.0
  */
-import type {ItemEffectDto} from "./itemEffectDto";
+import type { ItemEffectDto } from "./itemEffectDto";
 
 export interface ItemDetailsDto {
-  id?: number;
-  name?: string;
-  level?: number;
-  itemTypeId?: number;
-  iconId?: number;
-  ingredientIds?: number[];
-  possibleEffects?: ItemEffectDto[];
+	id?: number;
+	name?: string;
+	level?: number;
+	itemTypeId?: number;
+	iconId?: number;
+	ingredientIds?: number[];
+	possibleEffects?: ItemEffectDto[];
 }

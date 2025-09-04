@@ -6,11 +6,11 @@
  * OpenAPI spec version: 1.0
  */
 
-import type {GearSetSlotTypeDto} from "./gearSetSlotTypeDto";
-import type {ItemDetailsDto} from "./itemDetailsDto";
+import type { GearSetSlotTypeDto } from "./gearSetSlotTypeDto";
+import type { ItemDetailsDto } from "./itemDetailsDto";
 
 export interface GearSetSlotDto {
-  id?: number;
-  itemDetails?: ItemDetailsDto;
-  slotType?: GearSetSlotTypeDto;
+	id?: number;
+	itemDetails?: ItemDetailsDto;
+	slotType?: GearSetSlotTypeDto;
 }

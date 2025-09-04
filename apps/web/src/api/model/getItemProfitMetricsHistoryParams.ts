@@ -7,6 +7,6 @@
  */
 
 export type GetItemProfitMetricsHistoryParams = {
-  startDate: string;
-  endDate: string;
+	startDate: string;
+	endDate: string;
 };

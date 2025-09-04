@@ -5,8 +5,8 @@
  * API documentation
  * OpenAPI spec version: 1.0
  */
-import type {Pageable} from "./pageable";
+import type { Pageable } from "./pageable";
 
 export type GetAllItemTypesParams = {
-  pageable: Pageable;
+	pageable: Pageable;
 };

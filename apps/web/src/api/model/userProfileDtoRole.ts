@@ -7,10 +7,10 @@
  */
 
 export type UserProfileDtoRole =
-    (typeof UserProfileDtoRole)[keyof typeof UserProfileDtoRole];
+	(typeof UserProfileDtoRole)[keyof typeof UserProfileDtoRole];
 
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 export const UserProfileDtoRole = {
-  ADMIN: "ADMIN",
-  USER: "USER",
+	ADMIN: "ADMIN",
+	USER: "USER",
 } as const;

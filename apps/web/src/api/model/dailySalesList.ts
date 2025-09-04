@@ -5,9 +5,9 @@
  * API documentation
  * OpenAPI spec version: 1.0
  */
-import type {DailySales} from "./dailySales";
+import type { DailySales } from "./dailySales";
 
 export interface DailySalesList {
-  itemId?: number;
-  dailySales?: DailySales[];
+	itemId?: number;
+	dailySales?: DailySales[];
 }

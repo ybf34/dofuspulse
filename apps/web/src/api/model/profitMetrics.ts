@@ -7,9 +7,9 @@
  */
 
 export interface ProfitMetrics {
-  snapshotDate?: string;
-  craftCost?: number;
-  sellPrice?: number;
-  profitMargin?: number;
-  roi?: number;
+	snapshotDate?: string;
+	craftCost?: number;
+	sellPrice?: number;
+	profitMargin?: number;
+	roi?: number;
 }

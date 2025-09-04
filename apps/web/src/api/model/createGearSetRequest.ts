@@ -7,18 +7,18 @@
  */
 
 export interface CreateGearSetRequest {
-  /** @minLength 1 */
-  title?: string;
-  /** @minLength 1 */
-  characterClass?: string;
-  /**
-   * @minLength 1
-   * @pattern ^[mf]$
-   */
-  characterGender?: string;
-  /**
-   * @minItems 0
-   * @maxItems 10
-   */
-  tags?: string[];
+	/** @minLength 1 */
+	title?: string;
+	/** @minLength 1 */
+	characterClass?: string;
+	/**
+	 * @minLength 1
+	 * @pattern ^[mf]$
+	 */
+	characterGender?: string;
+	/**
+	 * @minItems 0
+	 * @maxItems 10
+	 */
+	tags?: string[];
 }

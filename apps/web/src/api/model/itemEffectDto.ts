@@ -7,7 +7,7 @@
  */
 
 export interface ItemEffectDto {
-  effectId?: number;
-  minValue?: number;
-  maxValue?: number;
+	effectId?: number;
+	minValue?: number;
+	maxValue?: number;
 }

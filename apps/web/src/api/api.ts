@@ -7,3389 +7,3389 @@
  */
 
 import type {
-  DataTag,
-  DefinedInitialDataOptions,
-  DefinedUseQueryResult,
-  MutationFunction,
-  QueryClient,
-  QueryFunction,
-  QueryKey,
-  UndefinedInitialDataOptions,
-  UseMutationOptions,
-  UseMutationResult,
-  UseQueryOptions,
-  UseQueryResult,
+	DataTag,
+	DefinedInitialDataOptions,
+	DefinedUseQueryResult,
+	MutationFunction,
+	QueryClient,
+	QueryFunction,
+	QueryKey,
+	UndefinedInitialDataOptions,
+	UseMutationOptions,
+	UseMutationResult,
+	UseQueryOptions,
+	UseQueryResult,
 } from "@tanstack/react-query";
-import {useMutation, useQuery} from "@tanstack/react-query";
-import type {BodyType, ErrorType} from "./axios";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import type { BodyType, ErrorType } from "./axios";
 
-import {customInstance} from "./axios";
-import {useCustomMutatorOptions} from "./custom-mutator-options";
+import { customInstance } from "./axios";
+import { useCustomMutatorOptions } from "./custom-mutator-options";
 import type {
-  CreateGearSetRequest,
-  DailySales,
-  DailySalesList,
-  EffectDto,
-  EquipItemRequest,
-  GearSetDto,
-  GearSetSlotDto,
-  GetAllItemDetailsParams,
-  GetAllItemTypesParams,
-  GetItemPerformanceMetricsParams,
-  GetItemPriceHistoryParams,
-  GetItemProfitMetricsHistoryParams,
-  GetItemSalesHistoryParams,
-  GetItemsDailySalesHistoryParams,
-  GetItemsPerformanceMetricsParams,
-  GetItemsProfitMetricsHistoryParams,
-  ItemDetailsDto,
-  ItemPerformance,
-  ItemPrice,
-  ItemTypeDto,
-  LoginRequest,
-  PagedModelItemDetailsDto,
-  PagedModelItemTypeDto,
-  ProblemDetail,
-  ProfitMetrics,
-  ProfitMetricsList,
-  RegisterRequest,
-  UserProfileDto,
+	CreateGearSetRequest,
+	DailySales,
+	DailySalesList,
+	EffectDto,
+	EquipItemRequest,
+	GearSetDto,
+	GearSetSlotDto,
+	GetAllItemDetailsParams,
+	GetAllItemTypesParams,
+	GetItemPerformanceMetricsParams,
+	GetItemPriceHistoryParams,
+	GetItemProfitMetricsHistoryParams,
+	GetItemSalesHistoryParams,
+	GetItemsDailySalesHistoryParams,
+	GetItemsPerformanceMetricsParams,
+	GetItemsProfitMetricsHistoryParams,
+	ItemDetailsDto,
+	ItemPerformance,
+	ItemPrice,
+	ItemTypeDto,
+	LoginRequest,
+	PagedModelItemDetailsDto,
+	PagedModelItemTypeDto,
+	ProblemDetail,
+	ProfitMetrics,
+	ProfitMetricsList,
+	RegisterRequest,
+	UserProfileDto,
 } from "./model";
 
 type SecondParameter<T extends (...args: never) => unknown> = Parameters<T>[1];
 
 export const createGearSet = (
-    createGearSetRequest: BodyType<CreateGearSetRequest>,
-    options?: SecondParameter<typeof customInstance>,
-    signal?: AbortSignal,
+	createGearSetRequest: BodyType<CreateGearSetRequest>,
+	options?: SecondParameter<typeof customInstance>,
+	signal?: AbortSignal,
 ) => {
-  return customInstance<GearSetDto>(
-      {
-        url: `/api/v1/gearsets`,
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        data: createGearSetRequest,
-        signal,
-      },
-      options,
-  );
+	return customInstance<GearSetDto>(
+		{
+			url: `/api/v1/gearsets`,
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			data: createGearSetRequest,
+			signal,
+		},
+		options,
+	);
 };
 
 export const useCreateGearSetMutationOptions = <
-    TError = ErrorType<ProblemDetail>,
-    TContext = unknown,
+	TError = ErrorType<ProblemDetail>,
+	TContext = unknown,
 >(options?: {
-  mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof createGearSet>>,
-      TError,
-      { data: BodyType<CreateGearSetRequest> },
-      TContext
-  >;
-  request?: SecondParameter<typeof customInstance>;
+	mutation?: UseMutationOptions<
+		Awaited<ReturnType<typeof createGearSet>>,
+		TError,
+		{ data: BodyType<CreateGearSetRequest> },
+		TContext
+	>;
+	request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-    Awaited<ReturnType<typeof createGearSet>>,
-    TError,
-    { data: BodyType<CreateGearSetRequest> },
-    TContext
+	Awaited<ReturnType<typeof createGearSet>>,
+	TError,
+	{ data: BodyType<CreateGearSetRequest> },
+	TContext
 > => {
-  const mutationKey = ["createGearSet"];
-  const {mutation: mutationOptions, request: requestOptions} = options
-      ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-          ? options
-          : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: {mutationKey}, request: undefined};
+	const mutationKey = ["createGearSet"];
+	const { mutation: mutationOptions, request: requestOptions } = options
+		? options.mutation &&
+			"mutationKey" in options.mutation &&
+			options.mutation.mutationKey
+			? options
+			: { ...options, mutation: { ...options.mutation, mutationKey } }
+		: { mutation: { mutationKey }, request: undefined };
 
-  const mutationFn: MutationFunction<
-      Awaited<ReturnType<typeof createGearSet>>,
-      { data: BodyType<CreateGearSetRequest> }
-  > = (props) => {
-    const {data} = props ?? {};
+	const mutationFn: MutationFunction<
+		Awaited<ReturnType<typeof createGearSet>>,
+		{ data: BodyType<CreateGearSetRequest> }
+	> = (props) => {
+		const { data } = props ?? {};
 
-    return createGearSet(data, requestOptions);
-  };
+		return createGearSet(data, requestOptions);
+	};
 
-  const customOptions = useCustomMutatorOptions({
-    ...mutationOptions,
-    mutationFn,
-  });
+	const customOptions = useCustomMutatorOptions({
+		...mutationOptions,
+		mutationFn,
+	});
 
-  return customOptions;
+	return customOptions;
 };
 
 export type CreateGearSetMutationResult = NonNullable<
-    Awaited<ReturnType<typeof createGearSet>>
+	Awaited<ReturnType<typeof createGearSet>>
 >;
 export type CreateGearSetMutationBody = BodyType<CreateGearSetRequest>;
 export type CreateGearSetMutationError = ErrorType<ProblemDetail>;
 
 export const useCreateGearSet = <
-    TError = ErrorType<ProblemDetail>,
-    TContext = unknown,
+	TError = ErrorType<ProblemDetail>,
+	TContext = unknown,
 >(
-    options?: {
-      mutation?: UseMutationOptions<
-          Awaited<ReturnType<typeof createGearSet>>,
-          TError,
-          { data: BodyType<CreateGearSetRequest> },
-          TContext
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	options?: {
+		mutation?: UseMutationOptions<
+			Awaited<ReturnType<typeof createGearSet>>,
+			TError,
+			{ data: BodyType<CreateGearSetRequest> },
+			TContext
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseMutationResult<
-    Awaited<ReturnType<typeof createGearSet>>,
-    TError,
-    { data: BodyType<CreateGearSetRequest> },
-    TContext
+	Awaited<ReturnType<typeof createGearSet>>,
+	TError,
+	{ data: BodyType<CreateGearSetRequest> },
+	TContext
 > => {
-  const mutationOptions = useCreateGearSetMutationOptions(options);
+	const mutationOptions = useCreateGearSetMutationOptions(options);
 
-  return useMutation(mutationOptions, queryClient);
+	return useMutation(mutationOptions, queryClient);
 };
 
 export const equipItem = (
-    gearSetId: number,
-    equipItemRequest: BodyType<EquipItemRequest>,
-    options?: SecondParameter<typeof customInstance>,
-    signal?: AbortSignal,
+	gearSetId: number,
+	equipItemRequest: BodyType<EquipItemRequest>,
+	options?: SecondParameter<typeof customInstance>,
+	signal?: AbortSignal,
 ) => {
-  return customInstance<GearSetSlotDto>(
-      {
-        url: `/api/v1/gearsets/${gearSetId}/slots`,
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        data: equipItemRequest,
-        signal,
-      },
-      options,
-  );
+	return customInstance<GearSetSlotDto>(
+		{
+			url: `/api/v1/gearsets/${gearSetId}/slots`,
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			data: equipItemRequest,
+			signal,
+		},
+		options,
+	);
 };
 
 export const useEquipItemMutationOptions = <
-    TError = ErrorType<ProblemDetail>,
-    TContext = unknown,
+	TError = ErrorType<ProblemDetail>,
+	TContext = unknown,
 >(options?: {
-  mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof equipItem>>,
-      TError,
-      { gearSetId: number; data: BodyType<EquipItemRequest> },
-      TContext
-  >;
-  request?: SecondParameter<typeof customInstance>;
+	mutation?: UseMutationOptions<
+		Awaited<ReturnType<typeof equipItem>>,
+		TError,
+		{ gearSetId: number; data: BodyType<EquipItemRequest> },
+		TContext
+	>;
+	request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-    Awaited<ReturnType<typeof equipItem>>,
-    TError,
-    { gearSetId: number; data: BodyType<EquipItemRequest> },
-    TContext
+	Awaited<ReturnType<typeof equipItem>>,
+	TError,
+	{ gearSetId: number; data: BodyType<EquipItemRequest> },
+	TContext
 > => {
-  const mutationKey = ["equipItem"];
-  const {mutation: mutationOptions, request: requestOptions} = options
-      ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-          ? options
-          : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: {mutationKey}, request: undefined};
+	const mutationKey = ["equipItem"];
+	const { mutation: mutationOptions, request: requestOptions } = options
+		? options.mutation &&
+			"mutationKey" in options.mutation &&
+			options.mutation.mutationKey
+			? options
+			: { ...options, mutation: { ...options.mutation, mutationKey } }
+		: { mutation: { mutationKey }, request: undefined };
 
-  const mutationFn: MutationFunction<
-      Awaited<ReturnType<typeof equipItem>>,
-      { gearSetId: number; data: BodyType<EquipItemRequest> }
-  > = (props) => {
-    const {gearSetId, data} = props ?? {};
+	const mutationFn: MutationFunction<
+		Awaited<ReturnType<typeof equipItem>>,
+		{ gearSetId: number; data: BodyType<EquipItemRequest> }
+	> = (props) => {
+		const { gearSetId, data } = props ?? {};
 
-    return equipItem(gearSetId, data, requestOptions);
-  };
+		return equipItem(gearSetId, data, requestOptions);
+	};
 
-  const customOptions = useCustomMutatorOptions({
-    ...mutationOptions,
-    mutationFn,
-  });
+	const customOptions = useCustomMutatorOptions({
+		...mutationOptions,
+		mutationFn,
+	});
 
-  return customOptions;
+	return customOptions;
 };
 
 export type EquipItemMutationResult = NonNullable<
-    Awaited<ReturnType<typeof equipItem>>
+	Awaited<ReturnType<typeof equipItem>>
 >;
 export type EquipItemMutationBody = BodyType<EquipItemRequest>;
 export type EquipItemMutationError = ErrorType<ProblemDetail>;
 
 export const useEquipItem = <
-    TError = ErrorType<ProblemDetail>,
-    TContext = unknown,
+	TError = ErrorType<ProblemDetail>,
+	TContext = unknown,
 >(
-    options?: {
-      mutation?: UseMutationOptions<
-          Awaited<ReturnType<typeof equipItem>>,
-          TError,
-          { gearSetId: number; data: BodyType<EquipItemRequest> },
-          TContext
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	options?: {
+		mutation?: UseMutationOptions<
+			Awaited<ReturnType<typeof equipItem>>,
+			TError,
+			{ gearSetId: number; data: BodyType<EquipItemRequest> },
+			TContext
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseMutationResult<
-    Awaited<ReturnType<typeof equipItem>>,
-    TError,
-    { gearSetId: number; data: BodyType<EquipItemRequest> },
-    TContext
+	Awaited<ReturnType<typeof equipItem>>,
+	TError,
+	{ gearSetId: number; data: BodyType<EquipItemRequest> },
+	TContext
 > => {
-  const mutationOptions = useEquipItemMutationOptions(options);
+	const mutationOptions = useEquipItemMutationOptions(options);
 
-  return useMutation(mutationOptions, queryClient);
+	return useMutation(mutationOptions, queryClient);
 };
 
 export const register = (
-    registerRequest: BodyType<RegisterRequest>,
-    options?: SecondParameter<typeof customInstance>,
-    signal?: AbortSignal,
+	registerRequest: BodyType<RegisterRequest>,
+	options?: SecondParameter<typeof customInstance>,
+	signal?: AbortSignal,
 ) => {
-  return customInstance<string>(
-      {
-        url: `/api/v1/auth/register`,
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        data: registerRequest,
-        signal,
-      },
-      options,
-  );
+	return customInstance<string>(
+		{
+			url: `/api/v1/auth/register`,
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			data: registerRequest,
+			signal,
+		},
+		options,
+	);
 };
 
 export const useRegisterMutationOptions = <
-    TError = ErrorType<ProblemDetail>,
-    TContext = unknown,
+	TError = ErrorType<ProblemDetail>,
+	TContext = unknown,
 >(options?: {
-  mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof register>>,
-      TError,
-      { data: BodyType<RegisterRequest> },
-      TContext
-  >;
-  request?: SecondParameter<typeof customInstance>;
+	mutation?: UseMutationOptions<
+		Awaited<ReturnType<typeof register>>,
+		TError,
+		{ data: BodyType<RegisterRequest> },
+		TContext
+	>;
+	request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-    Awaited<ReturnType<typeof register>>,
-    TError,
-    { data: BodyType<RegisterRequest> },
-    TContext
+	Awaited<ReturnType<typeof register>>,
+	TError,
+	{ data: BodyType<RegisterRequest> },
+	TContext
 > => {
-  const mutationKey = ["register"];
-  const {mutation: mutationOptions, request: requestOptions} = options
-      ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-          ? options
-          : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: {mutationKey}, request: undefined};
+	const mutationKey = ["register"];
+	const { mutation: mutationOptions, request: requestOptions } = options
+		? options.mutation &&
+			"mutationKey" in options.mutation &&
+			options.mutation.mutationKey
+			? options
+			: { ...options, mutation: { ...options.mutation, mutationKey } }
+		: { mutation: { mutationKey }, request: undefined };
 
-  const mutationFn: MutationFunction<
-      Awaited<ReturnType<typeof register>>,
-      { data: BodyType<RegisterRequest> }
-  > = (props) => {
-    const {data} = props ?? {};
+	const mutationFn: MutationFunction<
+		Awaited<ReturnType<typeof register>>,
+		{ data: BodyType<RegisterRequest> }
+	> = (props) => {
+		const { data } = props ?? {};
 
-    return register(data, requestOptions);
-  };
+		return register(data, requestOptions);
+	};
 
-  const customOptions = useCustomMutatorOptions({
-    ...mutationOptions,
-    mutationFn,
-  });
+	const customOptions = useCustomMutatorOptions({
+		...mutationOptions,
+		mutationFn,
+	});
 
-  return customOptions;
+	return customOptions;
 };
 
 export type RegisterMutationResult = NonNullable<
-    Awaited<ReturnType<typeof register>>
+	Awaited<ReturnType<typeof register>>
 >;
 export type RegisterMutationBody = BodyType<RegisterRequest>;
 export type RegisterMutationError = ErrorType<ProblemDetail>;
 
 export const useRegister = <
-    TError = ErrorType<ProblemDetail>,
-    TContext = unknown,
+	TError = ErrorType<ProblemDetail>,
+	TContext = unknown,
 >(
-    options?: {
-      mutation?: UseMutationOptions<
-          Awaited<ReturnType<typeof register>>,
-          TError,
-          { data: BodyType<RegisterRequest> },
-          TContext
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	options?: {
+		mutation?: UseMutationOptions<
+			Awaited<ReturnType<typeof register>>,
+			TError,
+			{ data: BodyType<RegisterRequest> },
+			TContext
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseMutationResult<
-    Awaited<ReturnType<typeof register>>,
-    TError,
-    { data: BodyType<RegisterRequest> },
-    TContext
+	Awaited<ReturnType<typeof register>>,
+	TError,
+	{ data: BodyType<RegisterRequest> },
+	TContext
 > => {
-  const mutationOptions = useRegisterMutationOptions(options);
+	const mutationOptions = useRegisterMutationOptions(options);
 
-  return useMutation(mutationOptions, queryClient);
+	return useMutation(mutationOptions, queryClient);
 };
 
 export const login = (
-    loginRequest: BodyType<LoginRequest>,
-    options?: SecondParameter<typeof customInstance>,
-    signal?: AbortSignal,
+	loginRequest: BodyType<LoginRequest>,
+	options?: SecondParameter<typeof customInstance>,
+	signal?: AbortSignal,
 ) => {
-  return customInstance<string>(
-      {
-        url: `/api/v1/auth/login`,
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        data: loginRequest,
-        signal,
-      },
-      options,
-  );
+	return customInstance<string>(
+		{
+			url: `/api/v1/auth/login`,
+			method: "POST",
+			headers: { "Content-Type": "application/json" },
+			data: loginRequest,
+			signal,
+		},
+		options,
+	);
 };
 
 export const useLoginMutationOptions = <
-    TError = ErrorType<ProblemDetail>,
-    TContext = unknown,
+	TError = ErrorType<ProblemDetail>,
+	TContext = unknown,
 >(options?: {
-  mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof login>>,
-      TError,
-      { data: BodyType<LoginRequest> },
-      TContext
-  >;
-  request?: SecondParameter<typeof customInstance>;
+	mutation?: UseMutationOptions<
+		Awaited<ReturnType<typeof login>>,
+		TError,
+		{ data: BodyType<LoginRequest> },
+		TContext
+	>;
+	request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-    Awaited<ReturnType<typeof login>>,
-    TError,
-    { data: BodyType<LoginRequest> },
-    TContext
+	Awaited<ReturnType<typeof login>>,
+	TError,
+	{ data: BodyType<LoginRequest> },
+	TContext
 > => {
-  const mutationKey = ["login"];
-  const {mutation: mutationOptions, request: requestOptions} = options
-      ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-          ? options
-          : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: {mutationKey}, request: undefined};
+	const mutationKey = ["login"];
+	const { mutation: mutationOptions, request: requestOptions } = options
+		? options.mutation &&
+			"mutationKey" in options.mutation &&
+			options.mutation.mutationKey
+			? options
+			: { ...options, mutation: { ...options.mutation, mutationKey } }
+		: { mutation: { mutationKey }, request: undefined };
 
-  const mutationFn: MutationFunction<
-      Awaited<ReturnType<typeof login>>,
-      { data: BodyType<LoginRequest> }
-  > = (props) => {
-    const {data} = props ?? {};
+	const mutationFn: MutationFunction<
+		Awaited<ReturnType<typeof login>>,
+		{ data: BodyType<LoginRequest> }
+	> = (props) => {
+		const { data } = props ?? {};
 
-    return login(data, requestOptions);
-  };
+		return login(data, requestOptions);
+	};
 
-  const customOptions = useCustomMutatorOptions({
-    ...mutationOptions,
-    mutationFn,
-  });
+	const customOptions = useCustomMutatorOptions({
+		...mutationOptions,
+		mutationFn,
+	});
 
-  return customOptions;
+	return customOptions;
 };
 
 export type LoginMutationResult = NonNullable<
-    Awaited<ReturnType<typeof login>>
+	Awaited<ReturnType<typeof login>>
 >;
 export type LoginMutationBody = BodyType<LoginRequest>;
 export type LoginMutationError = ErrorType<ProblemDetail>;
 
 export const useLogin = <TError = ErrorType<ProblemDetail>, TContext = unknown>(
-    options?: {
-      mutation?: UseMutationOptions<
-          Awaited<ReturnType<typeof login>>,
-          TError,
-          { data: BodyType<LoginRequest> },
-          TContext
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	options?: {
+		mutation?: UseMutationOptions<
+			Awaited<ReturnType<typeof login>>,
+			TError,
+			{ data: BodyType<LoginRequest> },
+			TContext
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseMutationResult<
-    Awaited<ReturnType<typeof login>>,
-    TError,
-    { data: BodyType<LoginRequest> },
-    TContext
+	Awaited<ReturnType<typeof login>>,
+	TError,
+	{ data: BodyType<LoginRequest> },
+	TContext
 > => {
-  const mutationOptions = useLoginMutationOptions(options);
+	const mutationOptions = useLoginMutationOptions(options);
 
-  return useMutation(mutationOptions, queryClient);
+	return useMutation(mutationOptions, queryClient);
 };
 
 export const user = (
-    options?: SecondParameter<typeof customInstance>,
-    signal?: AbortSignal,
+	options?: SecondParameter<typeof customInstance>,
+	signal?: AbortSignal,
 ) => {
-  return customInstance<string>(
-      {url: `/api/v1/userprotected`, method: "GET", signal},
-      options,
-  );
+	return customInstance<string>(
+		{ url: `/api/v1/userprotected`, method: "GET", signal },
+		options,
+	);
 };
 
 export const getUserQueryKey = () => {
-  return ["api", "v1", "userprotected"] as const;
+	return ["api", "v1", "userprotected"] as const;
 };
 
 export const getUserQueryOptions = <
-    TData = Awaited<ReturnType<typeof user>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof user>>,
+	TError = ErrorType<ProblemDetail>,
 >(options?: {
-  query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof user>>, TError, TData>
-  >;
-  request?: SecondParameter<typeof customInstance>;
+	query?: Partial<
+		UseQueryOptions<Awaited<ReturnType<typeof user>>, TError, TData>
+	>;
+	request?: SecondParameter<typeof customInstance>;
 }) => {
-  const {query: queryOptions, request: requestOptions} = options ?? {};
+	const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getUserQueryKey();
+	const queryKey = queryOptions?.queryKey ?? getUserQueryKey();
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof user>>> = ({
-                                                                      signal,
-                                                                    }) => user(requestOptions, signal);
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof user>>> = ({
+		signal,
+	}) => user(requestOptions, signal);
 
-  return {queryKey, queryFn, ...queryOptions} as UseQueryOptions<
-      Awaited<ReturnType<typeof user>>,
-      TError,
-      TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+	return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+		Awaited<ReturnType<typeof user>>,
+		TError,
+		TData
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type UserQueryResult = NonNullable<Awaited<ReturnType<typeof user>>>;
 export type UserQueryError = ErrorType<ProblemDetail>;
 
 export function useUser<
-    TData = Awaited<ReturnType<typeof user>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof user>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    options: {
-      query: Partial<
-          UseQueryOptions<Awaited<ReturnType<typeof user>>, TError, TData>
-      > &
-          Pick<
-              DefinedInitialDataOptions<
-                  Awaited<ReturnType<typeof user>>,
-                  TError,
-                  Awaited<ReturnType<typeof user>>
-              >,
-              "initialData"
-          >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	options: {
+		query: Partial<
+			UseQueryOptions<Awaited<ReturnType<typeof user>>, TError, TData>
+		> &
+			Pick<
+				DefinedInitialDataOptions<
+					Awaited<ReturnType<typeof user>>,
+					TError,
+					Awaited<ReturnType<typeof user>>
+				>,
+				"initialData"
+			>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useUser<
-    TData = Awaited<ReturnType<typeof user>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof user>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    options?: {
-      query?: Partial<
-          UseQueryOptions<Awaited<ReturnType<typeof user>>, TError, TData>
-      > &
-          Pick<
-              UndefinedInitialDataOptions<
-                  Awaited<ReturnType<typeof user>>,
-                  TError,
-                  Awaited<ReturnType<typeof user>>
-              >,
-              "initialData"
-          >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<Awaited<ReturnType<typeof user>>, TError, TData>
+		> &
+			Pick<
+				UndefinedInitialDataOptions<
+					Awaited<ReturnType<typeof user>>,
+					TError,
+					Awaited<ReturnType<typeof user>>
+				>,
+				"initialData"
+			>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useUser<
-    TData = Awaited<ReturnType<typeof user>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof user>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    options?: {
-      query?: Partial<
-          UseQueryOptions<Awaited<ReturnType<typeof user>>, TError, TData>
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<Awaited<ReturnType<typeof user>>, TError, TData>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 
 export function useUser<
-    TData = Awaited<ReturnType<typeof user>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof user>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    options?: {
-      query?: Partial<
-          UseQueryOptions<Awaited<ReturnType<typeof user>>, TError, TData>
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<Awaited<ReturnType<typeof user>>, TError, TData>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 } {
-  const queryOptions = getUserQueryOptions(options);
+	const queryOptions = getUserQueryOptions(options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-      TData,
-      TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+	const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+		TData,
+		TError
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  query.queryKey = queryOptions.queryKey;
+	query.queryKey = queryOptions.queryKey;
 
-  return query;
+	return query;
 }
 
 export const getUserProfile = (
-    options?: SecondParameter<typeof customInstance>,
-    signal?: AbortSignal,
+	options?: SecondParameter<typeof customInstance>,
+	signal?: AbortSignal,
 ) => {
-  return customInstance<UserProfileDto>(
-      {url: `/api/v1/user/me`, method: "GET", signal},
-      options,
-  );
+	return customInstance<UserProfileDto>(
+		{ url: `/api/v1/user/me`, method: "GET", signal },
+		options,
+	);
 };
 
 export const getGetUserProfileQueryKey = () => {
-  return ["api", "v1", "user", "me"] as const;
+	return ["api", "v1", "user", "me"] as const;
 };
 
 export const getGetUserProfileQueryOptions = <
-    TData = Awaited<ReturnType<typeof getUserProfile>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getUserProfile>>,
+	TError = ErrorType<ProblemDetail>,
 >(options?: {
-  query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getUserProfile>>, TError, TData>
-  >;
-  request?: SecondParameter<typeof customInstance>;
+	query?: Partial<
+		UseQueryOptions<Awaited<ReturnType<typeof getUserProfile>>, TError, TData>
+	>;
+	request?: SecondParameter<typeof customInstance>;
 }) => {
-  const {query: queryOptions, request: requestOptions} = options ?? {};
+	const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetUserProfileQueryKey();
+	const queryKey = queryOptions?.queryKey ?? getGetUserProfileQueryKey();
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getUserProfile>>> = ({
-                                                                                signal,
-                                                                              }) => getUserProfile(requestOptions, signal);
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getUserProfile>>> = ({
+		signal,
+	}) => getUserProfile(requestOptions, signal);
 
-  return {queryKey, queryFn, ...queryOptions} as UseQueryOptions<
-      Awaited<ReturnType<typeof getUserProfile>>,
-      TError,
-      TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+	return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+		Awaited<ReturnType<typeof getUserProfile>>,
+		TError,
+		TData
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetUserProfileQueryResult = NonNullable<
-    Awaited<ReturnType<typeof getUserProfile>>
+	Awaited<ReturnType<typeof getUserProfile>>
 >;
 export type GetUserProfileQueryError = ErrorType<ProblemDetail>;
 
 export function useGetUserProfile<
-    TData = Awaited<ReturnType<typeof getUserProfile>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getUserProfile>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    options: {
-      query: Partial<
-          UseQueryOptions<Awaited<ReturnType<typeof getUserProfile>>, TError, TData>
-      > &
-          Pick<
-              DefinedInitialDataOptions<
-                  Awaited<ReturnType<typeof getUserProfile>>,
-                  TError,
-                  Awaited<ReturnType<typeof getUserProfile>>
-              >,
-              "initialData"
-          >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	options: {
+		query: Partial<
+			UseQueryOptions<Awaited<ReturnType<typeof getUserProfile>>, TError, TData>
+		> &
+			Pick<
+				DefinedInitialDataOptions<
+					Awaited<ReturnType<typeof getUserProfile>>,
+					TError,
+					Awaited<ReturnType<typeof getUserProfile>>
+				>,
+				"initialData"
+			>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetUserProfile<
-    TData = Awaited<ReturnType<typeof getUserProfile>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getUserProfile>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    options?: {
-      query?: Partial<
-          UseQueryOptions<Awaited<ReturnType<typeof getUserProfile>>, TError, TData>
-      > &
-          Pick<
-              UndefinedInitialDataOptions<
-                  Awaited<ReturnType<typeof getUserProfile>>,
-                  TError,
-                  Awaited<ReturnType<typeof getUserProfile>>
-              >,
-              "initialData"
-          >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<Awaited<ReturnType<typeof getUserProfile>>, TError, TData>
+		> &
+			Pick<
+				UndefinedInitialDataOptions<
+					Awaited<ReturnType<typeof getUserProfile>>,
+					TError,
+					Awaited<ReturnType<typeof getUserProfile>>
+				>,
+				"initialData"
+			>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetUserProfile<
-    TData = Awaited<ReturnType<typeof getUserProfile>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getUserProfile>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    options?: {
-      query?: Partial<
-          UseQueryOptions<Awaited<ReturnType<typeof getUserProfile>>, TError, TData>
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<Awaited<ReturnType<typeof getUserProfile>>, TError, TData>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 
 export function useGetUserProfile<
-    TData = Awaited<ReturnType<typeof getUserProfile>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getUserProfile>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    options?: {
-      query?: Partial<
-          UseQueryOptions<Awaited<ReturnType<typeof getUserProfile>>, TError, TData>
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<Awaited<ReturnType<typeof getUserProfile>>, TError, TData>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 } {
-  const queryOptions = getGetUserProfileQueryOptions(options);
+	const queryOptions = getGetUserProfileQueryOptions(options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-      TData,
-      TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+	const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+		TData,
+		TError
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  query.queryKey = queryOptions.queryKey;
+	query.queryKey = queryOptions.queryKey;
 
-  return query;
+	return query;
 }
 
 export const getUserGearSets = (
-    options?: SecondParameter<typeof customInstance>,
-    signal?: AbortSignal,
+	options?: SecondParameter<typeof customInstance>,
+	signal?: AbortSignal,
 ) => {
-  return customInstance<GearSetDto[]>(
-      {url: `/api/v1/user/gearsets`, method: "GET", signal},
-      options,
-  );
+	return customInstance<GearSetDto[]>(
+		{ url: `/api/v1/user/gearsets`, method: "GET", signal },
+		options,
+	);
 };
 
 export const getGetUserGearSetsQueryKey = () => {
-  return ["api", "v1", "user", "gearsets"] as const;
+	return ["api", "v1", "user", "gearsets"] as const;
 };
 
 export const getGetUserGearSetsQueryOptions = <
-    TData = Awaited<ReturnType<typeof getUserGearSets>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getUserGearSets>>,
+	TError = ErrorType<ProblemDetail>,
 >(options?: {
-  query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getUserGearSets>>, TError, TData>
-  >;
-  request?: SecondParameter<typeof customInstance>;
+	query?: Partial<
+		UseQueryOptions<Awaited<ReturnType<typeof getUserGearSets>>, TError, TData>
+	>;
+	request?: SecondParameter<typeof customInstance>;
 }) => {
-  const {query: queryOptions, request: requestOptions} = options ?? {};
+	const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetUserGearSetsQueryKey();
+	const queryKey = queryOptions?.queryKey ?? getGetUserGearSetsQueryKey();
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getUserGearSets>>> = ({
-                                                                                 signal,
-                                                                               }) => getUserGearSets(requestOptions, signal);
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getUserGearSets>>> = ({
+		signal,
+	}) => getUserGearSets(requestOptions, signal);
 
-  return {queryKey, queryFn, ...queryOptions} as UseQueryOptions<
-      Awaited<ReturnType<typeof getUserGearSets>>,
-      TError,
-      TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+	return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+		Awaited<ReturnType<typeof getUserGearSets>>,
+		TError,
+		TData
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetUserGearSetsQueryResult = NonNullable<
-    Awaited<ReturnType<typeof getUserGearSets>>
+	Awaited<ReturnType<typeof getUserGearSets>>
 >;
 export type GetUserGearSetsQueryError = ErrorType<ProblemDetail>;
 
 export function useGetUserGearSets<
-    TData = Awaited<ReturnType<typeof getUserGearSets>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getUserGearSets>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    options: {
-      query: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getUserGearSets>>,
-              TError,
-              TData
-          >
-      > &
-          Pick<
-              DefinedInitialDataOptions<
-                  Awaited<ReturnType<typeof getUserGearSets>>,
-                  TError,
-                  Awaited<ReturnType<typeof getUserGearSets>>
-              >,
-              "initialData"
-          >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	options: {
+		query: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getUserGearSets>>,
+				TError,
+				TData
+			>
+		> &
+			Pick<
+				DefinedInitialDataOptions<
+					Awaited<ReturnType<typeof getUserGearSets>>,
+					TError,
+					Awaited<ReturnType<typeof getUserGearSets>>
+				>,
+				"initialData"
+			>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetUserGearSets<
-    TData = Awaited<ReturnType<typeof getUserGearSets>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getUserGearSets>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getUserGearSets>>,
-              TError,
-              TData
-          >
-      > &
-          Pick<
-              UndefinedInitialDataOptions<
-                  Awaited<ReturnType<typeof getUserGearSets>>,
-                  TError,
-                  Awaited<ReturnType<typeof getUserGearSets>>
-              >,
-              "initialData"
-          >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getUserGearSets>>,
+				TError,
+				TData
+			>
+		> &
+			Pick<
+				UndefinedInitialDataOptions<
+					Awaited<ReturnType<typeof getUserGearSets>>,
+					TError,
+					Awaited<ReturnType<typeof getUserGearSets>>
+				>,
+				"initialData"
+			>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetUserGearSets<
-    TData = Awaited<ReturnType<typeof getUserGearSets>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getUserGearSets>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getUserGearSets>>,
-              TError,
-              TData
-          >
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getUserGearSets>>,
+				TError,
+				TData
+			>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 
 export function useGetUserGearSets<
-    TData = Awaited<ReturnType<typeof getUserGearSets>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getUserGearSets>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getUserGearSets>>,
-              TError,
-              TData
-          >
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getUserGearSets>>,
+				TError,
+				TData
+			>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 } {
-  const queryOptions = getGetUserGearSetsQueryOptions(options);
+	const queryOptions = getGetUserGearSetsQueryOptions(options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-      TData,
-      TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+	const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+		TData,
+		TError
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  query.queryKey = queryOptions.queryKey;
+	query.queryKey = queryOptions.queryKey;
 
-  return query;
+	return query;
 }
 
 export const getAllItemDetails = (
-    params: GetAllItemDetailsParams,
-    options?: SecondParameter<typeof customInstance>,
-    signal?: AbortSignal,
+	params: GetAllItemDetailsParams,
+	options?: SecondParameter<typeof customInstance>,
+	signal?: AbortSignal,
 ) => {
-  return customInstance<PagedModelItemDetailsDto>(
-      {url: `/api/v1/items`, method: "GET", params, signal},
-      options,
-  );
+	return customInstance<PagedModelItemDetailsDto>(
+		{ url: `/api/v1/items`, method: "GET", params, signal },
+		options,
+	);
 };
 
 export const getGetAllItemDetailsQueryKey = (
-    params: GetAllItemDetailsParams,
+	params: GetAllItemDetailsParams,
 ) => {
-  return ["api", "v1", "items", ...(params ? [params] : [])] as const;
+	return ["api", "v1", "items", ...(params ? [params] : [])] as const;
 };
 
 export const getGetAllItemDetailsQueryOptions = <
-    TData = Awaited<ReturnType<typeof getAllItemDetails>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getAllItemDetails>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    params: GetAllItemDetailsParams,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getAllItemDetails>>,
-              TError,
-              TData
-          >
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
+	params: GetAllItemDetailsParams,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getAllItemDetails>>,
+				TError,
+				TData
+			>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
 ) => {
-  const {query: queryOptions, request: requestOptions} = options ?? {};
+	const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =
-      queryOptions?.queryKey ?? getGetAllItemDetailsQueryKey(params);
+	const queryKey =
+		queryOptions?.queryKey ?? getGetAllItemDetailsQueryKey(params);
 
-  const queryFn: QueryFunction<
-      Awaited<ReturnType<typeof getAllItemDetails>>
-  > = ({signal}) => getAllItemDetails(params, requestOptions, signal);
+	const queryFn: QueryFunction<
+		Awaited<ReturnType<typeof getAllItemDetails>>
+	> = ({ signal }) => getAllItemDetails(params, requestOptions, signal);
 
-  return {queryKey, queryFn, ...queryOptions} as UseQueryOptions<
-      Awaited<ReturnType<typeof getAllItemDetails>>,
-      TError,
-      TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+	return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+		Awaited<ReturnType<typeof getAllItemDetails>>,
+		TError,
+		TData
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetAllItemDetailsQueryResult = NonNullable<
-    Awaited<ReturnType<typeof getAllItemDetails>>
+	Awaited<ReturnType<typeof getAllItemDetails>>
 >;
 export type GetAllItemDetailsQueryError = ErrorType<ProblemDetail>;
 
 export function useGetAllItemDetails<
-    TData = Awaited<ReturnType<typeof getAllItemDetails>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getAllItemDetails>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    params: GetAllItemDetailsParams,
-    options: {
-      query: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getAllItemDetails>>,
-              TError,
-              TData
-          >
-      > &
-          Pick<
-              DefinedInitialDataOptions<
-                  Awaited<ReturnType<typeof getAllItemDetails>>,
-                  TError,
-                  Awaited<ReturnType<typeof getAllItemDetails>>
-              >,
-              "initialData"
-          >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	params: GetAllItemDetailsParams,
+	options: {
+		query: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getAllItemDetails>>,
+				TError,
+				TData
+			>
+		> &
+			Pick<
+				DefinedInitialDataOptions<
+					Awaited<ReturnType<typeof getAllItemDetails>>,
+					TError,
+					Awaited<ReturnType<typeof getAllItemDetails>>
+				>,
+				"initialData"
+			>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetAllItemDetails<
-    TData = Awaited<ReturnType<typeof getAllItemDetails>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getAllItemDetails>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    params: GetAllItemDetailsParams,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getAllItemDetails>>,
-              TError,
-              TData
-          >
-      > &
-          Pick<
-              UndefinedInitialDataOptions<
-                  Awaited<ReturnType<typeof getAllItemDetails>>,
-                  TError,
-                  Awaited<ReturnType<typeof getAllItemDetails>>
-              >,
-              "initialData"
-          >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	params: GetAllItemDetailsParams,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getAllItemDetails>>,
+				TError,
+				TData
+			>
+		> &
+			Pick<
+				UndefinedInitialDataOptions<
+					Awaited<ReturnType<typeof getAllItemDetails>>,
+					TError,
+					Awaited<ReturnType<typeof getAllItemDetails>>
+				>,
+				"initialData"
+			>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetAllItemDetails<
-    TData = Awaited<ReturnType<typeof getAllItemDetails>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getAllItemDetails>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    params: GetAllItemDetailsParams,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getAllItemDetails>>,
-              TError,
-              TData
-          >
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	params: GetAllItemDetailsParams,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getAllItemDetails>>,
+				TError,
+				TData
+			>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 
 export function useGetAllItemDetails<
-    TData = Awaited<ReturnType<typeof getAllItemDetails>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getAllItemDetails>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    params: GetAllItemDetailsParams,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getAllItemDetails>>,
-              TError,
-              TData
-          >
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	params: GetAllItemDetailsParams,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getAllItemDetails>>,
+				TError,
+				TData
+			>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 } {
-  const queryOptions = getGetAllItemDetailsQueryOptions(params, options);
+	const queryOptions = getGetAllItemDetailsQueryOptions(params, options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-      TData,
-      TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+	const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+		TData,
+		TError
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  query.queryKey = queryOptions.queryKey;
+	query.queryKey = queryOptions.queryKey;
 
-  return query;
+	return query;
 }
 
 export const getItemDetailsById = (
-    id: number,
-    options?: SecondParameter<typeof customInstance>,
-    signal?: AbortSignal,
+	id: number,
+	options?: SecondParameter<typeof customInstance>,
+	signal?: AbortSignal,
 ) => {
-  return customInstance<ItemDetailsDto>(
-      {url: `/api/v1/items/${id}`, method: "GET", signal},
-      options,
-  );
+	return customInstance<ItemDetailsDto>(
+		{ url: `/api/v1/items/${id}`, method: "GET", signal },
+		options,
+	);
 };
 
 export const getGetItemDetailsByIdQueryKey = (id: number) => {
-  return ["api", "v1", "items", id] as const;
+	return ["api", "v1", "items", id] as const;
 };
 
 export const getGetItemDetailsByIdQueryOptions = <
-    TData = Awaited<ReturnType<typeof getItemDetailsById>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemDetailsById>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    id: number,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemDetailsById>>,
-              TError,
-              TData
-          >
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
+	id: number,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemDetailsById>>,
+				TError,
+				TData
+			>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
 ) => {
-  const {query: queryOptions, request: requestOptions} = options ?? {};
+	const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetItemDetailsByIdQueryKey(id);
+	const queryKey = queryOptions?.queryKey ?? getGetItemDetailsByIdQueryKey(id);
 
-  const queryFn: QueryFunction<
-      Awaited<ReturnType<typeof getItemDetailsById>>
-  > = ({signal}) => getItemDetailsById(id, requestOptions, signal);
+	const queryFn: QueryFunction<
+		Awaited<ReturnType<typeof getItemDetailsById>>
+	> = ({ signal }) => getItemDetailsById(id, requestOptions, signal);
 
-  return {
-    queryKey,
-    queryFn,
-    enabled: !!id,
-    ...queryOptions,
-  } as UseQueryOptions<
-      Awaited<ReturnType<typeof getItemDetailsById>>,
-      TError,
-      TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+	return {
+		queryKey,
+		queryFn,
+		enabled: !!id,
+		...queryOptions,
+	} as UseQueryOptions<
+		Awaited<ReturnType<typeof getItemDetailsById>>,
+		TError,
+		TData
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetItemDetailsByIdQueryResult = NonNullable<
-    Awaited<ReturnType<typeof getItemDetailsById>>
+	Awaited<ReturnType<typeof getItemDetailsById>>
 >;
 export type GetItemDetailsByIdQueryError = ErrorType<ProblemDetail>;
 
 export function useGetItemDetailsById<
-    TData = Awaited<ReturnType<typeof getItemDetailsById>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemDetailsById>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    id: number,
-    options: {
-      query: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemDetailsById>>,
-              TError,
-              TData
-          >
-      > &
-          Pick<
-              DefinedInitialDataOptions<
-                  Awaited<ReturnType<typeof getItemDetailsById>>,
-                  TError,
-                  Awaited<ReturnType<typeof getItemDetailsById>>
-              >,
-              "initialData"
-          >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	id: number,
+	options: {
+		query: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemDetailsById>>,
+				TError,
+				TData
+			>
+		> &
+			Pick<
+				DefinedInitialDataOptions<
+					Awaited<ReturnType<typeof getItemDetailsById>>,
+					TError,
+					Awaited<ReturnType<typeof getItemDetailsById>>
+				>,
+				"initialData"
+			>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetItemDetailsById<
-    TData = Awaited<ReturnType<typeof getItemDetailsById>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemDetailsById>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    id: number,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemDetailsById>>,
-              TError,
-              TData
-          >
-      > &
-          Pick<
-              UndefinedInitialDataOptions<
-                  Awaited<ReturnType<typeof getItemDetailsById>>,
-                  TError,
-                  Awaited<ReturnType<typeof getItemDetailsById>>
-              >,
-              "initialData"
-          >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	id: number,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemDetailsById>>,
+				TError,
+				TData
+			>
+		> &
+			Pick<
+				UndefinedInitialDataOptions<
+					Awaited<ReturnType<typeof getItemDetailsById>>,
+					TError,
+					Awaited<ReturnType<typeof getItemDetailsById>>
+				>,
+				"initialData"
+			>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetItemDetailsById<
-    TData = Awaited<ReturnType<typeof getItemDetailsById>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemDetailsById>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    id: number,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemDetailsById>>,
-              TError,
-              TData
-          >
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	id: number,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemDetailsById>>,
+				TError,
+				TData
+			>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 
 export function useGetItemDetailsById<
-    TData = Awaited<ReturnType<typeof getItemDetailsById>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemDetailsById>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    id: number,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemDetailsById>>,
-              TError,
-              TData
-          >
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	id: number,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemDetailsById>>,
+				TError,
+				TData
+			>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 } {
-  const queryOptions = getGetItemDetailsByIdQueryOptions(id, options);
+	const queryOptions = getGetItemDetailsByIdQueryOptions(id, options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-      TData,
-      TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+	const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+		TData,
+		TError
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  query.queryKey = queryOptions.queryKey;
+	query.queryKey = queryOptions.queryKey;
 
-  return query;
+	return query;
 }
 
 export const getItemSalesHistory = (
-    id: number,
-    params: GetItemSalesHistoryParams,
-    options?: SecondParameter<typeof customInstance>,
-    signal?: AbortSignal,
+	id: number,
+	params: GetItemSalesHistoryParams,
+	options?: SecondParameter<typeof customInstance>,
+	signal?: AbortSignal,
 ) => {
-  return customInstance<DailySales[]>(
-      {url: `/api/v1/items/${id}/sales-history`, method: "GET", params, signal},
-      options,
-  );
+	return customInstance<DailySales[]>(
+		{ url: `/api/v1/items/${id}/sales-history`, method: "GET", params, signal },
+		options,
+	);
 };
 
 export const getGetItemSalesHistoryQueryKey = (
-    id: number,
-    params: GetItemSalesHistoryParams,
+	id: number,
+	params: GetItemSalesHistoryParams,
 ) => {
-  return [
-    "api",
-    "v1",
-    "items",
-    id,
-    "sales-history",
-    ...(params ? [params] : []),
-  ] as const;
+	return [
+		"api",
+		"v1",
+		"items",
+		id,
+		"sales-history",
+		...(params ? [params] : []),
+	] as const;
 };
 
 export const getGetItemSalesHistoryQueryOptions = <
-    TData = Awaited<ReturnType<typeof getItemSalesHistory>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemSalesHistory>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    id: number,
-    params: GetItemSalesHistoryParams,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemSalesHistory>>,
-              TError,
-              TData
-          >
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
+	id: number,
+	params: GetItemSalesHistoryParams,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemSalesHistory>>,
+				TError,
+				TData
+			>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
 ) => {
-  const {query: queryOptions, request: requestOptions} = options ?? {};
+	const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =
-      queryOptions?.queryKey ?? getGetItemSalesHistoryQueryKey(id, params);
+	const queryKey =
+		queryOptions?.queryKey ?? getGetItemSalesHistoryQueryKey(id, params);
 
-  const queryFn: QueryFunction<
-      Awaited<ReturnType<typeof getItemSalesHistory>>
-  > = ({signal}) => getItemSalesHistory(id, params, requestOptions, signal);
+	const queryFn: QueryFunction<
+		Awaited<ReturnType<typeof getItemSalesHistory>>
+	> = ({ signal }) => getItemSalesHistory(id, params, requestOptions, signal);
 
-  return {
-    queryKey,
-    queryFn,
-    enabled: !!id,
-    ...queryOptions,
-  } as UseQueryOptions<
-      Awaited<ReturnType<typeof getItemSalesHistory>>,
-      TError,
-      TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+	return {
+		queryKey,
+		queryFn,
+		enabled: !!id,
+		...queryOptions,
+	} as UseQueryOptions<
+		Awaited<ReturnType<typeof getItemSalesHistory>>,
+		TError,
+		TData
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetItemSalesHistoryQueryResult = NonNullable<
-    Awaited<ReturnType<typeof getItemSalesHistory>>
+	Awaited<ReturnType<typeof getItemSalesHistory>>
 >;
 export type GetItemSalesHistoryQueryError = ErrorType<ProblemDetail>;
 
 export function useGetItemSalesHistory<
-    TData = Awaited<ReturnType<typeof getItemSalesHistory>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemSalesHistory>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    id: number,
-    params: GetItemSalesHistoryParams,
-    options: {
-      query: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemSalesHistory>>,
-              TError,
-              TData
-          >
-      > &
-          Pick<
-              DefinedInitialDataOptions<
-                  Awaited<ReturnType<typeof getItemSalesHistory>>,
-                  TError,
-                  Awaited<ReturnType<typeof getItemSalesHistory>>
-              >,
-              "initialData"
-          >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	id: number,
+	params: GetItemSalesHistoryParams,
+	options: {
+		query: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemSalesHistory>>,
+				TError,
+				TData
+			>
+		> &
+			Pick<
+				DefinedInitialDataOptions<
+					Awaited<ReturnType<typeof getItemSalesHistory>>,
+					TError,
+					Awaited<ReturnType<typeof getItemSalesHistory>>
+				>,
+				"initialData"
+			>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetItemSalesHistory<
-    TData = Awaited<ReturnType<typeof getItemSalesHistory>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemSalesHistory>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    id: number,
-    params: GetItemSalesHistoryParams,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemSalesHistory>>,
-              TError,
-              TData
-          >
-      > &
-          Pick<
-              UndefinedInitialDataOptions<
-                  Awaited<ReturnType<typeof getItemSalesHistory>>,
-                  TError,
-                  Awaited<ReturnType<typeof getItemSalesHistory>>
-              >,
-              "initialData"
-          >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	id: number,
+	params: GetItemSalesHistoryParams,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemSalesHistory>>,
+				TError,
+				TData
+			>
+		> &
+			Pick<
+				UndefinedInitialDataOptions<
+					Awaited<ReturnType<typeof getItemSalesHistory>>,
+					TError,
+					Awaited<ReturnType<typeof getItemSalesHistory>>
+				>,
+				"initialData"
+			>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetItemSalesHistory<
-    TData = Awaited<ReturnType<typeof getItemSalesHistory>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemSalesHistory>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    id: number,
-    params: GetItemSalesHistoryParams,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemSalesHistory>>,
-              TError,
-              TData
-          >
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	id: number,
+	params: GetItemSalesHistoryParams,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemSalesHistory>>,
+				TError,
+				TData
+			>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 
 export function useGetItemSalesHistory<
-    TData = Awaited<ReturnType<typeof getItemSalesHistory>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemSalesHistory>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    id: number,
-    params: GetItemSalesHistoryParams,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemSalesHistory>>,
-              TError,
-              TData
-          >
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	id: number,
+	params: GetItemSalesHistoryParams,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemSalesHistory>>,
+				TError,
+				TData
+			>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 } {
-  const queryOptions = getGetItemSalesHistoryQueryOptions(id, params, options);
+	const queryOptions = getGetItemSalesHistoryQueryOptions(id, params, options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-      TData,
-      TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+	const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+		TData,
+		TError
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  query.queryKey = queryOptions.queryKey;
+	query.queryKey = queryOptions.queryKey;
 
-  return query;
+	return query;
 }
 
 export const getItemProfitMetricsHistory = (
-    id: number,
-    params: GetItemProfitMetricsHistoryParams,
-    options?: SecondParameter<typeof customInstance>,
-    signal?: AbortSignal,
+	id: number,
+	params: GetItemProfitMetricsHistoryParams,
+	options?: SecondParameter<typeof customInstance>,
+	signal?: AbortSignal,
 ) => {
-  return customInstance<ProfitMetrics[]>(
-      {
-        url: `/api/v1/items/${id}/profit-metrics`,
-        method: "GET",
-        params,
-        signal,
-      },
-      options,
-  );
+	return customInstance<ProfitMetrics[]>(
+		{
+			url: `/api/v1/items/${id}/profit-metrics`,
+			method: "GET",
+			params,
+			signal,
+		},
+		options,
+	);
 };
 
 export const getGetItemProfitMetricsHistoryQueryKey = (
-    id: number,
-    params: GetItemProfitMetricsHistoryParams,
+	id: number,
+	params: GetItemProfitMetricsHistoryParams,
 ) => {
-  return [
-    "api",
-    "v1",
-    "items",
-    id,
-    "profit-metrics",
-    ...(params ? [params] : []),
-  ] as const;
+	return [
+		"api",
+		"v1",
+		"items",
+		id,
+		"profit-metrics",
+		...(params ? [params] : []),
+	] as const;
 };
 
 export const getGetItemProfitMetricsHistoryQueryOptions = <
-    TData = Awaited<ReturnType<typeof getItemProfitMetricsHistory>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemProfitMetricsHistory>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    id: number,
-    params: GetItemProfitMetricsHistoryParams,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemProfitMetricsHistory>>,
-              TError,
-              TData
-          >
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
+	id: number,
+	params: GetItemProfitMetricsHistoryParams,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemProfitMetricsHistory>>,
+				TError,
+				TData
+			>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
 ) => {
-  const {query: queryOptions, request: requestOptions} = options ?? {};
+	const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =
-      queryOptions?.queryKey ??
-      getGetItemProfitMetricsHistoryQueryKey(id, params);
+	const queryKey =
+		queryOptions?.queryKey ??
+		getGetItemProfitMetricsHistoryQueryKey(id, params);
 
-  const queryFn: QueryFunction<
-      Awaited<ReturnType<typeof getItemProfitMetricsHistory>>
-  > = ({signal}) =>
-      getItemProfitMetricsHistory(id, params, requestOptions, signal);
+	const queryFn: QueryFunction<
+		Awaited<ReturnType<typeof getItemProfitMetricsHistory>>
+	> = ({ signal }) =>
+		getItemProfitMetricsHistory(id, params, requestOptions, signal);
 
-  return {
-    queryKey,
-    queryFn,
-    enabled: !!id,
-    ...queryOptions,
-  } as UseQueryOptions<
-      Awaited<ReturnType<typeof getItemProfitMetricsHistory>>,
-      TError,
-      TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+	return {
+		queryKey,
+		queryFn,
+		enabled: !!id,
+		...queryOptions,
+	} as UseQueryOptions<
+		Awaited<ReturnType<typeof getItemProfitMetricsHistory>>,
+		TError,
+		TData
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetItemProfitMetricsHistoryQueryResult = NonNullable<
-    Awaited<ReturnType<typeof getItemProfitMetricsHistory>>
+	Awaited<ReturnType<typeof getItemProfitMetricsHistory>>
 >;
 export type GetItemProfitMetricsHistoryQueryError = ErrorType<ProblemDetail>;
 
 export function useGetItemProfitMetricsHistory<
-    TData = Awaited<ReturnType<typeof getItemProfitMetricsHistory>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemProfitMetricsHistory>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    id: number,
-    params: GetItemProfitMetricsHistoryParams,
-    options: {
-      query: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemProfitMetricsHistory>>,
-              TError,
-              TData
-          >
-      > &
-          Pick<
-              DefinedInitialDataOptions<
-                  Awaited<ReturnType<typeof getItemProfitMetricsHistory>>,
-                  TError,
-                  Awaited<ReturnType<typeof getItemProfitMetricsHistory>>
-              >,
-              "initialData"
-          >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	id: number,
+	params: GetItemProfitMetricsHistoryParams,
+	options: {
+		query: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemProfitMetricsHistory>>,
+				TError,
+				TData
+			>
+		> &
+			Pick<
+				DefinedInitialDataOptions<
+					Awaited<ReturnType<typeof getItemProfitMetricsHistory>>,
+					TError,
+					Awaited<ReturnType<typeof getItemProfitMetricsHistory>>
+				>,
+				"initialData"
+			>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetItemProfitMetricsHistory<
-    TData = Awaited<ReturnType<typeof getItemProfitMetricsHistory>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemProfitMetricsHistory>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    id: number,
-    params: GetItemProfitMetricsHistoryParams,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemProfitMetricsHistory>>,
-              TError,
-              TData
-          >
-      > &
-          Pick<
-              UndefinedInitialDataOptions<
-                  Awaited<ReturnType<typeof getItemProfitMetricsHistory>>,
-                  TError,
-                  Awaited<ReturnType<typeof getItemProfitMetricsHistory>>
-              >,
-              "initialData"
-          >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	id: number,
+	params: GetItemProfitMetricsHistoryParams,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemProfitMetricsHistory>>,
+				TError,
+				TData
+			>
+		> &
+			Pick<
+				UndefinedInitialDataOptions<
+					Awaited<ReturnType<typeof getItemProfitMetricsHistory>>,
+					TError,
+					Awaited<ReturnType<typeof getItemProfitMetricsHistory>>
+				>,
+				"initialData"
+			>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetItemProfitMetricsHistory<
-    TData = Awaited<ReturnType<typeof getItemProfitMetricsHistory>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemProfitMetricsHistory>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    id: number,
-    params: GetItemProfitMetricsHistoryParams,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemProfitMetricsHistory>>,
-              TError,
-              TData
-          >
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	id: number,
+	params: GetItemProfitMetricsHistoryParams,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemProfitMetricsHistory>>,
+				TError,
+				TData
+			>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 
 export function useGetItemProfitMetricsHistory<
-    TData = Awaited<ReturnType<typeof getItemProfitMetricsHistory>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemProfitMetricsHistory>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    id: number,
-    params: GetItemProfitMetricsHistoryParams,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemProfitMetricsHistory>>,
-              TError,
-              TData
-          >
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	id: number,
+	params: GetItemProfitMetricsHistoryParams,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemProfitMetricsHistory>>,
+				TError,
+				TData
+			>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 } {
-  const queryOptions = getGetItemProfitMetricsHistoryQueryOptions(
-      id,
-      params,
-      options,
-  );
+	const queryOptions = getGetItemProfitMetricsHistoryQueryOptions(
+		id,
+		params,
+		options,
+	);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-      TData,
-      TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+	const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+		TData,
+		TError
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  query.queryKey = queryOptions.queryKey;
+	query.queryKey = queryOptions.queryKey;
 
-  return query;
+	return query;
 }
 
 export const getItemPriceHistory = (
-    id: number,
-    params: GetItemPriceHistoryParams,
-    options?: SecondParameter<typeof customInstance>,
-    signal?: AbortSignal,
+	id: number,
+	params: GetItemPriceHistoryParams,
+	options?: SecondParameter<typeof customInstance>,
+	signal?: AbortSignal,
 ) => {
-  return customInstance<ItemPrice[]>(
-      {url: `/api/v1/items/${id}/price-history`, method: "GET", params, signal},
-      options,
-  );
+	return customInstance<ItemPrice[]>(
+		{ url: `/api/v1/items/${id}/price-history`, method: "GET", params, signal },
+		options,
+	);
 };
 
 export const getGetItemPriceHistoryQueryKey = (
-    id: number,
-    params: GetItemPriceHistoryParams,
+	id: number,
+	params: GetItemPriceHistoryParams,
 ) => {
-  return [
-    "api",
-    "v1",
-    "items",
-    id,
-    "price-history",
-    ...(params ? [params] : []),
-  ] as const;
+	return [
+		"api",
+		"v1",
+		"items",
+		id,
+		"price-history",
+		...(params ? [params] : []),
+	] as const;
 };
 
 export const getGetItemPriceHistoryQueryOptions = <
-    TData = Awaited<ReturnType<typeof getItemPriceHistory>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemPriceHistory>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    id: number,
-    params: GetItemPriceHistoryParams,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemPriceHistory>>,
-              TError,
-              TData
-          >
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
+	id: number,
+	params: GetItemPriceHistoryParams,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemPriceHistory>>,
+				TError,
+				TData
+			>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
 ) => {
-  const {query: queryOptions, request: requestOptions} = options ?? {};
+	const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =
-      queryOptions?.queryKey ?? getGetItemPriceHistoryQueryKey(id, params);
+	const queryKey =
+		queryOptions?.queryKey ?? getGetItemPriceHistoryQueryKey(id, params);
 
-  const queryFn: QueryFunction<
-      Awaited<ReturnType<typeof getItemPriceHistory>>
-  > = ({signal}) => getItemPriceHistory(id, params, requestOptions, signal);
+	const queryFn: QueryFunction<
+		Awaited<ReturnType<typeof getItemPriceHistory>>
+	> = ({ signal }) => getItemPriceHistory(id, params, requestOptions, signal);
 
-  return {
-    queryKey,
-    queryFn,
-    enabled: !!id,
-    ...queryOptions,
-  } as UseQueryOptions<
-      Awaited<ReturnType<typeof getItemPriceHistory>>,
-      TError,
-      TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+	return {
+		queryKey,
+		queryFn,
+		enabled: !!id,
+		...queryOptions,
+	} as UseQueryOptions<
+		Awaited<ReturnType<typeof getItemPriceHistory>>,
+		TError,
+		TData
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetItemPriceHistoryQueryResult = NonNullable<
-    Awaited<ReturnType<typeof getItemPriceHistory>>
+	Awaited<ReturnType<typeof getItemPriceHistory>>
 >;
 export type GetItemPriceHistoryQueryError = ErrorType<ProblemDetail>;
 
 export function useGetItemPriceHistory<
-    TData = Awaited<ReturnType<typeof getItemPriceHistory>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemPriceHistory>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    id: number,
-    params: GetItemPriceHistoryParams,
-    options: {
-      query: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemPriceHistory>>,
-              TError,
-              TData
-          >
-      > &
-          Pick<
-              DefinedInitialDataOptions<
-                  Awaited<ReturnType<typeof getItemPriceHistory>>,
-                  TError,
-                  Awaited<ReturnType<typeof getItemPriceHistory>>
-              >,
-              "initialData"
-          >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	id: number,
+	params: GetItemPriceHistoryParams,
+	options: {
+		query: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemPriceHistory>>,
+				TError,
+				TData
+			>
+		> &
+			Pick<
+				DefinedInitialDataOptions<
+					Awaited<ReturnType<typeof getItemPriceHistory>>,
+					TError,
+					Awaited<ReturnType<typeof getItemPriceHistory>>
+				>,
+				"initialData"
+			>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetItemPriceHistory<
-    TData = Awaited<ReturnType<typeof getItemPriceHistory>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemPriceHistory>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    id: number,
-    params: GetItemPriceHistoryParams,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemPriceHistory>>,
-              TError,
-              TData
-          >
-      > &
-          Pick<
-              UndefinedInitialDataOptions<
-                  Awaited<ReturnType<typeof getItemPriceHistory>>,
-                  TError,
-                  Awaited<ReturnType<typeof getItemPriceHistory>>
-              >,
-              "initialData"
-          >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	id: number,
+	params: GetItemPriceHistoryParams,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemPriceHistory>>,
+				TError,
+				TData
+			>
+		> &
+			Pick<
+				UndefinedInitialDataOptions<
+					Awaited<ReturnType<typeof getItemPriceHistory>>,
+					TError,
+					Awaited<ReturnType<typeof getItemPriceHistory>>
+				>,
+				"initialData"
+			>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetItemPriceHistory<
-    TData = Awaited<ReturnType<typeof getItemPriceHistory>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemPriceHistory>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    id: number,
-    params: GetItemPriceHistoryParams,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemPriceHistory>>,
-              TError,
-              TData
-          >
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	id: number,
+	params: GetItemPriceHistoryParams,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemPriceHistory>>,
+				TError,
+				TData
+			>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 
 export function useGetItemPriceHistory<
-    TData = Awaited<ReturnType<typeof getItemPriceHistory>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemPriceHistory>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    id: number,
-    params: GetItemPriceHistoryParams,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemPriceHistory>>,
-              TError,
-              TData
-          >
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	id: number,
+	params: GetItemPriceHistoryParams,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemPriceHistory>>,
+				TError,
+				TData
+			>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 } {
-  const queryOptions = getGetItemPriceHistoryQueryOptions(id, params, options);
+	const queryOptions = getGetItemPriceHistoryQueryOptions(id, params, options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-      TData,
-      TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+	const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+		TData,
+		TError
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  query.queryKey = queryOptions.queryKey;
+	query.queryKey = queryOptions.queryKey;
 
-  return query;
+	return query;
 }
 
 export const getItemPerformanceMetrics = (
-    id: number,
-    params: GetItemPerformanceMetricsParams,
-    options?: SecondParameter<typeof customInstance>,
-    signal?: AbortSignal,
+	id: number,
+	params: GetItemPerformanceMetricsParams,
+	options?: SecondParameter<typeof customInstance>,
+	signal?: AbortSignal,
 ) => {
-  return customInstance<ItemPerformance>(
-      {url: `/api/v1/items/${id}/performance`, method: "GET", params, signal},
-      options,
-  );
+	return customInstance<ItemPerformance>(
+		{ url: `/api/v1/items/${id}/performance`, method: "GET", params, signal },
+		options,
+	);
 };
 
 export const getGetItemPerformanceMetricsQueryKey = (
-    id: number,
-    params: GetItemPerformanceMetricsParams,
+	id: number,
+	params: GetItemPerformanceMetricsParams,
 ) => {
-  return [
-    "api",
-    "v1",
-    "items",
-    id,
-    "performance",
-    ...(params ? [params] : []),
-  ] as const;
+	return [
+		"api",
+		"v1",
+		"items",
+		id,
+		"performance",
+		...(params ? [params] : []),
+	] as const;
 };
 
 export const getGetItemPerformanceMetricsQueryOptions = <
-    TData = Awaited<ReturnType<typeof getItemPerformanceMetrics>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemPerformanceMetrics>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    id: number,
-    params: GetItemPerformanceMetricsParams,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemPerformanceMetrics>>,
-              TError,
-              TData
-          >
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
+	id: number,
+	params: GetItemPerformanceMetricsParams,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemPerformanceMetrics>>,
+				TError,
+				TData
+			>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
 ) => {
-  const {query: queryOptions, request: requestOptions} = options ?? {};
+	const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =
-      queryOptions?.queryKey ?? getGetItemPerformanceMetricsQueryKey(id, params);
+	const queryKey =
+		queryOptions?.queryKey ?? getGetItemPerformanceMetricsQueryKey(id, params);
 
-  const queryFn: QueryFunction<
-      Awaited<ReturnType<typeof getItemPerformanceMetrics>>
-  > = ({signal}) =>
-      getItemPerformanceMetrics(id, params, requestOptions, signal);
+	const queryFn: QueryFunction<
+		Awaited<ReturnType<typeof getItemPerformanceMetrics>>
+	> = ({ signal }) =>
+		getItemPerformanceMetrics(id, params, requestOptions, signal);
 
-  return {
-    queryKey,
-    queryFn,
-    enabled: !!id,
-    ...queryOptions,
-  } as UseQueryOptions<
-      Awaited<ReturnType<typeof getItemPerformanceMetrics>>,
-      TError,
-      TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+	return {
+		queryKey,
+		queryFn,
+		enabled: !!id,
+		...queryOptions,
+	} as UseQueryOptions<
+		Awaited<ReturnType<typeof getItemPerformanceMetrics>>,
+		TError,
+		TData
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetItemPerformanceMetricsQueryResult = NonNullable<
-    Awaited<ReturnType<typeof getItemPerformanceMetrics>>
+	Awaited<ReturnType<typeof getItemPerformanceMetrics>>
 >;
 export type GetItemPerformanceMetricsQueryError = ErrorType<ProblemDetail>;
 
 export function useGetItemPerformanceMetrics<
-    TData = Awaited<ReturnType<typeof getItemPerformanceMetrics>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemPerformanceMetrics>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    id: number,
-    params: GetItemPerformanceMetricsParams,
-    options: {
-      query: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemPerformanceMetrics>>,
-              TError,
-              TData
-          >
-      > &
-          Pick<
-              DefinedInitialDataOptions<
-                  Awaited<ReturnType<typeof getItemPerformanceMetrics>>,
-                  TError,
-                  Awaited<ReturnType<typeof getItemPerformanceMetrics>>
-              >,
-              "initialData"
-          >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	id: number,
+	params: GetItemPerformanceMetricsParams,
+	options: {
+		query: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemPerformanceMetrics>>,
+				TError,
+				TData
+			>
+		> &
+			Pick<
+				DefinedInitialDataOptions<
+					Awaited<ReturnType<typeof getItemPerformanceMetrics>>,
+					TError,
+					Awaited<ReturnType<typeof getItemPerformanceMetrics>>
+				>,
+				"initialData"
+			>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetItemPerformanceMetrics<
-    TData = Awaited<ReturnType<typeof getItemPerformanceMetrics>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemPerformanceMetrics>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    id: number,
-    params: GetItemPerformanceMetricsParams,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemPerformanceMetrics>>,
-              TError,
-              TData
-          >
-      > &
-          Pick<
-              UndefinedInitialDataOptions<
-                  Awaited<ReturnType<typeof getItemPerformanceMetrics>>,
-                  TError,
-                  Awaited<ReturnType<typeof getItemPerformanceMetrics>>
-              >,
-              "initialData"
-          >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	id: number,
+	params: GetItemPerformanceMetricsParams,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemPerformanceMetrics>>,
+				TError,
+				TData
+			>
+		> &
+			Pick<
+				UndefinedInitialDataOptions<
+					Awaited<ReturnType<typeof getItemPerformanceMetrics>>,
+					TError,
+					Awaited<ReturnType<typeof getItemPerformanceMetrics>>
+				>,
+				"initialData"
+			>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetItemPerformanceMetrics<
-    TData = Awaited<ReturnType<typeof getItemPerformanceMetrics>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemPerformanceMetrics>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    id: number,
-    params: GetItemPerformanceMetricsParams,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemPerformanceMetrics>>,
-              TError,
-              TData
-          >
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	id: number,
+	params: GetItemPerformanceMetricsParams,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemPerformanceMetrics>>,
+				TError,
+				TData
+			>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 
 export function useGetItemPerformanceMetrics<
-    TData = Awaited<ReturnType<typeof getItemPerformanceMetrics>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemPerformanceMetrics>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    id: number,
-    params: GetItemPerformanceMetricsParams,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemPerformanceMetrics>>,
-              TError,
-              TData
-          >
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	id: number,
+	params: GetItemPerformanceMetricsParams,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemPerformanceMetrics>>,
+				TError,
+				TData
+			>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 } {
-  const queryOptions = getGetItemPerformanceMetricsQueryOptions(
-      id,
-      params,
-      options,
-  );
+	const queryOptions = getGetItemPerformanceMetricsQueryOptions(
+		id,
+		params,
+		options,
+	);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-      TData,
-      TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+	const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+		TData,
+		TError
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  query.queryKey = queryOptions.queryKey;
+	query.queryKey = queryOptions.queryKey;
 
-  return query;
+	return query;
 }
 
 export const getItemsDailySalesHistory = (
-    params: GetItemsDailySalesHistoryParams,
-    options?: SecondParameter<typeof customInstance>,
-    signal?: AbortSignal,
+	params: GetItemsDailySalesHistoryParams,
+	options?: SecondParameter<typeof customInstance>,
+	signal?: AbortSignal,
 ) => {
-  return customInstance<DailySalesList[]>(
-      {url: `/api/v1/items/sales-history`, method: "GET", params, signal},
-      options,
-  );
+	return customInstance<DailySalesList[]>(
+		{ url: `/api/v1/items/sales-history`, method: "GET", params, signal },
+		options,
+	);
 };
 
 export const getGetItemsDailySalesHistoryQueryKey = (
-    params: GetItemsDailySalesHistoryParams,
+	params: GetItemsDailySalesHistoryParams,
 ) => {
-  return [
-    "api",
-    "v1",
-    "items",
-    "sales-history",
-    ...(params ? [params] : []),
-  ] as const;
+	return [
+		"api",
+		"v1",
+		"items",
+		"sales-history",
+		...(params ? [params] : []),
+	] as const;
 };
 
 export const getGetItemsDailySalesHistoryQueryOptions = <
-    TData = Awaited<ReturnType<typeof getItemsDailySalesHistory>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemsDailySalesHistory>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    params: GetItemsDailySalesHistoryParams,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemsDailySalesHistory>>,
-              TError,
-              TData
-          >
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
+	params: GetItemsDailySalesHistoryParams,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemsDailySalesHistory>>,
+				TError,
+				TData
+			>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
 ) => {
-  const {query: queryOptions, request: requestOptions} = options ?? {};
+	const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =
-      queryOptions?.queryKey ?? getGetItemsDailySalesHistoryQueryKey(params);
+	const queryKey =
+		queryOptions?.queryKey ?? getGetItemsDailySalesHistoryQueryKey(params);
 
-  const queryFn: QueryFunction<
-      Awaited<ReturnType<typeof getItemsDailySalesHistory>>
-  > = ({signal}) => getItemsDailySalesHistory(params, requestOptions, signal);
+	const queryFn: QueryFunction<
+		Awaited<ReturnType<typeof getItemsDailySalesHistory>>
+	> = ({ signal }) => getItemsDailySalesHistory(params, requestOptions, signal);
 
-  return {queryKey, queryFn, ...queryOptions} as UseQueryOptions<
-      Awaited<ReturnType<typeof getItemsDailySalesHistory>>,
-      TError,
-      TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+	return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+		Awaited<ReturnType<typeof getItemsDailySalesHistory>>,
+		TError,
+		TData
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetItemsDailySalesHistoryQueryResult = NonNullable<
-    Awaited<ReturnType<typeof getItemsDailySalesHistory>>
+	Awaited<ReturnType<typeof getItemsDailySalesHistory>>
 >;
 export type GetItemsDailySalesHistoryQueryError = ErrorType<ProblemDetail>;
 
 export function useGetItemsDailySalesHistory<
-    TData = Awaited<ReturnType<typeof getItemsDailySalesHistory>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemsDailySalesHistory>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    params: GetItemsDailySalesHistoryParams,
-    options: {
-      query: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemsDailySalesHistory>>,
-              TError,
-              TData
-          >
-      > &
-          Pick<
-              DefinedInitialDataOptions<
-                  Awaited<ReturnType<typeof getItemsDailySalesHistory>>,
-                  TError,
-                  Awaited<ReturnType<typeof getItemsDailySalesHistory>>
-              >,
-              "initialData"
-          >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	params: GetItemsDailySalesHistoryParams,
+	options: {
+		query: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemsDailySalesHistory>>,
+				TError,
+				TData
+			>
+		> &
+			Pick<
+				DefinedInitialDataOptions<
+					Awaited<ReturnType<typeof getItemsDailySalesHistory>>,
+					TError,
+					Awaited<ReturnType<typeof getItemsDailySalesHistory>>
+				>,
+				"initialData"
+			>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetItemsDailySalesHistory<
-    TData = Awaited<ReturnType<typeof getItemsDailySalesHistory>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemsDailySalesHistory>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    params: GetItemsDailySalesHistoryParams,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemsDailySalesHistory>>,
-              TError,
-              TData
-          >
-      > &
-          Pick<
-              UndefinedInitialDataOptions<
-                  Awaited<ReturnType<typeof getItemsDailySalesHistory>>,
-                  TError,
-                  Awaited<ReturnType<typeof getItemsDailySalesHistory>>
-              >,
-              "initialData"
-          >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	params: GetItemsDailySalesHistoryParams,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemsDailySalesHistory>>,
+				TError,
+				TData
+			>
+		> &
+			Pick<
+				UndefinedInitialDataOptions<
+					Awaited<ReturnType<typeof getItemsDailySalesHistory>>,
+					TError,
+					Awaited<ReturnType<typeof getItemsDailySalesHistory>>
+				>,
+				"initialData"
+			>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetItemsDailySalesHistory<
-    TData = Awaited<ReturnType<typeof getItemsDailySalesHistory>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemsDailySalesHistory>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    params: GetItemsDailySalesHistoryParams,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemsDailySalesHistory>>,
-              TError,
-              TData
-          >
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	params: GetItemsDailySalesHistoryParams,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemsDailySalesHistory>>,
+				TError,
+				TData
+			>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 
 export function useGetItemsDailySalesHistory<
-    TData = Awaited<ReturnType<typeof getItemsDailySalesHistory>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemsDailySalesHistory>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    params: GetItemsDailySalesHistoryParams,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemsDailySalesHistory>>,
-              TError,
-              TData
-          >
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	params: GetItemsDailySalesHistoryParams,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemsDailySalesHistory>>,
+				TError,
+				TData
+			>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 } {
-  const queryOptions = getGetItemsDailySalesHistoryQueryOptions(
-      params,
-      options,
-  );
+	const queryOptions = getGetItemsDailySalesHistoryQueryOptions(
+		params,
+		options,
+	);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-      TData,
-      TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+	const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+		TData,
+		TError
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  query.queryKey = queryOptions.queryKey;
+	query.queryKey = queryOptions.queryKey;
 
-  return query;
+	return query;
 }
 
 export const getItemsProfitMetricsHistory = (
-    params: GetItemsProfitMetricsHistoryParams,
-    options?: SecondParameter<typeof customInstance>,
-    signal?: AbortSignal,
+	params: GetItemsProfitMetricsHistoryParams,
+	options?: SecondParameter<typeof customInstance>,
+	signal?: AbortSignal,
 ) => {
-  return customInstance<ProfitMetricsList[]>(
-      {url: `/api/v1/items/profit-metrics`, method: "GET", params, signal},
-      options,
-  );
+	return customInstance<ProfitMetricsList[]>(
+		{ url: `/api/v1/items/profit-metrics`, method: "GET", params, signal },
+		options,
+	);
 };
 
 export const getGetItemsProfitMetricsHistoryQueryKey = (
-    params: GetItemsProfitMetricsHistoryParams,
+	params: GetItemsProfitMetricsHistoryParams,
 ) => {
-  return [
-    "api",
-    "v1",
-    "items",
-    "profit-metrics",
-    ...(params ? [params] : []),
-  ] as const;
+	return [
+		"api",
+		"v1",
+		"items",
+		"profit-metrics",
+		...(params ? [params] : []),
+	] as const;
 };
 
 export const getGetItemsProfitMetricsHistoryQueryOptions = <
-    TData = Awaited<ReturnType<typeof getItemsProfitMetricsHistory>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemsProfitMetricsHistory>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    params: GetItemsProfitMetricsHistoryParams,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemsProfitMetricsHistory>>,
-              TError,
-              TData
-          >
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
+	params: GetItemsProfitMetricsHistoryParams,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemsProfitMetricsHistory>>,
+				TError,
+				TData
+			>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
 ) => {
-  const {query: queryOptions, request: requestOptions} = options ?? {};
+	const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =
-      queryOptions?.queryKey ?? getGetItemsProfitMetricsHistoryQueryKey(params);
+	const queryKey =
+		queryOptions?.queryKey ?? getGetItemsProfitMetricsHistoryQueryKey(params);
 
-  const queryFn: QueryFunction<
-      Awaited<ReturnType<typeof getItemsProfitMetricsHistory>>
-  > = ({signal}) =>
-      getItemsProfitMetricsHistory(params, requestOptions, signal);
+	const queryFn: QueryFunction<
+		Awaited<ReturnType<typeof getItemsProfitMetricsHistory>>
+	> = ({ signal }) =>
+		getItemsProfitMetricsHistory(params, requestOptions, signal);
 
-  return {queryKey, queryFn, ...queryOptions} as UseQueryOptions<
-      Awaited<ReturnType<typeof getItemsProfitMetricsHistory>>,
-      TError,
-      TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+	return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+		Awaited<ReturnType<typeof getItemsProfitMetricsHistory>>,
+		TError,
+		TData
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetItemsProfitMetricsHistoryQueryResult = NonNullable<
-    Awaited<ReturnType<typeof getItemsProfitMetricsHistory>>
+	Awaited<ReturnType<typeof getItemsProfitMetricsHistory>>
 >;
 export type GetItemsProfitMetricsHistoryQueryError = ErrorType<ProblemDetail>;
 
 export function useGetItemsProfitMetricsHistory<
-    TData = Awaited<ReturnType<typeof getItemsProfitMetricsHistory>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemsProfitMetricsHistory>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    params: GetItemsProfitMetricsHistoryParams,
-    options: {
-      query: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemsProfitMetricsHistory>>,
-              TError,
-              TData
-          >
-      > &
-          Pick<
-              DefinedInitialDataOptions<
-                  Awaited<ReturnType<typeof getItemsProfitMetricsHistory>>,
-                  TError,
-                  Awaited<ReturnType<typeof getItemsProfitMetricsHistory>>
-              >,
-              "initialData"
-          >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	params: GetItemsProfitMetricsHistoryParams,
+	options: {
+		query: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemsProfitMetricsHistory>>,
+				TError,
+				TData
+			>
+		> &
+			Pick<
+				DefinedInitialDataOptions<
+					Awaited<ReturnType<typeof getItemsProfitMetricsHistory>>,
+					TError,
+					Awaited<ReturnType<typeof getItemsProfitMetricsHistory>>
+				>,
+				"initialData"
+			>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetItemsProfitMetricsHistory<
-    TData = Awaited<ReturnType<typeof getItemsProfitMetricsHistory>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemsProfitMetricsHistory>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    params: GetItemsProfitMetricsHistoryParams,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemsProfitMetricsHistory>>,
-              TError,
-              TData
-          >
-      > &
-          Pick<
-              UndefinedInitialDataOptions<
-                  Awaited<ReturnType<typeof getItemsProfitMetricsHistory>>,
-                  TError,
-                  Awaited<ReturnType<typeof getItemsProfitMetricsHistory>>
-              >,
-              "initialData"
-          >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	params: GetItemsProfitMetricsHistoryParams,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemsProfitMetricsHistory>>,
+				TError,
+				TData
+			>
+		> &
+			Pick<
+				UndefinedInitialDataOptions<
+					Awaited<ReturnType<typeof getItemsProfitMetricsHistory>>,
+					TError,
+					Awaited<ReturnType<typeof getItemsProfitMetricsHistory>>
+				>,
+				"initialData"
+			>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetItemsProfitMetricsHistory<
-    TData = Awaited<ReturnType<typeof getItemsProfitMetricsHistory>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemsProfitMetricsHistory>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    params: GetItemsProfitMetricsHistoryParams,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemsProfitMetricsHistory>>,
-              TError,
-              TData
-          >
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	params: GetItemsProfitMetricsHistoryParams,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemsProfitMetricsHistory>>,
+				TError,
+				TData
+			>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 
 export function useGetItemsProfitMetricsHistory<
-    TData = Awaited<ReturnType<typeof getItemsProfitMetricsHistory>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemsProfitMetricsHistory>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    params: GetItemsProfitMetricsHistoryParams,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemsProfitMetricsHistory>>,
-              TError,
-              TData
-          >
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	params: GetItemsProfitMetricsHistoryParams,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemsProfitMetricsHistory>>,
+				TError,
+				TData
+			>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 } {
-  const queryOptions = getGetItemsProfitMetricsHistoryQueryOptions(
-      params,
-      options,
-  );
+	const queryOptions = getGetItemsProfitMetricsHistoryQueryOptions(
+		params,
+		options,
+	);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-      TData,
-      TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+	const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+		TData,
+		TError
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  query.queryKey = queryOptions.queryKey;
+	query.queryKey = queryOptions.queryKey;
 
-  return query;
+	return query;
 }
 
 export const getItemsPerformanceMetrics = (
-    params: GetItemsPerformanceMetricsParams,
-    options?: SecondParameter<typeof customInstance>,
-    signal?: AbortSignal,
+	params: GetItemsPerformanceMetricsParams,
+	options?: SecondParameter<typeof customInstance>,
+	signal?: AbortSignal,
 ) => {
-  return customInstance<ItemPerformance[]>(
-      {url: `/api/v1/items/performance`, method: "GET", params, signal},
-      options,
-  );
+	return customInstance<ItemPerformance[]>(
+		{ url: `/api/v1/items/performance`, method: "GET", params, signal },
+		options,
+	);
 };
 
 export const getGetItemsPerformanceMetricsQueryKey = (
-    params: GetItemsPerformanceMetricsParams,
+	params: GetItemsPerformanceMetricsParams,
 ) => {
-  return [
-    "api",
-    "v1",
-    "items",
-    "performance",
-    ...(params ? [params] : []),
-  ] as const;
+	return [
+		"api",
+		"v1",
+		"items",
+		"performance",
+		...(params ? [params] : []),
+	] as const;
 };
 
 export const getGetItemsPerformanceMetricsQueryOptions = <
-    TData = Awaited<ReturnType<typeof getItemsPerformanceMetrics>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemsPerformanceMetrics>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    params: GetItemsPerformanceMetricsParams,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemsPerformanceMetrics>>,
-              TError,
-              TData
-          >
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
+	params: GetItemsPerformanceMetricsParams,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemsPerformanceMetrics>>,
+				TError,
+				TData
+			>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
 ) => {
-  const {query: queryOptions, request: requestOptions} = options ?? {};
+	const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey =
-      queryOptions?.queryKey ?? getGetItemsPerformanceMetricsQueryKey(params);
+	const queryKey =
+		queryOptions?.queryKey ?? getGetItemsPerformanceMetricsQueryKey(params);
 
-  const queryFn: QueryFunction<
-      Awaited<ReturnType<typeof getItemsPerformanceMetrics>>
-  > = ({signal}) =>
-      getItemsPerformanceMetrics(params, requestOptions, signal);
+	const queryFn: QueryFunction<
+		Awaited<ReturnType<typeof getItemsPerformanceMetrics>>
+	> = ({ signal }) =>
+		getItemsPerformanceMetrics(params, requestOptions, signal);
 
-  return {queryKey, queryFn, ...queryOptions} as UseQueryOptions<
-      Awaited<ReturnType<typeof getItemsPerformanceMetrics>>,
-      TError,
-      TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+	return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+		Awaited<ReturnType<typeof getItemsPerformanceMetrics>>,
+		TError,
+		TData
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetItemsPerformanceMetricsQueryResult = NonNullable<
-    Awaited<ReturnType<typeof getItemsPerformanceMetrics>>
+	Awaited<ReturnType<typeof getItemsPerformanceMetrics>>
 >;
 export type GetItemsPerformanceMetricsQueryError = ErrorType<ProblemDetail>;
 
 export function useGetItemsPerformanceMetrics<
-    TData = Awaited<ReturnType<typeof getItemsPerformanceMetrics>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemsPerformanceMetrics>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    params: GetItemsPerformanceMetricsParams,
-    options: {
-      query: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemsPerformanceMetrics>>,
-              TError,
-              TData
-          >
-      > &
-          Pick<
-              DefinedInitialDataOptions<
-                  Awaited<ReturnType<typeof getItemsPerformanceMetrics>>,
-                  TError,
-                  Awaited<ReturnType<typeof getItemsPerformanceMetrics>>
-              >,
-              "initialData"
-          >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	params: GetItemsPerformanceMetricsParams,
+	options: {
+		query: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemsPerformanceMetrics>>,
+				TError,
+				TData
+			>
+		> &
+			Pick<
+				DefinedInitialDataOptions<
+					Awaited<ReturnType<typeof getItemsPerformanceMetrics>>,
+					TError,
+					Awaited<ReturnType<typeof getItemsPerformanceMetrics>>
+				>,
+				"initialData"
+			>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetItemsPerformanceMetrics<
-    TData = Awaited<ReturnType<typeof getItemsPerformanceMetrics>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemsPerformanceMetrics>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    params: GetItemsPerformanceMetricsParams,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemsPerformanceMetrics>>,
-              TError,
-              TData
-          >
-      > &
-          Pick<
-              UndefinedInitialDataOptions<
-                  Awaited<ReturnType<typeof getItemsPerformanceMetrics>>,
-                  TError,
-                  Awaited<ReturnType<typeof getItemsPerformanceMetrics>>
-              >,
-              "initialData"
-          >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	params: GetItemsPerformanceMetricsParams,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemsPerformanceMetrics>>,
+				TError,
+				TData
+			>
+		> &
+			Pick<
+				UndefinedInitialDataOptions<
+					Awaited<ReturnType<typeof getItemsPerformanceMetrics>>,
+					TError,
+					Awaited<ReturnType<typeof getItemsPerformanceMetrics>>
+				>,
+				"initialData"
+			>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetItemsPerformanceMetrics<
-    TData = Awaited<ReturnType<typeof getItemsPerformanceMetrics>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemsPerformanceMetrics>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    params: GetItemsPerformanceMetricsParams,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemsPerformanceMetrics>>,
-              TError,
-              TData
-          >
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	params: GetItemsPerformanceMetricsParams,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemsPerformanceMetrics>>,
+				TError,
+				TData
+			>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 
 export function useGetItemsPerformanceMetrics<
-    TData = Awaited<ReturnType<typeof getItemsPerformanceMetrics>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemsPerformanceMetrics>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    params: GetItemsPerformanceMetricsParams,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemsPerformanceMetrics>>,
-              TError,
-              TData
-          >
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	params: GetItemsPerformanceMetricsParams,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemsPerformanceMetrics>>,
+				TError,
+				TData
+			>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 } {
-  const queryOptions = getGetItemsPerformanceMetricsQueryOptions(
-      params,
-      options,
-  );
+	const queryOptions = getGetItemsPerformanceMetricsQueryOptions(
+		params,
+		options,
+	);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-      TData,
-      TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+	const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+		TData,
+		TError
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  query.queryKey = queryOptions.queryKey;
+	query.queryKey = queryOptions.queryKey;
 
-  return query;
+	return query;
 }
 
 export const getAllItemTypes = (
-    params: GetAllItemTypesParams,
-    options?: SecondParameter<typeof customInstance>,
-    signal?: AbortSignal,
+	params: GetAllItemTypesParams,
+	options?: SecondParameter<typeof customInstance>,
+	signal?: AbortSignal,
 ) => {
-  return customInstance<PagedModelItemTypeDto>(
-      {url: `/api/v1/item-types`, method: "GET", params, signal},
-      options,
-  );
+	return customInstance<PagedModelItemTypeDto>(
+		{ url: `/api/v1/item-types`, method: "GET", params, signal },
+		options,
+	);
 };
 
 export const getGetAllItemTypesQueryKey = (params: GetAllItemTypesParams) => {
-  return ["api", "v1", "item-types", ...(params ? [params] : [])] as const;
+	return ["api", "v1", "item-types", ...(params ? [params] : [])] as const;
 };
 
 export const getGetAllItemTypesQueryOptions = <
-    TData = Awaited<ReturnType<typeof getAllItemTypes>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getAllItemTypes>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    params: GetAllItemTypesParams,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getAllItemTypes>>,
-              TError,
-              TData
-          >
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
+	params: GetAllItemTypesParams,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getAllItemTypes>>,
+				TError,
+				TData
+			>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
 ) => {
-  const {query: queryOptions, request: requestOptions} = options ?? {};
+	const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetAllItemTypesQueryKey(params);
+	const queryKey = queryOptions?.queryKey ?? getGetAllItemTypesQueryKey(params);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getAllItemTypes>>> = ({
-                                                                                 signal,
-                                                                               }) => getAllItemTypes(params, requestOptions, signal);
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getAllItemTypes>>> = ({
+		signal,
+	}) => getAllItemTypes(params, requestOptions, signal);
 
-  return {queryKey, queryFn, ...queryOptions} as UseQueryOptions<
-      Awaited<ReturnType<typeof getAllItemTypes>>,
-      TError,
-      TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+	return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+		Awaited<ReturnType<typeof getAllItemTypes>>,
+		TError,
+		TData
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetAllItemTypesQueryResult = NonNullable<
-    Awaited<ReturnType<typeof getAllItemTypes>>
+	Awaited<ReturnType<typeof getAllItemTypes>>
 >;
 export type GetAllItemTypesQueryError = ErrorType<ProblemDetail>;
 
 export function useGetAllItemTypes<
-    TData = Awaited<ReturnType<typeof getAllItemTypes>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getAllItemTypes>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    params: GetAllItemTypesParams,
-    options: {
-      query: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getAllItemTypes>>,
-              TError,
-              TData
-          >
-      > &
-          Pick<
-              DefinedInitialDataOptions<
-                  Awaited<ReturnType<typeof getAllItemTypes>>,
-                  TError,
-                  Awaited<ReturnType<typeof getAllItemTypes>>
-              >,
-              "initialData"
-          >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	params: GetAllItemTypesParams,
+	options: {
+		query: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getAllItemTypes>>,
+				TError,
+				TData
+			>
+		> &
+			Pick<
+				DefinedInitialDataOptions<
+					Awaited<ReturnType<typeof getAllItemTypes>>,
+					TError,
+					Awaited<ReturnType<typeof getAllItemTypes>>
+				>,
+				"initialData"
+			>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetAllItemTypes<
-    TData = Awaited<ReturnType<typeof getAllItemTypes>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getAllItemTypes>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    params: GetAllItemTypesParams,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getAllItemTypes>>,
-              TError,
-              TData
-          >
-      > &
-          Pick<
-              UndefinedInitialDataOptions<
-                  Awaited<ReturnType<typeof getAllItemTypes>>,
-                  TError,
-                  Awaited<ReturnType<typeof getAllItemTypes>>
-              >,
-              "initialData"
-          >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	params: GetAllItemTypesParams,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getAllItemTypes>>,
+				TError,
+				TData
+			>
+		> &
+			Pick<
+				UndefinedInitialDataOptions<
+					Awaited<ReturnType<typeof getAllItemTypes>>,
+					TError,
+					Awaited<ReturnType<typeof getAllItemTypes>>
+				>,
+				"initialData"
+			>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetAllItemTypes<
-    TData = Awaited<ReturnType<typeof getAllItemTypes>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getAllItemTypes>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    params: GetAllItemTypesParams,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getAllItemTypes>>,
-              TError,
-              TData
-          >
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	params: GetAllItemTypesParams,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getAllItemTypes>>,
+				TError,
+				TData
+			>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 
 export function useGetAllItemTypes<
-    TData = Awaited<ReturnType<typeof getAllItemTypes>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getAllItemTypes>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    params: GetAllItemTypesParams,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getAllItemTypes>>,
-              TError,
-              TData
-          >
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	params: GetAllItemTypesParams,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getAllItemTypes>>,
+				TError,
+				TData
+			>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 } {
-  const queryOptions = getGetAllItemTypesQueryOptions(params, options);
+	const queryOptions = getGetAllItemTypesQueryOptions(params, options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-      TData,
-      TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+	const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+		TData,
+		TError
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  query.queryKey = queryOptions.queryKey;
+	query.queryKey = queryOptions.queryKey;
 
-  return query;
+	return query;
 }
 
 export const getItemTypeById = (
-    typeId: number,
-    options?: SecondParameter<typeof customInstance>,
-    signal?: AbortSignal,
+	typeId: number,
+	options?: SecondParameter<typeof customInstance>,
+	signal?: AbortSignal,
 ) => {
-  return customInstance<ItemTypeDto>(
-      {url: `/api/v1/item-types/${typeId}`, method: "GET", signal},
-      options,
-  );
+	return customInstance<ItemTypeDto>(
+		{ url: `/api/v1/item-types/${typeId}`, method: "GET", signal },
+		options,
+	);
 };
 
 export const getGetItemTypeByIdQueryKey = (typeId: number) => {
-  return ["api", "v1", "item-types", typeId] as const;
+	return ["api", "v1", "item-types", typeId] as const;
 };
 
 export const getGetItemTypeByIdQueryOptions = <
-    TData = Awaited<ReturnType<typeof getItemTypeById>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemTypeById>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    typeId: number,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemTypeById>>,
-              TError,
-              TData
-          >
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
+	typeId: number,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemTypeById>>,
+				TError,
+				TData
+			>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
 ) => {
-  const {query: queryOptions, request: requestOptions} = options ?? {};
+	const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetItemTypeByIdQueryKey(typeId);
+	const queryKey = queryOptions?.queryKey ?? getGetItemTypeByIdQueryKey(typeId);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getItemTypeById>>> = ({
-                                                                                 signal,
-                                                                               }) => getItemTypeById(typeId, requestOptions, signal);
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getItemTypeById>>> = ({
+		signal,
+	}) => getItemTypeById(typeId, requestOptions, signal);
 
-  return {
-    queryKey,
-    queryFn,
-    enabled: !!typeId,
-    ...queryOptions,
-  } as UseQueryOptions<
-      Awaited<ReturnType<typeof getItemTypeById>>,
-      TError,
-      TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+	return {
+		queryKey,
+		queryFn,
+		enabled: !!typeId,
+		...queryOptions,
+	} as UseQueryOptions<
+		Awaited<ReturnType<typeof getItemTypeById>>,
+		TError,
+		TData
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetItemTypeByIdQueryResult = NonNullable<
-    Awaited<ReturnType<typeof getItemTypeById>>
+	Awaited<ReturnType<typeof getItemTypeById>>
 >;
 export type GetItemTypeByIdQueryError = ErrorType<ProblemDetail>;
 
 export function useGetItemTypeById<
-    TData = Awaited<ReturnType<typeof getItemTypeById>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemTypeById>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    typeId: number,
-    options: {
-      query: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemTypeById>>,
-              TError,
-              TData
-          >
-      > &
-          Pick<
-              DefinedInitialDataOptions<
-                  Awaited<ReturnType<typeof getItemTypeById>>,
-                  TError,
-                  Awaited<ReturnType<typeof getItemTypeById>>
-              >,
-              "initialData"
-          >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	typeId: number,
+	options: {
+		query: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemTypeById>>,
+				TError,
+				TData
+			>
+		> &
+			Pick<
+				DefinedInitialDataOptions<
+					Awaited<ReturnType<typeof getItemTypeById>>,
+					TError,
+					Awaited<ReturnType<typeof getItemTypeById>>
+				>,
+				"initialData"
+			>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetItemTypeById<
-    TData = Awaited<ReturnType<typeof getItemTypeById>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemTypeById>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    typeId: number,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemTypeById>>,
-              TError,
-              TData
-          >
-      > &
-          Pick<
-              UndefinedInitialDataOptions<
-                  Awaited<ReturnType<typeof getItemTypeById>>,
-                  TError,
-                  Awaited<ReturnType<typeof getItemTypeById>>
-              >,
-              "initialData"
-          >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	typeId: number,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemTypeById>>,
+				TError,
+				TData
+			>
+		> &
+			Pick<
+				UndefinedInitialDataOptions<
+					Awaited<ReturnType<typeof getItemTypeById>>,
+					TError,
+					Awaited<ReturnType<typeof getItemTypeById>>
+				>,
+				"initialData"
+			>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetItemTypeById<
-    TData = Awaited<ReturnType<typeof getItemTypeById>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemTypeById>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    typeId: number,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemTypeById>>,
-              TError,
-              TData
-          >
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	typeId: number,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemTypeById>>,
+				TError,
+				TData
+			>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 
 export function useGetItemTypeById<
-    TData = Awaited<ReturnType<typeof getItemTypeById>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getItemTypeById>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    typeId: number,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<
-              Awaited<ReturnType<typeof getItemTypeById>>,
-              TError,
-              TData
-          >
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	typeId: number,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<
+				Awaited<ReturnType<typeof getItemTypeById>>,
+				TError,
+				TData
+			>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 } {
-  const queryOptions = getGetItemTypeByIdQueryOptions(typeId, options);
+	const queryOptions = getGetItemTypeByIdQueryOptions(typeId, options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-      TData,
-      TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+	const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+		TData,
+		TError
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  query.queryKey = queryOptions.queryKey;
+	query.queryKey = queryOptions.queryKey;
 
-  return query;
+	return query;
 }
 
 export const getGearSetById = (
-    id: number,
-    options?: SecondParameter<typeof customInstance>,
-    signal?: AbortSignal,
+	id: number,
+	options?: SecondParameter<typeof customInstance>,
+	signal?: AbortSignal,
 ) => {
-  return customInstance<GearSetDto>(
-      {url: `/api/v1/gearsets/${id}`, method: "GET", signal},
-      options,
-  );
+	return customInstance<GearSetDto>(
+		{ url: `/api/v1/gearsets/${id}`, method: "GET", signal },
+		options,
+	);
 };
 
 export const getGetGearSetByIdQueryKey = (id: number) => {
-  return ["api", "v1", "gearsets", id] as const;
+	return ["api", "v1", "gearsets", id] as const;
 };
 
 export const getGetGearSetByIdQueryOptions = <
-    TData = Awaited<ReturnType<typeof getGearSetById>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getGearSetById>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    id: number,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<Awaited<ReturnType<typeof getGearSetById>>, TError, TData>
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
+	id: number,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<Awaited<ReturnType<typeof getGearSetById>>, TError, TData>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
 ) => {
-  const {query: queryOptions, request: requestOptions} = options ?? {};
+	const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetGearSetByIdQueryKey(id);
+	const queryKey = queryOptions?.queryKey ?? getGetGearSetByIdQueryKey(id);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getGearSetById>>> = ({
-                                                                                signal,
-                                                                              }) => getGearSetById(id, requestOptions, signal);
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getGearSetById>>> = ({
+		signal,
+	}) => getGearSetById(id, requestOptions, signal);
 
-  return {
-    queryKey,
-    queryFn,
-    enabled: !!id,
-    ...queryOptions,
-  } as UseQueryOptions<
-      Awaited<ReturnType<typeof getGearSetById>>,
-      TError,
-      TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+	return {
+		queryKey,
+		queryFn,
+		enabled: !!id,
+		...queryOptions,
+	} as UseQueryOptions<
+		Awaited<ReturnType<typeof getGearSetById>>,
+		TError,
+		TData
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetGearSetByIdQueryResult = NonNullable<
-    Awaited<ReturnType<typeof getGearSetById>>
+	Awaited<ReturnType<typeof getGearSetById>>
 >;
 export type GetGearSetByIdQueryError = ErrorType<ProblemDetail>;
 
 export function useGetGearSetById<
-    TData = Awaited<ReturnType<typeof getGearSetById>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getGearSetById>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    id: number,
-    options: {
-      query: Partial<
-          UseQueryOptions<Awaited<ReturnType<typeof getGearSetById>>, TError, TData>
-      > &
-          Pick<
-              DefinedInitialDataOptions<
-                  Awaited<ReturnType<typeof getGearSetById>>,
-                  TError,
-                  Awaited<ReturnType<typeof getGearSetById>>
-              >,
-              "initialData"
-          >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	id: number,
+	options: {
+		query: Partial<
+			UseQueryOptions<Awaited<ReturnType<typeof getGearSetById>>, TError, TData>
+		> &
+			Pick<
+				DefinedInitialDataOptions<
+					Awaited<ReturnType<typeof getGearSetById>>,
+					TError,
+					Awaited<ReturnType<typeof getGearSetById>>
+				>,
+				"initialData"
+			>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetGearSetById<
-    TData = Awaited<ReturnType<typeof getGearSetById>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getGearSetById>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    id: number,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<Awaited<ReturnType<typeof getGearSetById>>, TError, TData>
-      > &
-          Pick<
-              UndefinedInitialDataOptions<
-                  Awaited<ReturnType<typeof getGearSetById>>,
-                  TError,
-                  Awaited<ReturnType<typeof getGearSetById>>
-              >,
-              "initialData"
-          >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	id: number,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<Awaited<ReturnType<typeof getGearSetById>>, TError, TData>
+		> &
+			Pick<
+				UndefinedInitialDataOptions<
+					Awaited<ReturnType<typeof getGearSetById>>,
+					TError,
+					Awaited<ReturnType<typeof getGearSetById>>
+				>,
+				"initialData"
+			>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetGearSetById<
-    TData = Awaited<ReturnType<typeof getGearSetById>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getGearSetById>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    id: number,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<Awaited<ReturnType<typeof getGearSetById>>, TError, TData>
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	id: number,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<Awaited<ReturnType<typeof getGearSetById>>, TError, TData>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 
 export function useGetGearSetById<
-    TData = Awaited<ReturnType<typeof getGearSetById>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getGearSetById>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    id: number,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<Awaited<ReturnType<typeof getGearSetById>>, TError, TData>
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	id: number,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<Awaited<ReturnType<typeof getGearSetById>>, TError, TData>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 } {
-  const queryOptions = getGetGearSetByIdQueryOptions(id, options);
+	const queryOptions = getGetGearSetByIdQueryOptions(id, options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-      TData,
-      TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+	const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+		TData,
+		TError
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  query.queryKey = queryOptions.queryKey;
+	query.queryKey = queryOptions.queryKey;
 
-  return query;
+	return query;
 }
 
 export const deleteGearSet = (
-    id: number,
-    options?: SecondParameter<typeof customInstance>,
+	id: number,
+	options?: SecondParameter<typeof customInstance>,
 ) => {
-  return customInstance<void>(
-      {url: `/api/v1/gearsets/${id}`, method: "DELETE"},
-      options,
-  );
+	return customInstance<void>(
+		{ url: `/api/v1/gearsets/${id}`, method: "DELETE" },
+		options,
+	);
 };
 
 export const useDeleteGearSetMutationOptions = <
-    TError = ErrorType<ProblemDetail>,
-    TContext = unknown,
+	TError = ErrorType<ProblemDetail>,
+	TContext = unknown,
 >(options?: {
-  mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof deleteGearSet>>,
-      TError,
-      { id: number },
-      TContext
-  >;
-  request?: SecondParameter<typeof customInstance>;
+	mutation?: UseMutationOptions<
+		Awaited<ReturnType<typeof deleteGearSet>>,
+		TError,
+		{ id: number },
+		TContext
+	>;
+	request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-    Awaited<ReturnType<typeof deleteGearSet>>,
-    TError,
-    { id: number },
-    TContext
+	Awaited<ReturnType<typeof deleteGearSet>>,
+	TError,
+	{ id: number },
+	TContext
 > => {
-  const mutationKey = ["deleteGearSet"];
-  const {mutation: mutationOptions, request: requestOptions} = options
-      ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-          ? options
-          : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: {mutationKey}, request: undefined};
+	const mutationKey = ["deleteGearSet"];
+	const { mutation: mutationOptions, request: requestOptions } = options
+		? options.mutation &&
+			"mutationKey" in options.mutation &&
+			options.mutation.mutationKey
+			? options
+			: { ...options, mutation: { ...options.mutation, mutationKey } }
+		: { mutation: { mutationKey }, request: undefined };
 
-  const mutationFn: MutationFunction<
-      Awaited<ReturnType<typeof deleteGearSet>>,
-      { id: number }
-  > = (props) => {
-    const {id} = props ?? {};
+	const mutationFn: MutationFunction<
+		Awaited<ReturnType<typeof deleteGearSet>>,
+		{ id: number }
+	> = (props) => {
+		const { id } = props ?? {};
 
-    return deleteGearSet(id, requestOptions);
-  };
+		return deleteGearSet(id, requestOptions);
+	};
 
-  const customOptions = useCustomMutatorOptions({
-    ...mutationOptions,
-    mutationFn,
-  });
+	const customOptions = useCustomMutatorOptions({
+		...mutationOptions,
+		mutationFn,
+	});
 
-  return customOptions;
+	return customOptions;
 };
 
 export type DeleteGearSetMutationResult = NonNullable<
-    Awaited<ReturnType<typeof deleteGearSet>>
+	Awaited<ReturnType<typeof deleteGearSet>>
 >;
 
 export type DeleteGearSetMutationError = ErrorType<ProblemDetail>;
 
 export const useDeleteGearSet = <
-    TError = ErrorType<ProblemDetail>,
-    TContext = unknown,
+	TError = ErrorType<ProblemDetail>,
+	TContext = unknown,
 >(
-    options?: {
-      mutation?: UseMutationOptions<
-          Awaited<ReturnType<typeof deleteGearSet>>,
-          TError,
-          { id: number },
-          TContext
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	options?: {
+		mutation?: UseMutationOptions<
+			Awaited<ReturnType<typeof deleteGearSet>>,
+			TError,
+			{ id: number },
+			TContext
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseMutationResult<
-    Awaited<ReturnType<typeof deleteGearSet>>,
-    TError,
-    { id: number },
-    TContext
+	Awaited<ReturnType<typeof deleteGearSet>>,
+	TError,
+	{ id: number },
+	TContext
 > => {
-  const mutationOptions = useDeleteGearSetMutationOptions(options);
+	const mutationOptions = useDeleteGearSetMutationOptions(options);
 
-  return useMutation(mutationOptions, queryClient);
+	return useMutation(mutationOptions, queryClient);
 };
 
 export const getAllEffects = (
-    options?: SecondParameter<typeof customInstance>,
-    signal?: AbortSignal,
+	options?: SecondParameter<typeof customInstance>,
+	signal?: AbortSignal,
 ) => {
-  return customInstance<EffectDto[]>(
-      {url: `/api/v1/effects`, method: "GET", signal},
-      options,
-  );
+	return customInstance<EffectDto[]>(
+		{ url: `/api/v1/effects`, method: "GET", signal },
+		options,
+	);
 };
 
 export const getGetAllEffectsQueryKey = () => {
-  return ["api", "v1", "effects"] as const;
+	return ["api", "v1", "effects"] as const;
 };
 
 export const getGetAllEffectsQueryOptions = <
-    TData = Awaited<ReturnType<typeof getAllEffects>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getAllEffects>>,
+	TError = ErrorType<ProblemDetail>,
 >(options?: {
-  query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof getAllEffects>>, TError, TData>
-  >;
-  request?: SecondParameter<typeof customInstance>;
+	query?: Partial<
+		UseQueryOptions<Awaited<ReturnType<typeof getAllEffects>>, TError, TData>
+	>;
+	request?: SecondParameter<typeof customInstance>;
 }) => {
-  const {query: queryOptions, request: requestOptions} = options ?? {};
+	const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetAllEffectsQueryKey();
+	const queryKey = queryOptions?.queryKey ?? getGetAllEffectsQueryKey();
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getAllEffects>>> = ({
-                                                                               signal,
-                                                                             }) => getAllEffects(requestOptions, signal);
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getAllEffects>>> = ({
+		signal,
+	}) => getAllEffects(requestOptions, signal);
 
-  return {queryKey, queryFn, ...queryOptions} as UseQueryOptions<
-      Awaited<ReturnType<typeof getAllEffects>>,
-      TError,
-      TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+	return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+		Awaited<ReturnType<typeof getAllEffects>>,
+		TError,
+		TData
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetAllEffectsQueryResult = NonNullable<
-    Awaited<ReturnType<typeof getAllEffects>>
+	Awaited<ReturnType<typeof getAllEffects>>
 >;
 export type GetAllEffectsQueryError = ErrorType<ProblemDetail>;
 
 export function useGetAllEffects<
-    TData = Awaited<ReturnType<typeof getAllEffects>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getAllEffects>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    options: {
-      query: Partial<
-          UseQueryOptions<Awaited<ReturnType<typeof getAllEffects>>, TError, TData>
-      > &
-          Pick<
-              DefinedInitialDataOptions<
-                  Awaited<ReturnType<typeof getAllEffects>>,
-                  TError,
-                  Awaited<ReturnType<typeof getAllEffects>>
-              >,
-              "initialData"
-          >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	options: {
+		query: Partial<
+			UseQueryOptions<Awaited<ReturnType<typeof getAllEffects>>, TError, TData>
+		> &
+			Pick<
+				DefinedInitialDataOptions<
+					Awaited<ReturnType<typeof getAllEffects>>,
+					TError,
+					Awaited<ReturnType<typeof getAllEffects>>
+				>,
+				"initialData"
+			>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetAllEffects<
-    TData = Awaited<ReturnType<typeof getAllEffects>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getAllEffects>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    options?: {
-      query?: Partial<
-          UseQueryOptions<Awaited<ReturnType<typeof getAllEffects>>, TError, TData>
-      > &
-          Pick<
-              UndefinedInitialDataOptions<
-                  Awaited<ReturnType<typeof getAllEffects>>,
-                  TError,
-                  Awaited<ReturnType<typeof getAllEffects>>
-              >,
-              "initialData"
-          >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<Awaited<ReturnType<typeof getAllEffects>>, TError, TData>
+		> &
+			Pick<
+				UndefinedInitialDataOptions<
+					Awaited<ReturnType<typeof getAllEffects>>,
+					TError,
+					Awaited<ReturnType<typeof getAllEffects>>
+				>,
+				"initialData"
+			>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetAllEffects<
-    TData = Awaited<ReturnType<typeof getAllEffects>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getAllEffects>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    options?: {
-      query?: Partial<
-          UseQueryOptions<Awaited<ReturnType<typeof getAllEffects>>, TError, TData>
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<Awaited<ReturnType<typeof getAllEffects>>, TError, TData>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 
 export function useGetAllEffects<
-    TData = Awaited<ReturnType<typeof getAllEffects>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getAllEffects>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    options?: {
-      query?: Partial<
-          UseQueryOptions<Awaited<ReturnType<typeof getAllEffects>>, TError, TData>
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<Awaited<ReturnType<typeof getAllEffects>>, TError, TData>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 } {
-  const queryOptions = getGetAllEffectsQueryOptions(options);
+	const queryOptions = getGetAllEffectsQueryOptions(options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-      TData,
-      TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+	const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+		TData,
+		TError
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  query.queryKey = queryOptions.queryKey;
+	query.queryKey = queryOptions.queryKey;
 
-  return query;
+	return query;
 }
 
 export const getEffectById = (
-    id: number,
-    options?: SecondParameter<typeof customInstance>,
-    signal?: AbortSignal,
+	id: number,
+	options?: SecondParameter<typeof customInstance>,
+	signal?: AbortSignal,
 ) => {
-  return customInstance<EffectDto>(
-      {url: `/api/v1/effects/${id}`, method: "GET", signal},
-      options,
-  );
+	return customInstance<EffectDto>(
+		{ url: `/api/v1/effects/${id}`, method: "GET", signal },
+		options,
+	);
 };
 
 export const getGetEffectByIdQueryKey = (id: number) => {
-  return ["api", "v1", "effects", id] as const;
+	return ["api", "v1", "effects", id] as const;
 };
 
 export const getGetEffectByIdQueryOptions = <
-    TData = Awaited<ReturnType<typeof getEffectById>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getEffectById>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    id: number,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<Awaited<ReturnType<typeof getEffectById>>, TError, TData>
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
+	id: number,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<Awaited<ReturnType<typeof getEffectById>>, TError, TData>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
 ) => {
-  const {query: queryOptions, request: requestOptions} = options ?? {};
+	const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getGetEffectByIdQueryKey(id);
+	const queryKey = queryOptions?.queryKey ?? getGetEffectByIdQueryKey(id);
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof getEffectById>>> = ({
-                                                                               signal,
-                                                                             }) => getEffectById(id, requestOptions, signal);
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof getEffectById>>> = ({
+		signal,
+	}) => getEffectById(id, requestOptions, signal);
 
-  return {
-    queryKey,
-    queryFn,
-    enabled: !!id,
-    ...queryOptions,
-  } as UseQueryOptions<
-      Awaited<ReturnType<typeof getEffectById>>,
-      TError,
-      TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+	return {
+		queryKey,
+		queryFn,
+		enabled: !!id,
+		...queryOptions,
+	} as UseQueryOptions<
+		Awaited<ReturnType<typeof getEffectById>>,
+		TError,
+		TData
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type GetEffectByIdQueryResult = NonNullable<
-    Awaited<ReturnType<typeof getEffectById>>
+	Awaited<ReturnType<typeof getEffectById>>
 >;
 export type GetEffectByIdQueryError = ErrorType<ProblemDetail>;
 
 export function useGetEffectById<
-    TData = Awaited<ReturnType<typeof getEffectById>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getEffectById>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    id: number,
-    options: {
-      query: Partial<
-          UseQueryOptions<Awaited<ReturnType<typeof getEffectById>>, TError, TData>
-      > &
-          Pick<
-              DefinedInitialDataOptions<
-                  Awaited<ReturnType<typeof getEffectById>>,
-                  TError,
-                  Awaited<ReturnType<typeof getEffectById>>
-              >,
-              "initialData"
-          >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	id: number,
+	options: {
+		query: Partial<
+			UseQueryOptions<Awaited<ReturnType<typeof getEffectById>>, TError, TData>
+		> &
+			Pick<
+				DefinedInitialDataOptions<
+					Awaited<ReturnType<typeof getEffectById>>,
+					TError,
+					Awaited<ReturnType<typeof getEffectById>>
+				>,
+				"initialData"
+			>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetEffectById<
-    TData = Awaited<ReturnType<typeof getEffectById>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getEffectById>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    id: number,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<Awaited<ReturnType<typeof getEffectById>>, TError, TData>
-      > &
-          Pick<
-              UndefinedInitialDataOptions<
-                  Awaited<ReturnType<typeof getEffectById>>,
-                  TError,
-                  Awaited<ReturnType<typeof getEffectById>>
-              >,
-              "initialData"
-          >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	id: number,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<Awaited<ReturnType<typeof getEffectById>>, TError, TData>
+		> &
+			Pick<
+				UndefinedInitialDataOptions<
+					Awaited<ReturnType<typeof getEffectById>>,
+					TError,
+					Awaited<ReturnType<typeof getEffectById>>
+				>,
+				"initialData"
+			>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useGetEffectById<
-    TData = Awaited<ReturnType<typeof getEffectById>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getEffectById>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    id: number,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<Awaited<ReturnType<typeof getEffectById>>, TError, TData>
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	id: number,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<Awaited<ReturnType<typeof getEffectById>>, TError, TData>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 
 export function useGetEffectById<
-    TData = Awaited<ReturnType<typeof getEffectById>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof getEffectById>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    id: number,
-    options?: {
-      query?: Partial<
-          UseQueryOptions<Awaited<ReturnType<typeof getEffectById>>, TError, TData>
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	id: number,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<Awaited<ReturnType<typeof getEffectById>>, TError, TData>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 } {
-  const queryOptions = getGetEffectByIdQueryOptions(id, options);
+	const queryOptions = getGetEffectByIdQueryOptions(id, options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-      TData,
-      TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+	const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+		TData,
+		TError
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  query.queryKey = queryOptions.queryKey;
+	query.queryKey = queryOptions.queryKey;
 
-  return query;
+	return query;
 }
 
 export const admin = (
-    options?: SecondParameter<typeof customInstance>,
-    signal?: AbortSignal,
+	options?: SecondParameter<typeof customInstance>,
+	signal?: AbortSignal,
 ) => {
-  return customInstance<string>(
-      {url: `/api/v1/admin`, method: "GET", signal},
-      options,
-  );
+	return customInstance<string>(
+		{ url: `/api/v1/admin`, method: "GET", signal },
+		options,
+	);
 };
 
 export const getAdminQueryKey = () => {
-  return ["api", "v1", "admin"] as const;
+	return ["api", "v1", "admin"] as const;
 };
 
 export const getAdminQueryOptions = <
-    TData = Awaited<ReturnType<typeof admin>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof admin>>,
+	TError = ErrorType<ProblemDetail>,
 >(options?: {
-  query?: Partial<
-      UseQueryOptions<Awaited<ReturnType<typeof admin>>, TError, TData>
-  >;
-  request?: SecondParameter<typeof customInstance>;
+	query?: Partial<
+		UseQueryOptions<Awaited<ReturnType<typeof admin>>, TError, TData>
+	>;
+	request?: SecondParameter<typeof customInstance>;
 }) => {
-  const {query: queryOptions, request: requestOptions} = options ?? {};
+	const { query: queryOptions, request: requestOptions } = options ?? {};
 
-  const queryKey = queryOptions?.queryKey ?? getAdminQueryKey();
+	const queryKey = queryOptions?.queryKey ?? getAdminQueryKey();
 
-  const queryFn: QueryFunction<Awaited<ReturnType<typeof admin>>> = ({
-                                                                       signal,
-                                                                     }) => admin(requestOptions, signal);
+	const queryFn: QueryFunction<Awaited<ReturnType<typeof admin>>> = ({
+		signal,
+	}) => admin(requestOptions, signal);
 
-  return {queryKey, queryFn, ...queryOptions} as UseQueryOptions<
-      Awaited<ReturnType<typeof admin>>,
-      TError,
-      TData
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+	return { queryKey, queryFn, ...queryOptions } as UseQueryOptions<
+		Awaited<ReturnType<typeof admin>>,
+		TError,
+		TData
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
 };
 
 export type AdminQueryResult = NonNullable<Awaited<ReturnType<typeof admin>>>;
 export type AdminQueryError = ErrorType<ProblemDetail>;
 
 export function useAdmin<
-    TData = Awaited<ReturnType<typeof admin>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof admin>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    options: {
-      query: Partial<
-          UseQueryOptions<Awaited<ReturnType<typeof admin>>, TError, TData>
-      > &
-          Pick<
-              DefinedInitialDataOptions<
-                  Awaited<ReturnType<typeof admin>>,
-                  TError,
-                  Awaited<ReturnType<typeof admin>>
-              >,
-              "initialData"
-          >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	options: {
+		query: Partial<
+			UseQueryOptions<Awaited<ReturnType<typeof admin>>, TError, TData>
+		> &
+			Pick<
+				DefinedInitialDataOptions<
+					Awaited<ReturnType<typeof admin>>,
+					TError,
+					Awaited<ReturnType<typeof admin>>
+				>,
+				"initialData"
+			>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): DefinedUseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useAdmin<
-    TData = Awaited<ReturnType<typeof admin>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof admin>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    options?: {
-      query?: Partial<
-          UseQueryOptions<Awaited<ReturnType<typeof admin>>, TError, TData>
-      > &
-          Pick<
-              UndefinedInitialDataOptions<
-                  Awaited<ReturnType<typeof admin>>,
-                  TError,
-                  Awaited<ReturnType<typeof admin>>
-              >,
-              "initialData"
-          >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<Awaited<ReturnType<typeof admin>>, TError, TData>
+		> &
+			Pick<
+				UndefinedInitialDataOptions<
+					Awaited<ReturnType<typeof admin>>,
+					TError,
+					Awaited<ReturnType<typeof admin>>
+				>,
+				"initialData"
+			>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 export function useAdmin<
-    TData = Awaited<ReturnType<typeof admin>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof admin>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    options?: {
-      query?: Partial<
-          UseQueryOptions<Awaited<ReturnType<typeof admin>>, TError, TData>
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<Awaited<ReturnType<typeof admin>>, TError, TData>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 };
 
 export function useAdmin<
-    TData = Awaited<ReturnType<typeof admin>>,
-    TError = ErrorType<ProblemDetail>,
+	TData = Awaited<ReturnType<typeof admin>>,
+	TError = ErrorType<ProblemDetail>,
 >(
-    options?: {
-      query?: Partial<
-          UseQueryOptions<Awaited<ReturnType<typeof admin>>, TError, TData>
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	options?: {
+		query?: Partial<
+			UseQueryOptions<Awaited<ReturnType<typeof admin>>, TError, TData>
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseQueryResult<TData, TError> & {
-  queryKey: DataTag<QueryKey, TData, TError>;
+	queryKey: DataTag<QueryKey, TData, TError>;
 } {
-  const queryOptions = getAdminQueryOptions(options);
+	const queryOptions = getAdminQueryOptions(options);
 
-  const query = useQuery(queryOptions, queryClient) as UseQueryResult<
-      TData,
-      TError
-  > & { queryKey: DataTag<QueryKey, TData, TError> };
+	const query = useQuery(queryOptions, queryClient) as UseQueryResult<
+		TData,
+		TError
+	> & { queryKey: DataTag<QueryKey, TData, TError> };
 
-  query.queryKey = queryOptions.queryKey;
+	query.queryKey = queryOptions.queryKey;
 
-  return query;
+	return query;
 }
 
 export const unequipItem = (
-    gearSetId: number,
-    slotId: number,
-    options?: SecondParameter<typeof customInstance>,
+	gearSetId: number,
+	slotId: number,
+	options?: SecondParameter<typeof customInstance>,
 ) => {
-  return customInstance<void>(
-      {url: `/api/v1/gearsets/${gearSetId}/slots/${slotId}`, method: "DELETE"},
-      options,
-  );
+	return customInstance<void>(
+		{ url: `/api/v1/gearsets/${gearSetId}/slots/${slotId}`, method: "DELETE" },
+		options,
+	);
 };
 
 export const useUnequipItemMutationOptions = <
-    TError = ErrorType<ProblemDetail>,
-    TContext = unknown,
+	TError = ErrorType<ProblemDetail>,
+	TContext = unknown,
 >(options?: {
-  mutation?: UseMutationOptions<
-      Awaited<ReturnType<typeof unequipItem>>,
-      TError,
-      { gearSetId: number; slotId: number },
-      TContext
-  >;
-  request?: SecondParameter<typeof customInstance>;
+	mutation?: UseMutationOptions<
+		Awaited<ReturnType<typeof unequipItem>>,
+		TError,
+		{ gearSetId: number; slotId: number },
+		TContext
+	>;
+	request?: SecondParameter<typeof customInstance>;
 }): UseMutationOptions<
-    Awaited<ReturnType<typeof unequipItem>>,
-    TError,
-    { gearSetId: number; slotId: number },
-    TContext
+	Awaited<ReturnType<typeof unequipItem>>,
+	TError,
+	{ gearSetId: number; slotId: number },
+	TContext
 > => {
-  const mutationKey = ["unequipItem"];
-  const {mutation: mutationOptions, request: requestOptions} = options
-      ? options.mutation &&
-      "mutationKey" in options.mutation &&
-      options.mutation.mutationKey
-          ? options
-          : {...options, mutation: {...options.mutation, mutationKey}}
-      : {mutation: {mutationKey}, request: undefined};
+	const mutationKey = ["unequipItem"];
+	const { mutation: mutationOptions, request: requestOptions } = options
+		? options.mutation &&
+			"mutationKey" in options.mutation &&
+			options.mutation.mutationKey
+			? options
+			: { ...options, mutation: { ...options.mutation, mutationKey } }
+		: { mutation: { mutationKey }, request: undefined };
 
-  const mutationFn: MutationFunction<
-      Awaited<ReturnType<typeof unequipItem>>,
-      { gearSetId: number; slotId: number }
-  > = (props) => {
-    const {gearSetId, slotId} = props ?? {};
+	const mutationFn: MutationFunction<
+		Awaited<ReturnType<typeof unequipItem>>,
+		{ gearSetId: number; slotId: number }
+	> = (props) => {
+		const { gearSetId, slotId } = props ?? {};
 
-    return unequipItem(gearSetId, slotId, requestOptions);
-  };
+		return unequipItem(gearSetId, slotId, requestOptions);
+	};
 
-  const customOptions = useCustomMutatorOptions({
-    ...mutationOptions,
-    mutationFn,
-  });
+	const customOptions = useCustomMutatorOptions({
+		...mutationOptions,
+		mutationFn,
+	});
 
-  return customOptions;
+	return customOptions;
 };
 
 export type UnequipItemMutationResult = NonNullable<
-    Awaited<ReturnType<typeof unequipItem>>
+	Awaited<ReturnType<typeof unequipItem>>
 >;
 
 export type UnequipItemMutationError = ErrorType<ProblemDetail>;
 
 export const useUnequipItem = <
-    TError = ErrorType<ProblemDetail>,
-    TContext = unknown,
+	TError = ErrorType<ProblemDetail>,
+	TContext = unknown,
 >(
-    options?: {
-      mutation?: UseMutationOptions<
-          Awaited<ReturnType<typeof unequipItem>>,
-          TError,
-          { gearSetId: number; slotId: number },
-          TContext
-      >;
-      request?: SecondParameter<typeof customInstance>;
-    },
-    queryClient?: QueryClient,
+	options?: {
+		mutation?: UseMutationOptions<
+			Awaited<ReturnType<typeof unequipItem>>,
+			TError,
+			{ gearSetId: number; slotId: number },
+			TContext
+		>;
+		request?: SecondParameter<typeof customInstance>;
+	},
+	queryClient?: QueryClient,
 ): UseMutationResult<
-    Awaited<ReturnType<typeof unequipItem>>,
-    TError,
-    { gearSetId: number; slotId: number },
-    TContext
+	Awaited<ReturnType<typeof unequipItem>>,
+	TError,
+	{ gearSetId: number; slotId: number },
+	TContext
 > => {
-  const mutationOptions = useUnequipItemMutationOptions(options);
+	const mutationOptions = useUnequipItemMutationOptions(options);
 
-  return useMutation(mutationOptions, queryClient);
+	return useMutation(mutationOptions, queryClient);
 };
