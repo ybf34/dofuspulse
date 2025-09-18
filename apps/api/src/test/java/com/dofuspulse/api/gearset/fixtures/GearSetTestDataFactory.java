@@ -1,6 +1,8 @@
 package com.dofuspulse.api.gearset.fixtures;
 
 import com.dofuspulse.api.auth.UserPrincipal;
+import com.dofuspulse.api.gearset.dto.CharacterClassName;
+import com.dofuspulse.api.gearset.dto.GearSetSlotTypeIdentifier;
 import com.dofuspulse.api.model.CharacterClass;
 import com.dofuspulse.api.model.GearSet;
 import com.dofuspulse.api.model.GearSetSlot;
@@ -12,7 +14,7 @@ import java.util.List;
 public class GearSetTestDataFactory {
 
   public static GearSetSlotType createMockSlotType(
-      String slotName,
+      GearSetSlotTypeIdentifier slotName,
       List<ItemType> slotItemTypes) {
     GearSetSlotType slotType = new GearSetSlotType();
 
@@ -34,7 +36,7 @@ public class GearSetTestDataFactory {
     return slot;
   }
 
-  public static CharacterClass createMockCharacterClass(String className) {
+  public static CharacterClass createMockCharacterClass(CharacterClassName className) {
     return new CharacterClass(1L, className);
   }
 
@@ -42,7 +44,7 @@ public class GearSetTestDataFactory {
     GearSet gearSet = new GearSet();
 
     gearSet.setCharacterGender("m");
-    gearSet.setCharacterClass(createMockCharacterClass("cra"));
+    gearSet.setCharacterClass(createMockCharacterClass(CharacterClassName.CRA));
     gearSet.setTags(List.of("tag1", "tag2"));
     gearSet.setTitle("mock gearset");
     gearSet.setUserPrincipal(userPrincipal);

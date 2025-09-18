@@ -1,10 +1,7 @@
 package com.dofuspulse.api.items.specification;
 
 import com.dofuspulse.api.model.ItemDetails;
-import com.dofuspulse.api.model.ItemType;
 import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
-import jakarta.persistence.criteria.Subquery;
 import java.util.List;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -19,35 +16,12 @@ public class ItemDetailsSpecification {
     };
   }
 
-  public static Specification<ItemDetails> hasTypeFilters(
-      List<Long> typeIds,
-      List<String> typeNames) {
+  public static Specification<ItemDetails> hasTypesIds(List<Long> typeIds) {
     return ((root, query, cb) -> {
-      Predicate typeIdPredicate = null;
-      Predicate typeNamePredicate = null;
-
       if (typeIds != null && !typeIds.isEmpty()) {
-        typeIdPredicate = root.get("itemTypeId").in(typeIds);
+        return root.get("itemTypeId").in(typeIds);
       }
-
-      if (typeNames != null && !typeNames.isEmpty()) {
-        assert query != null;
-        Subquery<Long> subquery = query.subquery(Long.class);
-        Root<ItemType> itemTypeRoot = subquery.from(ItemType.class);
-        subquery.select(itemTypeRoot.get("id"))
-            .where(itemTypeRoot.get("name").in(typeNames));
-        typeNamePredicate = root.get("itemTypeId").in(subquery);
-      }
-
-      if (typeIdPredicate != null && typeNamePredicate != null) {
-        return cb.or(typeIdPredicate, typeNamePredicate);
-      } else if (typeIdPredicate != null) {
-        return typeIdPredicate;
-      } else if (typeNamePredicate != null) {
-        return typeNamePredicate;
-      } else {
-        return cb.conjunction();
-      }
+      return cb.conjunction();
     });
   }
 

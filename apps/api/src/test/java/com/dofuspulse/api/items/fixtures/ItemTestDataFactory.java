@@ -39,7 +39,7 @@ public class ItemTestDataFactory {
 
   public static ItemDetailsSearchCriteria createValidTestItemSearchCriteria() {
     return ItemDetailsSearchCriteria.builder().name("X").minLevel(1L).maxLevel(200L)
-        .types(List.of(1L)).ingredient(14L).effect(111).build();
+        .typesIds(List.of(1L)).ingredient(14L).effect(111).build();
   }
 
   public static ItemDetailsSearchCriteria createInvalidTestItemSearchCriteria() {
@@ -48,7 +48,7 @@ public class ItemTestDataFactory {
         .name("X")
         .minLevel(0L)
         .maxLevel(300L)
-        .types(List.of(1L))
+        .typesIds(List.of(1L))
         .ingredient(14L)
         .effect(111)
         .build();
@@ -60,9 +60,9 @@ public class ItemTestDataFactory {
     if (filters.name() != null) {
       queryParams.add("name", filters.name());
     }
-    if (filters.types() != null) {
+    if (filters.typesIds() != null) {
       queryParams.add("types",
-          filters.types().stream().map(String::valueOf).collect(Collectors.joining(",")));
+          filters.typesIds().stream().map(String::valueOf).collect(Collectors.joining(",")));
     }
     if (filters.ingredient() != null) {
       queryParams.add("ingredient", String.valueOf(filters.ingredient()));
@@ -81,10 +81,10 @@ public class ItemTestDataFactory {
     return Stream.of(
         Arguments.of("Out of range minLevel/maxLevel",
             ItemTestDataFactory.createItemDetailsQueryParams(
-                ItemDetailsSearchCriteria.builder().minLevel(0L).maxLevel(300L).types(List.of(1L))
+                ItemDetailsSearchCriteria.builder().minLevel(0L).maxLevel(300L).typesIds(List.of(1L))
                     .build())),
         Arguments.of("Name exceed max characters", ItemTestDataFactory.createItemDetailsQueryParams(
-            ItemDetailsSearchCriteria.builder().name("A".repeat(101)).types(List.of(1L)).build())));
+            ItemDetailsSearchCriteria.builder().name("A".repeat(101)).typesIds(List.of(1L)).build())));
   }
 
 }

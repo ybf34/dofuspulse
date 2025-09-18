@@ -11,7 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
+import org.hibernate.annotations.BatchSize;
 
 @Getter
 @Setter
@@ -43,5 +43,6 @@ public class ItemDetails {
   private List<Long> ingredientIds;
 
   @OneToMany(mappedBy = "itemDetails", cascade = CascadeType.ALL, orphanRemoval = true)
+  @BatchSize(size = 20)
   private List<ItemEffect> possibleEffects;
 }

@@ -94,7 +94,7 @@ public class ItemDetailsServiceIntegrationTest extends PostgresIntegrationTestCo
 
     ItemDetailsSearchCriteria itemDetailsFiltersParams = ItemDetailsSearchCriteria
         .builder()
-        .types(List.of(1L))
+        .typesIds(List.of(1L))
         .ingredient(15L)
         .build();
 

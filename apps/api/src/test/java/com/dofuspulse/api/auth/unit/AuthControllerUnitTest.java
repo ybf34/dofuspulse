@@ -15,6 +15,7 @@ import com.dofuspulse.api.exception.UserAlreadyExistsException;
 import com.dofuspulse.api.security.CustomAccessDeniedHandler;
 import com.dofuspulse.api.security.UnauthorizedHandler;
 import com.dofuspulse.api.security.WebSecurityConfig;
+import com.dofuspulse.api.user.dto.UserProfileDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,7 +47,7 @@ class AuthControllerUnitTest {
   public void shouldSucceedRegistrationWithValidData() throws Exception {
 
     when(authService.register(any()))
-        .thenReturn("User registered successfully");
+        .thenReturn(any(UserProfileDto.class));
 
     RegisterRequest registerRequest = RegisterRequest.builder()
         .email("newacc@test.com")

@@ -3,6 +3,7 @@ package com.dofuspulse.api.gearset.integration;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.dofuspulse.api.PostgresIntegrationTestContainer;
+import com.dofuspulse.api.gearset.dto.GearSetSlotTypeIdentifier;
 import com.dofuspulse.api.gearset.fixtures.GearSetTestDataFactory;
 import com.dofuspulse.api.model.GearSetSlotType;
 import com.dofuspulse.api.model.ItemType;
@@ -21,7 +22,7 @@ public class GearSetSlotTypeRepositoryIntegrationTest extends PostgresIntegratio
   ItemType mockItemType = new ItemType(1L, "AMULET");
 
   GearSetSlotType mockSlotType = GearSetTestDataFactory.createMockSlotType(
-      "AMULET",
+      GearSetSlotTypeIdentifier.AMULET,
       List.of(mockItemType));
 
   @Autowired

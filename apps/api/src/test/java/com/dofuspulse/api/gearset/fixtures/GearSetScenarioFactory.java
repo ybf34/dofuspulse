@@ -3,8 +3,10 @@ package com.dofuspulse.api.gearset.fixtures;
 import com.dofuspulse.api.auth.Role;
 import com.dofuspulse.api.auth.UserPrincipal;
 import com.dofuspulse.api.auth.UserRepository;
+import com.dofuspulse.api.gearset.dto.CharacterClassName;
 import com.dofuspulse.api.gearset.dto.CreateGearSetRequest;
 import com.dofuspulse.api.gearset.dto.EquipItemRequest;
+import com.dofuspulse.api.gearset.dto.GearSetSlotTypeIdentifier;
 import com.dofuspulse.api.items.fixtures.ItemTestDataFactory;
 import com.dofuspulse.api.model.CharacterClass;
 import com.dofuspulse.api.model.GearSet;
@@ -58,7 +60,7 @@ public class GearSetScenarioFactory {
     userRepository.save(user);
 
     CharacterClass characterClass = characterClassRepository.save(
-        GearSetTestDataFactory.createMockCharacterClass("cra")
+        GearSetTestDataFactory.createMockCharacterClass(CharacterClassName.CRA)
     );
 
     GearSet gearSet = gearSetRepository.save(
@@ -68,7 +70,7 @@ public class GearSetScenarioFactory {
     ItemType itemType = itemTypeRepository.save(new ItemType(1L, "Amulet"));
 
     GearSetSlotType slotType = gearSetSlotTypeRepository.save(
-        GearSetTestDataFactory.createMockSlotType("Amulet Slot", List.of(itemType))
+        GearSetTestDataFactory.createMockSlotType(GearSetSlotTypeIdentifier.AMULET, List.of(itemType))
     );
 
     ItemDetails itemDetails = itemDetailsRepository.save(
@@ -85,14 +87,16 @@ public class GearSetScenarioFactory {
 
   public static Stream<Arguments> invalidCreateGearSetRequests() {
     return Stream.of(
-        Arguments.of("Blank title", new CreateGearSetRequest("", "cra", "m", List.of())),
+        Arguments.of("Blank title", new CreateGearSetRequest("", "CRA", "m", List.of())),
+        Arguments.of("Incorrect character class name provided",
+            new CreateGearSetRequest("gearset", "CRAE", "m", List.of())),
         Arguments.of("Blank class", new CreateGearSetRequest("Set1", "", "m", List.of())),
-        Arguments.of("Invalid gender", new CreateGearSetRequest("Set1", "cra", "x", List.of())),
-        Arguments.of("Too many tags", new CreateGearSetRequest("Set1", "cra", "m",
+        Arguments.of("Invalid gender", new CreateGearSetRequest("Set1", "CRA", "x", List.of())),
+        Arguments.of("Too many tags", new CreateGearSetRequest("Set1", "CRA", "m",
             List.of("t1", "t2", "t3", "t4", "t5", "t6", "t7", "t8", "t9", "t10", "t11"))),
-        Arguments.of("Invalid tag pattern", new CreateGearSetRequest("Set1", "cra", "m",
+        Arguments.of("Invalid tag pattern", new CreateGearSetRequest("Set1", "CRA", "m",
             List.of("UPPERCASE"))),
-        Arguments.of("Tag too long", new CreateGearSetRequest("Set1", "cra", "m",
+        Arguments.of("Tag too long", new CreateGearSetRequest("Set1", "CRA", "m",
             List.of("a".repeat(21))))
     );
   }

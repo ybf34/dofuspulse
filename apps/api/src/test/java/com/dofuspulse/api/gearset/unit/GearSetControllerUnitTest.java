@@ -13,6 +13,7 @@ import com.dofuspulse.api.auth.Role;
 import com.dofuspulse.api.auth.UserPrincipal;
 import com.dofuspulse.api.gearset.controller.GearSetController;
 import com.dofuspulse.api.gearset.dto.CharacterClassDto;
+import com.dofuspulse.api.gearset.dto.CharacterClassName;
 import com.dofuspulse.api.gearset.dto.CreateGearSetRequest;
 import com.dofuspulse.api.gearset.dto.GearSetDto;
 import com.dofuspulse.api.gearset.service.GearSetServiceImpl;
@@ -53,7 +54,7 @@ public class GearSetControllerUnitTest {
 
   @BeforeEach
   void setUp() {
-    mockGearSet = new GearSetDto(1L, "My gearset", new CharacterClassDto("cra"), "m", List.of(),
+    mockGearSet = new GearSetDto(1L, "My gearset", new CharacterClassDto(CharacterClassName.CRA), "m", List.of(),
         List.of());
 
     UserPrincipal user = new UserPrincipal();
@@ -104,8 +105,8 @@ public class GearSetControllerUnitTest {
   )
   void shouldReturnUserGearSetsWith200Status() {
     List<GearSetDto> gearSets = List.of(
-        new GearSetDto(1L, "Set1", new CharacterClassDto("cra"), "m", List.of("tag1"), List.of()),
-        new GearSetDto(2L, "Set2", new CharacterClassDto("cra"), "m", List.of("tag1"), List.of())
+        new GearSetDto(1L, "Set1", new CharacterClassDto(CharacterClassName.CRA), "m", List.of("tag1"), List.of()),
+        new GearSetDto(2L, "Set2", new CharacterClassDto(CharacterClassName.CRA), "m", List.of("tag1"), List.of())
     );
     when(gearSetService.findUserGearSets(any(UserPrincipal.class))).thenReturn(gearSets);
 

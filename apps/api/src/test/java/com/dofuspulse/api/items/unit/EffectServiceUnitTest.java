@@ -42,7 +42,7 @@ public class EffectServiceUnitTest {
     Optional<EffectDto> effect = effectService.findById(mockEffect.getId());
 
     assertThat(effect).isPresent().get()
-        .extracting(EffectDto::id, EffectDto::description_template)
+        .extracting(EffectDto::id, EffectDto::descriptionTemplate)
         .containsExactly(mockEffect.getId(), mockEffect.getDescriptionTemplate());
 
     verify(effectRepository, times(1)).findById(mockEffect.getId());

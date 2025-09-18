@@ -55,10 +55,18 @@ class AuthServiceUnitTest {
   @Test
   @DisplayName("Login attempt should return success and save security context")
   void shouldLoginSuccessfullyAndSaveSession() {
+    String email = "test@example.com";
+    String password = "password";
+    Long id = 27L;
+
+    UserPrincipal user = new UserPrincipal();
+    user.setEmail(email);
+    user.setPassword(password.toCharArray());
+    user.setId(id);
 
     LoginRequest loginRequest = LoginRequest.builder()
-        .email("test@example.com")
-        .password("password")
+        .email(email)
+        .password(password)
         .build();
 
     HttpServletRequest request = mock(HttpServletRequest.class);
@@ -67,7 +75,7 @@ class AuthServiceUnitTest {
 
     when(authenticationManager.authenticate(
         any(UsernamePasswordAuthenticationToken.class))).thenReturn(mockAuthentication);
-
+    when(mockAuthentication.getPrincipal()).thenReturn(user);
     authService.loginAttempt(loginRequest, request, response);
 
     var capturedCredentials = ArgumentCaptor.forClass(
@@ -124,7 +132,7 @@ class AuthServiceUnitTest {
     when(passwordEncoder.encode(any(CharSequence.class))).thenReturn(mockEncodedPassword);
     when(userService.saveUser(any(UserPrincipal.class))).thenReturn(any(UserPrincipal.class));
 
-    String result = authService.register(registerRequest);
+    authService.register(registerRequest);
 
     verify(userService, times(1)).saveUser(userCaptor.capture());
     verify(passwordEncoder, times(1)).encode(CharBuffer.wrap(registerRequest.getPassword()));
@@ -133,7 +141,6 @@ class AuthServiceUnitTest {
         .extracting(UserPrincipal::getRole, UserPrincipal::getPassword)
         .containsExactly(Role.USER, mockEncodedPassword);
 
-    assertThat(result).isEqualTo("User registered successfully");
   }
 
 

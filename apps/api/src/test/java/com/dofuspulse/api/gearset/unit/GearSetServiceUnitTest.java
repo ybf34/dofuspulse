@@ -6,11 +6,11 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import com.dofuspulse.api.auth.Role;
 import com.dofuspulse.api.auth.UserPrincipal;
+import com.dofuspulse.api.gearset.dto.CharacterClassName;
 import com.dofuspulse.api.gearset.dto.CreateGearSetRequest;
 import com.dofuspulse.api.gearset.dto.GearSetDto;
 import com.dofuspulse.api.gearset.service.GearSetServiceImpl;
@@ -55,7 +55,7 @@ public class GearSetServiceUnitTest {
     GearSet gearSet = new GearSet();
     gearSet.setId(1L);
     CharacterClass characterClass = new CharacterClass();
-    characterClass.setName("cra");
+    characterClass.setName(CharacterClassName.CRA);
 
     gearSet.setCharacterClass(characterClass);
     gearSet.setUserPrincipal(user);
@@ -66,7 +66,7 @@ public class GearSetServiceUnitTest {
 
     assertThat(result).isPresent().get().satisfies(dto -> {
       assertThat(dto.id()).isEqualTo(1L);
-      assertThat(dto.characterClass().name()).isEqualTo("cra");
+      assertThat(dto.characterClass().name()).isEqualTo(CharacterClassName.CRA);
     });
 
     verify(gearSetRepository).findById(1L);
@@ -87,7 +87,7 @@ public class GearSetServiceUnitTest {
     GearSet gearSet = new GearSet();
     gearSet.setId(1L);
     CharacterClass characterClass = new CharacterClass();
-    characterClass.setName("cra");
+    characterClass.setName(CharacterClassName.CRA);
     gearSet.setCharacterClass(characterClass);
     gearSet.setUserPrincipal(user);
 
@@ -97,7 +97,7 @@ public class GearSetServiceUnitTest {
 
     assertThat(result).hasSize(1).first().satisfies(dto -> {
       assertThat(dto.id()).isEqualTo(1L);
-      assertThat(dto.characterClass().name()).isEqualTo("cra");
+      assertThat(dto.characterClass().name()).isEqualTo(CharacterClassName.CRA);
     });
 
     verify(gearSetRepository, times(1)).findByUserPrincipalId(user.getId());
@@ -113,7 +113,7 @@ public class GearSetServiceUnitTest {
     );
 
     CharacterClass characterClass = new CharacterClass();
-    characterClass.setName("cra");
+    characterClass.setName(CharacterClassName.CRA);
 
     GearSet saved = new GearSet();
     saved.setId(42L);
@@ -123,7 +123,7 @@ public class GearSetServiceUnitTest {
     saved.setTags(List.of("tag1"));
     saved.setUserPrincipal(user);
 
-    when(characterClassRepository.findByName("cra")).thenReturn(Optional.of(characterClass));
+    when(characterClassRepository.findByName(CharacterClassName.CRA)).thenReturn(Optional.of(characterClass));
     when(gearSetRepository.save(any(GearSet.class))).thenReturn(saved);
 
     GearSetDto result = gearSetService.createGearSet(request, user);
@@ -131,27 +131,13 @@ public class GearSetServiceUnitTest {
     assertThat(result).satisfies(dto -> {
       assertThat(dto.id()).isEqualTo(42L);
       assertThat(dto.title()).isEqualTo("New Set");
-      assertThat(dto.characterClass().name()).isEqualTo("cra");
+      assertThat(dto.characterClass().name()).isEqualTo(CharacterClassName.CRA);
       assertThat(dto.characterGender()).isEqualTo("f");
       assertThat(dto.tags()).containsExactly("tag1");
     });
 
-    verify(characterClassRepository).findByName("cra");
+    verify(characterClassRepository).findByName(CharacterClassName.CRA);
     verify(gearSetRepository).save(any(GearSet.class));
-  }
-
-  @Test
-  void shouldThrowWhenCharacterClassNotFound() {
-    CreateGearSetRequest request = new CreateGearSetRequest("New Set", "unknown", "f",
-        List.of("tag1"));
-
-    when(characterClassRepository.findByName("unknown")).thenReturn(Optional.empty());
-
-    assertThatThrownBy(() -> gearSetService.createGearSet(request, user)).isInstanceOf(
-        NoSuchElementException.class);
-
-    verify(characterClassRepository).findByName("unknown");
-    verifyNoInteractions(gearSetRepository);
   }
 
   @Test

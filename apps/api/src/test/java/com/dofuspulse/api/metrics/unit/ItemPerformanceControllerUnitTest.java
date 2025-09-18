@@ -78,7 +78,6 @@ public class ItemPerformanceControllerUnitTest {
 
     ItemDetailsSearchCriteria itemFilters = ItemDetailsSearchCriteria
         .builder()
-        .types(List.of(mockItemDetails.getItemTypeId()))
         .build();
 
     var itemFiltersQueryParams = ItemTestDataFactory.createItemDetailsQueryParams(

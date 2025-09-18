@@ -114,7 +114,6 @@ public class ItemProfitMetricsServiceIntegrationTest extends PostgresIntegration
     //given
     ItemDetailsSearchCriteria itemFilters = ItemDetailsSearchCriteria
         .builder()
-        .types(List.of(mockItemDetails.getItemTypeId()))
         .build();
 
     //when

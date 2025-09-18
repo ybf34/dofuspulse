@@ -128,7 +128,7 @@ public class ItemPerformanceServiceUnitTest {
   void shouldReturnPerformanceMetricsWhenItemsMatchesFiltersAndDates() {
     ItemDetailsSearchCriteria itemFilters = ItemDetailsSearchCriteria
         .builder()
-        .types(List.of(mockItemDetailsFirst.getItemTypeId()))
+        .typesIds(List.of(mockItemDetailsFirst.getItemTypeId()))
         .build();
 
     when(itemDetailsRepository.findAll(any(Specification.class)))

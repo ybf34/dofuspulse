@@ -1,6 +1,9 @@
 package com.dofuspulse.api.model;
 
+import com.dofuspulse.api.gearset.dto.GearSetSlotTypeIdentifier;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -27,7 +30,8 @@ public class GearSetSlotType {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  private String name;
+  @Enumerated(value = EnumType.STRING)
+  private GearSetSlotTypeIdentifier name;
 
   @ManyToMany
   @JoinTable(name = "slot_type_item_types", joinColumns = @JoinColumn(name = "slot_type_id"),

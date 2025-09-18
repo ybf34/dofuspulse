@@ -28,7 +28,7 @@ public class GlobalExceptionHandler {
     ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST,
         "Validation failed");
     problem.setTitle("Validation failed");
-    problem.setProperty("invalid-params", errors);
+    problem.setProperty("validation-errors", errors);
 
     return problem;
   }

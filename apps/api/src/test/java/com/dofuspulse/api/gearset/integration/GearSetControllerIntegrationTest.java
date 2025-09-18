@@ -178,7 +178,7 @@ public class GearSetControllerIntegrationTest extends PostgresIntegrationTestCon
       value = GearSetScenarioFactory.mockEmail,
       userDetailsServiceBeanName = "customUserDetailsService",
       setupBefore = TestExecutionEvent.TEST_EXECUTION)
-  void shouldReturn404WhenCreatingGearSetWithInvalidCharacterClass()
+  void shouldReturn400WhenCreatingGearSetWithInvalidCharacterClass()
       throws JsonProcessingException {
 
     CreateGearSetRequest invalidRequest = new CreateGearSetRequest(
@@ -193,7 +193,7 @@ public class GearSetControllerIntegrationTest extends PostgresIntegrationTestCon
         .contentType(MediaType.APPLICATION_JSON)
         .content(new ObjectMapper().writeValueAsString(invalidRequest))
         .assertThat()
-        .hasStatus(HttpStatus.NOT_FOUND);
+        .hasStatus(HttpStatus.BAD_REQUEST);
 
     List<GearSet> gearSets = gearSetRepository.findByUserPrincipalId(
         gearSetScenario.user().getId());

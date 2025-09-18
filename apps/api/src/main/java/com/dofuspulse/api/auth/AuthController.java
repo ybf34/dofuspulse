@@ -1,6 +1,6 @@
 package com.dofuspulse.api.auth;
 
-import com.dofuspulse.api.exception.ApiResponseDocumentation;
+import com.dofuspulse.api.user.dto.UserProfileDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -16,23 +16,22 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1")
-@ApiResponseDocumentation
 public class AuthController {
 
   private final AuthService authService;
 
   @PostMapping("/auth/login")
-  public ResponseEntity<String> login(
+  public ResponseEntity<UserProfileDto> login(
       @RequestBody @Valid LoginRequest loginRequest,
       HttpServletRequest request,
       HttpServletResponse response) {
-    authService.loginAttempt(loginRequest, request, response);
-    return ResponseEntity.ok().build();
+    UserProfileDto user = authService.loginAttempt(loginRequest, request, response);
+    return ResponseEntity.ok(user);
   }
 
   @PostMapping("/auth/register")
-  public ResponseEntity<String> register(@RequestBody @Validated RegisterRequest registerRequest) {
-    return ResponseEntity.ok(authService.register(registerRequest));
+  public ResponseEntity<UserProfileDto> register(@RequestBody @Validated RegisterRequest req) {
+    return ResponseEntity.ok(authService.register(req));
   }
 
   @GetMapping("/admin")

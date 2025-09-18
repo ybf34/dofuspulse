@@ -2,6 +2,7 @@ package com.dofuspulse.api.auth;
 
 
 import com.dofuspulse.api.exception.UserAlreadyExistsException;
+import com.dofuspulse.api.user.dto.UserProfileDto;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.nio.CharBuffer;
@@ -24,7 +25,7 @@ public class AuthService {
   private final PasswordEncoder passwordEncoder;
   private final SecurityContextRepository scr;
 
-  public void loginAttempt(
+  public UserProfileDto loginAttempt(
       LoginRequest loginRequest,
       HttpServletRequest request,
       HttpServletResponse response) {
@@ -40,10 +41,12 @@ public class AuthService {
     context.setAuthentication(authentication);
 
     scr.saveContext(context, request, response);
+
+    return new UserProfileDto((UserPrincipal) authentication.getPrincipal());
   }
 
   @Transactional
-  public String register(RegisterRequest request) {
+  public UserProfileDto register(RegisterRequest request) {
 
     if (userService.existsByEmail(request.getEmail())) {
       throw new UserAlreadyExistsException(
@@ -60,6 +63,6 @@ public class AuthService {
     newUser.setRole(Role.USER);
 
     userService.saveUser(newUser);
-    return "User registered successfully";
+    return new UserProfileDto(newUser);
   }
 }

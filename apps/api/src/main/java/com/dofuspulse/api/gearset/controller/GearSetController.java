@@ -1,7 +1,6 @@
 package com.dofuspulse.api.gearset.controller;
 
 import com.dofuspulse.api.auth.UserPrincipal;
-import com.dofuspulse.api.exception.ApiResponseDocumentation;
 import com.dofuspulse.api.gearset.dto.CreateGearSetRequest;
 import com.dofuspulse.api.gearset.dto.GearSetDto;
 import com.dofuspulse.api.gearset.service.contract.GearSetService;
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@ApiResponseDocumentation
 @RequestMapping("/api/v1")
 @RequiredArgsConstructor
 public class GearSetController {

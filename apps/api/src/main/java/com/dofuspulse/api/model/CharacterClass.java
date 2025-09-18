@@ -1,6 +1,9 @@
 package com.dofuspulse.api.model;
 
+import com.dofuspulse.api.gearset.dto.CharacterClassName;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -19,6 +22,7 @@ public class CharacterClass {
   @Id
   private Long id;
 
-  private String name;
+  @Enumerated(value = EnumType.STRING)
+  private CharacterClassName name;
 
 }

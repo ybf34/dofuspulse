@@ -95,12 +95,10 @@ public class PerformanceCalculator implements
 
     double salesVelocity = PerfUtil.round((double) totalItemsSold / dayCount);
     double avgDailyProfit = PerfUtil.round(profitMarginSum / dayCount);
-    double avgSoldDuration = totalItemsSold > 0 ?
-        PerfUtil.round(totalWeightedDuration / totalItemsSold) : 0;
+    double avgSoldDuration = totalItemsSold > 0 ? PerfUtil.round(totalWeightedDuration / totalItemsSold) : 0;
     double avgListingPrice = PerfUtil.round(listingPriceSum / dayCount);
     double avgCraftCost = PerfUtil.round(craftCostSum / dayCount);
-    double costPctChange = dayCount > 0 ?
-        PerfUtil.calculatePctChange(craftCosts[dayCount - 1], avgCraftCost) : 0;
+    double costPctChange = dayCount > 0 ? PerfUtil.calculatePctChange(craftCosts[dayCount - 1], avgCraftCost) : 0;
 
     return new ItemPerformance(
         itemId,

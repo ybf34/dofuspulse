@@ -125,7 +125,6 @@ public class ItemPerformanceServiceIntegrationTest extends PostgresIntegrationTe
 
     ItemDetailsSearchCriteria itemFilters = ItemDetailsSearchCriteria
         .builder()
-        .types(List.of(mockItemDetails.getItemTypeId()))
         .build();
 
     List<ItemPerformance> itemsPerformance = itemPerformanceService.getItemsPerformanceMetrics(

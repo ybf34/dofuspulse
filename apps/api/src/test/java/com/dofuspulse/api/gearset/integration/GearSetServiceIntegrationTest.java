@@ -7,6 +7,7 @@ import com.dofuspulse.api.PostgresIntegrationTestContainer;
 import com.dofuspulse.api.auth.Role;
 import com.dofuspulse.api.auth.UserPrincipal;
 import com.dofuspulse.api.auth.UserRepository;
+import com.dofuspulse.api.gearset.dto.CharacterClassName;
 import com.dofuspulse.api.gearset.dto.CreateGearSetRequest;
 import com.dofuspulse.api.gearset.dto.GearSetDto;
 import com.dofuspulse.api.gearset.fixtures.GearSetScenarioFactory;
@@ -87,12 +88,12 @@ public class GearSetServiceIntegrationTest extends PostgresIntegrationTestContai
   @Test
   void shouldCreateGearSetForUser() {
     String expectedTitle = "My gearset";
-    String expectedClass = "cra";
+    CharacterClassName expectedClass = CharacterClassName.CRA;
     String expectedGender = "f";
     List<String> expectedTags = List.of("tag1", "tag2");
 
     CreateGearSetRequest createGearSetRequest = new CreateGearSetRequest(expectedTitle,
-        expectedClass, expectedGender, expectedTags);
+        expectedClass.toString(), expectedGender, expectedTags);
 
     GearSetDto newGearSet = gearSetService.createGearSet(createGearSetRequest,
         gearSetScenario.user());

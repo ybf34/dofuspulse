@@ -39,8 +39,12 @@ public class PerfUtil {
     double max = values[0];
 
     for (double value : values) {
-      if (value < min) {min = value;}
-      if (value > max) {max = value;}
+      if (value < min) {
+        min = value;
+      }
+      if (value > max) {
+        max = value;
+      }
     }
 
     if (min == max) {

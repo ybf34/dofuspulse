@@ -87,7 +87,6 @@ public class ItemDailySalesServiceIntegrationTest extends PostgresIntegrationTes
 
     ItemDetailsSearchCriteria itemFilters = ItemDetailsSearchCriteria
         .builder()
-        .types(List.of(mockItemDetails.getItemTypeId()))
         .build();
 
     //when

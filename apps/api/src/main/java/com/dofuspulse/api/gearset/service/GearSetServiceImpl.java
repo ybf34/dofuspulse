@@ -1,6 +1,7 @@
 package com.dofuspulse.api.gearset.service;
 
 import com.dofuspulse.api.auth.UserPrincipal;
+import com.dofuspulse.api.gearset.dto.CharacterClassName;
 import com.dofuspulse.api.gearset.dto.CreateGearSetRequest;
 import com.dofuspulse.api.gearset.dto.GearSetDto;
 import com.dofuspulse.api.gearset.service.contract.GearSetService;
@@ -44,7 +45,8 @@ public class GearSetServiceImpl implements GearSetService {
     newGearSet.setTags(gearSetRequest.tags());
 
     CharacterClass characterClass =
-        characterClassRepository.findByName(gearSetRequest.characterClass())
+        characterClassRepository.findByName(
+                CharacterClassName.valueOf(gearSetRequest.characterClass().toUpperCase()))
             .orElseThrow(() -> new NoSuchElementException(
                 "Character class with name " + gearSetRequest.characterClass()
                     + " doesn't exist"));

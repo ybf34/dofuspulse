@@ -13,8 +13,6 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.annotation.web.configurers.SessionManagementConfigurer.SessionFixationConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.logout.CookieClearingLogoutHandler;
-import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.web.cors.CorsConfiguration;
@@ -27,11 +25,20 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
-  private static final String[] WHITE_LIST_URLS = {
-      "/api/v1/auth/**",
+  private static final String[] ANONYMOUS_URLS = {
+      "/api/v1/auth/login",
+      "/api/v1/auth/register"
+  };
+
+  private static final String[] PUBLIC_URLS = {
+      "/api/v1/auth/logout",
       "/login/**",
       "/actuator/**",
       "/error"
+  };
+
+  private static final String[] ADMIN_URLS = {
+      "/api/v1/admin"
   };
 
   private final UnauthorizedHandler unauthorizedHandler;
@@ -53,18 +60,18 @@ public class WebSecurityConfig {
         .exceptionHandling(exceptionHandling -> exceptionHandling
             .authenticationEntryPoint(unauthorizedHandler)
             .accessDeniedHandler(accessDeniedHandler))
-        .securityMatcher("/**")
         .logout(logout -> logout
             .logoutUrl("/api/v1/auth/logout")
-            .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler())
             .invalidateHttpSession(true)
-            .addLogoutHandler(new CookieClearingLogoutHandler("JSESSIONID"))
+            .logoutSuccessUrl(frontendHost + "/login")
             .permitAll()
         )
         .authorizeHttpRequests(registry -> registry
-            .requestMatchers(WHITE_LIST_URLS).permitAll()
-            .requestMatchers("/api/v1/admin").hasRole("ADMIN")
-            .anyRequest().authenticated());
+            .requestMatchers(ANONYMOUS_URLS).anonymous()
+            .requestMatchers(PUBLIC_URLS).permitAll()
+            .requestMatchers(ADMIN_URLS).hasRole("ADMIN")
+            .anyRequest().authenticated()
+        );
 
     return http.build();
   }

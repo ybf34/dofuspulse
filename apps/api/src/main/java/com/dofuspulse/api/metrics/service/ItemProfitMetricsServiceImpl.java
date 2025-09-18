@@ -76,7 +76,9 @@ public class ItemProfitMetricsServiceImpl implements ItemProfitMetricsService {
       List<ItemPrice> itemPrices = imr.getPriceHistoryInDateRangeForItems(List.of(itemId),
           startDate, endDate);
 
-      if (itemPrices.isEmpty() || itemCraftCosts.isEmpty()) {continue;}
+      if (itemPrices.isEmpty() || itemCraftCosts.isEmpty()) {
+        continue;
+      }
 
       List<ProfitMetrics> itemProfitMetrics = metricRegistry.calculate(
           MetricType.PROFIT_METRICS,

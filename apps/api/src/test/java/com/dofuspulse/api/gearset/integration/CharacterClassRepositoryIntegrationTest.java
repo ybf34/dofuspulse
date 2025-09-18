@@ -3,6 +3,7 @@ package com.dofuspulse.api.gearset.integration;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.dofuspulse.api.PostgresIntegrationTestContainer;
+import com.dofuspulse.api.gearset.dto.CharacterClassName;
 import com.dofuspulse.api.model.CharacterClass;
 import com.dofuspulse.api.repository.CharacterClassRepository;
 import java.util.Optional;
@@ -22,7 +23,7 @@ public class CharacterClassRepositoryIntegrationTest extends PostgresIntegration
   @BeforeEach
   void setUp() {
     characterClassRepository.deleteAll();
-    mockCharacterClass = new CharacterClass(1L, "cra");
+    mockCharacterClass = new CharacterClass(1L, CharacterClassName.CRA);
     characterClassRepository.save(mockCharacterClass);
   }
 

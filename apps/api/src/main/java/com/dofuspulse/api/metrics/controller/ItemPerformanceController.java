@@ -1,6 +1,5 @@
 package com.dofuspulse.api.metrics.controller;
 
-import com.dofuspulse.api.exception.ApiResponseDocumentation;
 import com.dofuspulse.api.items.dto.ItemDetailsSearchCriteria;
 import com.dofuspulse.api.metrics.service.contract.ItemPerformanceService;
 import com.dofuspulse.api.projections.ItemPerformance;
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1")
-@ApiResponseDocumentation
 public class ItemPerformanceController {
 
   private final ItemPerformanceService itemPerformanceService;

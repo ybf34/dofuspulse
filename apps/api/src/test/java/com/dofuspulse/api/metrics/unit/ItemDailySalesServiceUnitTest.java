@@ -163,7 +163,7 @@ public class ItemDailySalesServiceUnitTest {
     //when
     long itemCommonCategoryTypeFilter = 1;
     ItemDetailsSearchCriteria itemFilters = ItemDetailsSearchCriteria.builder()
-        .types(List.of(itemCommonCategoryTypeFilter)).build();
+        .typesIds(List.of(itemCommonCategoryTypeFilter)).build();
 
     List<DailySalesList> itemDailySalesLists = itemDailySalesService.getItemsDailySalesHistory(
         itemFilters, startDate, endDate);
@@ -192,7 +192,7 @@ public class ItemDailySalesServiceUnitTest {
 
     //given
     ItemDetailsSearchCriteria itemFilters = ItemDetailsSearchCriteria.builder()
-        .types(List.of(1L)).build();
+        .typesIds(List.of(1L)).build();
 
     when(itemDetailsRepository.findAll(any(Specification.class))).thenReturn(List.of());
 

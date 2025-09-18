@@ -194,7 +194,7 @@ public class ItemProfitMetricsServiceUnitTest {
         .thenReturn(mockProfitMetrics);
 
     ItemDetailsSearchCriteria itemFilters = ItemDetailsSearchCriteria.builder()
-        .types(List.of(1L)).build();
+        .typesIds(List.of(1L)).build();
 
     var itemsProfitMetrics = itemProfitMetricsService.getItemsProfitMetricsHistory(
         itemFilters, startDate, endDate);
