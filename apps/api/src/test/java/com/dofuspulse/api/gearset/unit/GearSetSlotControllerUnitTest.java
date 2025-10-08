@@ -16,6 +16,7 @@ import com.dofuspulse.api.auth.UserPrincipal;
 import com.dofuspulse.api.gearset.controller.GearSetSlotController;
 import com.dofuspulse.api.gearset.dto.EquipItemRequest;
 import com.dofuspulse.api.gearset.dto.GearSetSlotDto;
+import com.dofuspulse.api.gearset.dto.GearSetSlotTypeIdentifier;
 import com.dofuspulse.api.gearset.service.contract.GearSetSlotService;
 import com.dofuspulse.api.security.CustomAccessDeniedHandler;
 import com.dofuspulse.api.security.UnauthorizedHandler;
@@ -67,7 +68,7 @@ class GearSetSlotControllerUnitTest {
       userDetailsServiceBeanName = "customUserDetailsService",
       setupBefore = TestExecutionEvent.TEST_EXECUTION)
   void shouldEquipItemWith201Status() throws Exception {
-    EquipItemRequest request = new EquipItemRequest(1L, 10L);
+    EquipItemRequest request = new EquipItemRequest("HAT", 10L);
     GearSetSlotDto mockSlot =
         new GearSetSlotDto(100L, null, null);
 
@@ -87,7 +88,7 @@ class GearSetSlotControllerUnitTest {
     verify(gearSetSlotService).equipItem(captor.capture(), eq(1L), any(UserPrincipal.class));
 
     assertThat(captor.getValue().itemId()).isEqualTo(10L);
-    assertThat(captor.getValue().slotTypeId()).isEqualTo(1L);
+    assertThat(captor.getValue().slotIdentifier()).isEqualTo(GearSetSlotTypeIdentifier.HAT.toString());
   }
 
   @Test
@@ -113,8 +114,8 @@ class GearSetSlotControllerUnitTest {
       value = testUserEmail,
       userDetailsServiceBeanName = "customUserDetailsService",
       setupBefore = TestExecutionEvent.TEST_EXECUTION)
-  void shouldReturn404WhenEquipItemFailsInService() throws Exception {
-    EquipItemRequest request = new EquipItemRequest(1L, 10L);
+  void shouldReturn404WhenEquipItemForbiddenOrNotFoundGearset() throws Exception {
+    EquipItemRequest request = new EquipItemRequest("HAT", 10L);
     when(gearSetSlotService.equipItem(any(), eq(1L), any(UserPrincipal.class)))
         .thenThrow(new NoSuchElementException("GearSet not found"));
 

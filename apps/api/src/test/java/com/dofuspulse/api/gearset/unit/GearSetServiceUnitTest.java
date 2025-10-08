@@ -13,6 +13,7 @@ import com.dofuspulse.api.auth.UserPrincipal;
 import com.dofuspulse.api.gearset.dto.CharacterClassName;
 import com.dofuspulse.api.gearset.dto.CreateGearSetRequest;
 import com.dofuspulse.api.gearset.dto.GearSetDto;
+import com.dofuspulse.api.gearset.dto.UpdateGearSetRequest;
 import com.dofuspulse.api.gearset.service.GearSetServiceImpl;
 import com.dofuspulse.api.model.CharacterClass;
 import com.dofuspulse.api.model.GearSet;
@@ -62,9 +63,9 @@ public class GearSetServiceUnitTest {
 
     when(gearSetRepository.findById(1L)).thenReturn(Optional.of(gearSet));
 
-    Optional<GearSetDto> result = gearSetService.findById(1L);
+    GearSetDto result = gearSetService.findById(1L, user);
 
-    assertThat(result).isPresent().get().satisfies(dto -> {
+    assertThat(result).isNotNull().satisfies(dto -> {
       assertThat(dto.id()).isEqualTo(1L);
       assertThat(dto.characterClass().name()).isEqualTo(CharacterClassName.CRA);
     });
@@ -76,9 +77,8 @@ public class GearSetServiceUnitTest {
   void shouldReturnEmptyWhenGearSetNotFoundById() {
     when(gearSetRepository.findById(1L)).thenReturn(Optional.empty());
 
-    Optional<GearSetDto> result = gearSetService.findById(1L);
+    assertThatThrownBy(() -> gearSetService.findById(1L, user)).isInstanceOf(NoSuchElementException.class);
 
-    assertThat(result).isEmpty();
     verify(gearSetRepository, times(1)).findById(1L);
   }
 
@@ -105,12 +105,7 @@ public class GearSetServiceUnitTest {
 
   @Test
   void shouldCreateGearSet() {
-    CreateGearSetRequest request = new CreateGearSetRequest(
-        "New Set",
-        "cra",
-        "f",
-        List.of("tag1")
-    );
+    CreateGearSetRequest request = new CreateGearSetRequest("New Set", "cra", "f", List.of("tag1"));
 
     CharacterClass characterClass = new CharacterClass();
     characterClass.setName(CharacterClassName.CRA);
@@ -141,6 +136,46 @@ public class GearSetServiceUnitTest {
   }
 
   @Test
+  void shouldUpdateGearset() {
+
+    String newTitle = "gearset updated";
+    CharacterClassName newClass = CharacterClassName.valueOf("CRA");
+    String newGenre = "m";
+    List<String> newTags = List.of("tag1", "tag2");
+
+    UpdateGearSetRequest updateGearSetRequest = new UpdateGearSetRequest(newTitle, newClass.toString(), newGenre,
+        newTags);
+
+    CharacterClass characterClass = new CharacterClass();
+    characterClass.setName(CharacterClassName.CRA);
+
+    GearSet saved = new GearSet();
+    saved.setId(42L);
+    saved.setTitle(newTitle);
+    saved.setCharacterClass(characterClass);
+    saved.setCharacterGender(newGenre);
+    saved.setTags(newTags);
+    saved.setUserPrincipal(user);
+
+    when(gearSetRepository.findById(42L)).thenReturn(Optional.of(saved));
+    when(characterClassRepository.findByName(newClass)).thenReturn(Optional.of(characterClass));
+    when(gearSetRepository.save(any(GearSet.class))).thenReturn(saved);
+
+    GearSetDto result = gearSetService.updateGearSet(42L, updateGearSetRequest, user);
+
+    assertThat(result).satisfies(dto -> {
+      assertThat(dto.id()).isEqualTo(42L);
+      assertThat(dto.title()).isEqualTo(newTitle);
+      assertThat(dto.characterClass().name()).isEqualTo(newClass);
+      assertThat(dto.characterGender()).isEqualTo(newGenre);
+      assertThat(dto.tags()).usingRecursiveAssertion().isEqualTo(newTags);
+    });
+
+    verify(characterClassRepository).findByName(CharacterClassName.CRA);
+    verify(gearSetRepository).save(any(GearSet.class));
+  }
+
+  @Test
   void shouldDeleteOwnedGearSet() {
     GearSet gearSet = new GearSet();
     gearSet.setId(1L);
@@ -157,8 +192,7 @@ public class GearSetServiceUnitTest {
   void shouldThrowWhenDeletingNonExistentGearSet() {
     when(gearSetRepository.findById(1L)).thenReturn(Optional.empty());
 
-    assertThatThrownBy(() -> gearSetService.deleteGearSet(1L, user)).isInstanceOf(
-        NoSuchElementException.class);
+    assertThatThrownBy(() -> gearSetService.deleteGearSet(1L, user)).isInstanceOf(NoSuchElementException.class);
 
     verify(gearSetRepository, never()).deleteById(any());
   }
@@ -174,8 +208,7 @@ public class GearSetServiceUnitTest {
 
     when(gearSetRepository.findById(1L)).thenReturn(Optional.of(gearSet));
 
-    assertThatThrownBy(() -> gearSetService.deleteGearSet(1L, user)).isInstanceOf(
-        NoSuchElementException.class);
+    assertThatThrownBy(() -> gearSetService.deleteGearSet(1L, user)).isInstanceOf(NoSuchElementException.class);
 
     verify(gearSetRepository, never()).deleteById(any());
   }

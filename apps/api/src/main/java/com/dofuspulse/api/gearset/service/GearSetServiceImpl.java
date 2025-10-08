@@ -4,6 +4,7 @@ import com.dofuspulse.api.auth.UserPrincipal;
 import com.dofuspulse.api.gearset.dto.CharacterClassName;
 import com.dofuspulse.api.gearset.dto.CreateGearSetRequest;
 import com.dofuspulse.api.gearset.dto.GearSetDto;
+import com.dofuspulse.api.gearset.dto.UpdateGearSetRequest;
 import com.dofuspulse.api.gearset.service.contract.GearSetService;
 import com.dofuspulse.api.model.CharacterClass;
 import com.dofuspulse.api.model.GearSet;
@@ -11,7 +12,6 @@ import com.dofuspulse.api.repository.CharacterClassRepository;
 import com.dofuspulse.api.repository.GearSetRepository;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,8 +25,11 @@ public class GearSetServiceImpl implements GearSetService {
 
   @Override
   @Transactional(readOnly = true)
-  public Optional<GearSetDto> findById(Long id) {
-    return gearSetRepository.findById(id).map(GearSetDto::new);
+  public GearSetDto findById(Long id, UserPrincipal user) {
+    return gearSetRepository.findById(id)
+        .filter(g -> user.getId().equals(g.getUserPrincipal().getId()))
+        .map(GearSetDto::new)
+        .orElseThrow(() -> new NoSuchElementException("Gearset not found."));
   }
 
   @Override
@@ -54,6 +57,37 @@ public class GearSetServiceImpl implements GearSetService {
     newGearSet.setCharacterClass(characterClass);
     newGearSet.setCharacterGender(gearSetRequest.characterGender());
     return new GearSetDto(gearSetRepository.save(newGearSet));
+  }
+
+  @Override
+  @Transactional
+  public GearSetDto updateGearSet(Long id, UpdateGearSetRequest request, UserPrincipal user) {
+
+    GearSet gearset = gearSetRepository.findById(id)
+        .filter(g -> g.getUserPrincipal().getId().equals(user.getId()))
+        .orElseThrow(() -> new NoSuchElementException("GearSet not found."));
+
+    if (request.characterClass() != null) {
+      CharacterClass characterClass = characterClassRepository.findByName(
+              CharacterClassName.valueOf(request.characterClass().toUpperCase()))
+          .orElseThrow(() -> new NoSuchElementException(
+              "Character class " + request.characterClass() + " doesn't exist"));
+      gearset.setCharacterClass(characterClass);
+    }
+
+    if (request.title() != null) {
+      gearset.setTitle(request.title());
+    }
+
+    if (request.characterGender() != null) {
+      gearset.setCharacterGender(request.characterGender());
+    }
+
+    if (request.tags() != null) {
+      gearset.setTags(request.tags());
+    }
+
+    return new GearSetDto(gearSetRepository.save(gearset));
   }
 
   @Override

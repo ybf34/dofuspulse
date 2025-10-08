@@ -103,9 +103,10 @@ public class GearSetScenarioFactory {
 
   public static Stream<Arguments> invalidEquipItemRequests() {
     return Stream.of(
-        Arguments.of("Null slotTypeId", new EquipItemRequest(null, 10L)),
-        Arguments.of("Null itemId", new EquipItemRequest(1L, null)),
-        Arguments.of("Both null", new EquipItemRequest(null, null))
+        Arguments.of("Null slotIdentifier", new EquipItemRequest(null, 10L)),
+        Arguments.of("Null itemId", new EquipItemRequest("AMULET", null)),
+        Arguments.of("Both null", new EquipItemRequest(null, null)),
+        Arguments.of("Incorrect slot identifier", new EquipItemRequest("X", 10L))
     );
   }
 

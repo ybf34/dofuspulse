@@ -1,5 +1,6 @@
 package com.dofuspulse.api.repository;
 
+import com.dofuspulse.api.gearset.dto.GearSetSlotTypeIdentifier;
 import com.dofuspulse.api.model.GearSetSlotType;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,7 +14,8 @@ public interface GearSetSlotTypeRepository extends JpaRepository<GearSetSlotType
       SELECT gst
       FROM GearSetSlotType gst
       LEFT JOIN FETCH gst.itemTypes
-      WHERE gst.id = :id
+      WHERE gst.name = :name
       """)
-  Optional<GearSetSlotType> findById(@Param("id") @NonNull Long id);
+  Optional<GearSetSlotType> findByName(@Param("name") @NonNull GearSetSlotTypeIdentifier slotTypeName);
+
 }

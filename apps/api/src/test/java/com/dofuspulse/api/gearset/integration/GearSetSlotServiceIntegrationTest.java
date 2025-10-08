@@ -75,7 +75,7 @@ public class GearSetSlotServiceIntegrationTest extends PostgresIntegrationTestCo
   void shouldEquipItem() {
 
     EquipItemRequest equipItemRequest = new EquipItemRequest(
-        gearSetScenario.slotType().getId(),
+        gearSetScenario.slotType().getName().toString(),
         gearSetScenario.itemDetails().getId()
     );
 
@@ -101,7 +101,7 @@ public class GearSetSlotServiceIntegrationTest extends PostgresIntegrationTestCo
   void shouldThrowWhenGearSetNotFound() {
     EquipItemRequest request =
         new EquipItemRequest(
-            gearSetScenario.slotType().getId(), gearSetScenario.itemDetails().getId());
+            gearSetScenario.slotType().getName().toString(), gearSetScenario.itemDetails().getId());
 
     assertThatThrownBy(() -> gearSetSlotService.equipItem(request, 999L, gearSetScenario.user()))
         .isInstanceOf(NoSuchElementException.class);
@@ -116,7 +116,7 @@ public class GearSetSlotServiceIntegrationTest extends PostgresIntegrationTestCo
 
     EquipItemRequest request =
         new EquipItemRequest(
-            gearSetScenario.slotType().getId(), gearSetScenario.itemDetails().getId());
+            gearSetScenario.slotType().getName().toString(), gearSetScenario.itemDetails().getId());
 
     assertThatThrownBy(
         () -> gearSetSlotService.equipItem(request, gearSetScenario.gearSet().getId(), otherUser))
@@ -125,7 +125,7 @@ public class GearSetSlotServiceIntegrationTest extends PostgresIntegrationTestCo
 
   @Test
   void shouldThrowWhenSlotTypeNotFound() {
-    EquipItemRequest request = new EquipItemRequest(999L, gearSetScenario.itemDetails().getId());
+    EquipItemRequest request = new EquipItemRequest("BOOTS", gearSetScenario.itemDetails().getId());
 
     assertThatThrownBy(
         () -> gearSetSlotService.equipItem(request, gearSetScenario.gearSet().getId(),
@@ -135,7 +135,7 @@ public class GearSetSlotServiceIntegrationTest extends PostgresIntegrationTestCo
 
   @Test
   void shouldThrowWhenItemNotFound() {
-    EquipItemRequest request = new EquipItemRequest(gearSetScenario.slotType().getId(), 999L);
+    EquipItemRequest request = new EquipItemRequest(gearSetScenario.slotType().getName().toString(), 999L);
 
     assertThatThrownBy(
         () -> gearSetSlotService.equipItem(request, gearSetScenario.gearSet().getId(),
@@ -152,7 +152,7 @@ public class GearSetSlotServiceIntegrationTest extends PostgresIntegrationTestCo
                 2L, "Ring", 100L, 200L, ringType.getId(), List.of(), List.of(), List.of()));
 
     EquipItemRequest request =
-        new EquipItemRequest(gearSetScenario.slotType().getId(), ringItem.getId());
+        new EquipItemRequest(gearSetScenario.slotType().getName().toString(), ringItem.getId());
 
     assertThatThrownBy(
         () -> gearSetSlotService.equipItem(request, gearSetScenario.gearSet().getId(),

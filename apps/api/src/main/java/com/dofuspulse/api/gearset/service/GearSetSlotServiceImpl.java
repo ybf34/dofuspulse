@@ -5,6 +5,7 @@ import com.dofuspulse.api.exception.ItemNotFoundException;
 import com.dofuspulse.api.exception.ItemTypeIncompatibilityException;
 import com.dofuspulse.api.gearset.dto.EquipItemRequest;
 import com.dofuspulse.api.gearset.dto.GearSetSlotDto;
+import com.dofuspulse.api.gearset.dto.GearSetSlotTypeIdentifier;
 import com.dofuspulse.api.gearset.service.contract.GearSetSlotService;
 import com.dofuspulse.api.model.GearSet;
 import com.dofuspulse.api.model.GearSetSlot;
@@ -36,10 +37,11 @@ public class GearSetSlotServiceImpl implements GearSetSlotService {
         .filter(g -> g.getUserPrincipal().getId().equals(user.getId()))
         .orElseThrow(() -> new NoSuchElementException("GearSet not found"));
 
-    GearSetSlotType gearSetSlotType = slotTypeRepository.findById(request.slotTypeId())
+    GearSetSlotType gearSetSlotType = slotTypeRepository.findByName(
+            GearSetSlotTypeIdentifier.valueOf(request.slotIdentifier().toUpperCase()))
         .orElseThrow(
             () -> new NoSuchElementException(
-                "GearSet slot type not found with id " + request.slotTypeId()));
+                "GearSet slot type not found with identifier " + request.slotIdentifier()));
 
     ItemDetails itemDetails = itemDetailsRepository.findById(request.itemId())
         .orElseThrow(

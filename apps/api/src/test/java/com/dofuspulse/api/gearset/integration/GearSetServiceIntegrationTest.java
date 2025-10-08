@@ -10,6 +10,7 @@ import com.dofuspulse.api.auth.UserRepository;
 import com.dofuspulse.api.gearset.dto.CharacterClassName;
 import com.dofuspulse.api.gearset.dto.CreateGearSetRequest;
 import com.dofuspulse.api.gearset.dto.GearSetDto;
+import com.dofuspulse.api.gearset.dto.UpdateGearSetRequest;
 import com.dofuspulse.api.gearset.fixtures.GearSetScenarioFactory;
 import com.dofuspulse.api.gearset.fixtures.GearSetScenarioFactory.GearSetScenario;
 import com.dofuspulse.api.gearset.service.GearSetServiceImpl;
@@ -23,7 +24,6 @@ import com.dofuspulse.api.repository.ItemDetailsRepository;
 import com.dofuspulse.api.repository.ItemTypeRepository;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Optional;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -69,10 +69,17 @@ public class GearSetServiceIntegrationTest extends PostgresIntegrationTestContai
   void shouldReturnGearSetById() {
     GearSet expectedGearSet = gearSetScenario.gearSet();
 
-    Optional<GearSetDto> gearSet = gearSetService.findById(gearSetScenario.gearSet().getId());
+    GearSetDto gearSet = gearSetService.findById(gearSetScenario.gearSet().getId(), gearSetScenario.user());
 
-    assertThat(gearSet).isPresent().get().usingRecursiveComparison()
+    assertThat(gearSet).isNotNull()
+        .usingRecursiveComparison()
         .isEqualTo(new GearSetDto(expectedGearSet));
+  }
+
+  @Test
+  void shouldThrowExceptionWhenGearsetNotFound() {
+    assertThatThrownBy(() -> gearSetService.findById(28L, gearSetScenario.user())).isInstanceOf(
+        NoSuchElementException.class);
   }
 
   @Test
@@ -111,6 +118,42 @@ public class GearSetServiceIntegrationTest extends PostgresIntegrationTestContai
 
       assertThat(newGearSet).usingRecursiveComparison().isEqualTo(new GearSetDto(persisted));
     }, () -> Assertions.fail("Expected  new gearset to be persisted but not found"));
+  }
+
+  @Test
+  void shouldUpdateGearset() {
+    String newTitle = "gearset updated";
+    CharacterClassName newClass = CharacterClassName.valueOf("CRA");
+    String newGenre = "m";
+    List<String> newTags = List.of("tag1", "tag2");
+
+    UpdateGearSetRequest updateGearSetRequest = new UpdateGearSetRequest(
+        newTitle,
+        newClass.toString(),
+        newGenre,
+        newTags
+    );
+
+    GearSetDto updatedGearSet = gearSetService.updateGearSet(gearSetScenario.gearSet().getId(),
+        updateGearSetRequest,
+        gearSetScenario.user());
+
+    gearSetRepository.findById(updatedGearSet.id())
+        .ifPresent(gearset -> {
+          assertThat(gearset).satisfies(gs -> {
+            assertThat(gs.getUserPrincipal().getId()).as("Ownership must match")
+                .isEqualTo(gearSetScenario.user().getId());
+
+            assertThat(gs.getTitle()).isEqualTo(newTitle);
+            assertThat(gs.getCharacterClass().getName()).isEqualTo(newClass);
+            assertThat(gs.getCharacterGender()).isEqualTo(newGenre);
+            assertThat(gs.getTags()).containsExactlyElementsOf(newTags);
+          });
+
+          assertThat(updatedGearSet)
+              .usingRecursiveComparison()
+              .isEqualTo(new GearSetDto(gearset));
+        });
   }
 
   @Test

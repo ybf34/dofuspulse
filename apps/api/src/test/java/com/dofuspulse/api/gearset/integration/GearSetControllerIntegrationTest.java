@@ -8,6 +8,7 @@ import com.dofuspulse.api.auth.UserPrincipal;
 import com.dofuspulse.api.auth.UserRepository;
 import com.dofuspulse.api.gearset.dto.CreateGearSetRequest;
 import com.dofuspulse.api.gearset.dto.GearSetDto;
+import com.dofuspulse.api.gearset.dto.UpdateGearSetRequest;
 import com.dofuspulse.api.gearset.fixtures.GearSetScenarioFactory;
 import com.dofuspulse.api.gearset.fixtures.GearSetScenarioFactory.GearSetScenario;
 import com.dofuspulse.api.model.GearSet;
@@ -28,7 +29,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.TestExecutionEvent;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.assertj.MockMvcTester;
 import org.springframework.transaction.annotation.Transactional;
@@ -77,7 +77,10 @@ public class GearSetControllerIntegrationTest extends PostgresIntegrationTestCon
   }
 
   @Test
-  @WithMockUser
+  @WithUserDetails(
+      value = GearSetScenarioFactory.mockEmail,
+      userDetailsServiceBeanName = "customUserDetailsService",
+      setupBefore = TestExecutionEvent.TEST_EXECUTION)
   void shouldReturnGearSetByIdWith200Status() {
 
     mvcTester.get()
@@ -91,7 +94,10 @@ public class GearSetControllerIntegrationTest extends PostgresIntegrationTestCon
   }
 
   @Test
-  @WithMockUser
+  @WithUserDetails(
+      value = GearSetScenarioFactory.mockEmail,
+      userDetailsServiceBeanName = "customUserDetailsService",
+      setupBefore = TestExecutionEvent.TEST_EXECUTION)
   void shouldReturn404WhenGearSetNotFoundById() {
     mvcTester.get()
         .uri("/api/v1/gearsets/{id}", 9999L) // nonexistent
@@ -170,6 +176,43 @@ public class GearSetControllerIntegrationTest extends PostgresIntegrationTestCon
           assertThat(gs.getCharacterGender()).isEqualTo(expectedGender);
           assertThat(gs.getTags()).containsExactlyElementsOf(expectedTags);
         });
+
+  }
+
+  @Test
+  @WithUserDetails(
+      value = GearSetScenarioFactory.mockEmail,
+      userDetailsServiceBeanName = "customUserDetailsService",
+      setupBefore = TestExecutionEvent.TEST_EXECUTION
+  )
+  void shouldUpdateGearsetWith200Status() throws Exception {
+    //given
+    String newTitle = "gearset updated";
+    String newClass = "CRA";
+    String newGenre = "m";
+    List<String> newTags = List.of("tag1", "tag2");
+
+    UpdateGearSetRequest updateGearSetRequest = new UpdateGearSetRequest(
+        newTitle,
+        newClass,
+        newGenre,
+        newTags
+    );
+
+    //when
+    mvcTester.put()
+        .uri("/api/v1/gearsets/{id}", gearSetScenario.gearSet().getId())
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(new ObjectMapper().writeValueAsString(updateGearSetRequest))
+        .assertThat()
+        .hasStatus(200)
+        .bodyJson()
+        .hasPath("$.id")
+        .hasPath("$.title")
+        .hasPath("$.characterClass")
+        .hasPath("$.characterGender")
+        .hasPath("$.tags")
+        .hasPath("$.slots");
 
   }
 

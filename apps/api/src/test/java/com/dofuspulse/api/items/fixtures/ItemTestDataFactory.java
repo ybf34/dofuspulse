@@ -32,6 +32,7 @@ public class ItemTestDataFactory {
     mockItemDetails.setItemTypeId(1L);
     mockItemDetails.setIngredientIds(ingredientIds);
     mockItemDetails.setQuantities(quantities);
+
     mockItemDetails.setPossibleEffects(List.of());
 
     return mockItemDetails;
@@ -39,7 +40,7 @@ public class ItemTestDataFactory {
 
   public static ItemDetailsSearchCriteria createValidTestItemSearchCriteria() {
     return ItemDetailsSearchCriteria.builder().name("X").minLevel(1L).maxLevel(200L)
-        .typesIds(List.of(1L)).ingredient(14L).effect(111).build();
+        .typesIds(List.of(1L)).ingredient(14L).effectsIds(List.of()).build();
   }
 
   public static ItemDetailsSearchCriteria createInvalidTestItemSearchCriteria() {
@@ -50,7 +51,7 @@ public class ItemTestDataFactory {
         .maxLevel(300L)
         .typesIds(List.of(1L))
         .ingredient(14L)
-        .effect(111)
+        .effectsIds(List.of(111L))
         .build();
   }
 
@@ -61,8 +62,12 @@ public class ItemTestDataFactory {
       queryParams.add("name", filters.name());
     }
     if (filters.typesIds() != null) {
-      queryParams.add("types",
+      queryParams.add("typesIds",
           filters.typesIds().stream().map(String::valueOf).collect(Collectors.joining(",")));
+    }
+    if (filters.effectsIds() != null) {
+      queryParams.add("effectsIds",
+          filters.effectsIds().stream().map(String::valueOf).collect(Collectors.joining(",")));
     }
     if (filters.ingredient() != null) {
       queryParams.add("ingredient", String.valueOf(filters.ingredient()));
@@ -73,18 +78,31 @@ public class ItemTestDataFactory {
     if (filters.maxLevel() != null) {
       queryParams.add("maxLevel", String.valueOf(filters.maxLevel()));
     }
-
     return queryParams;
   }
 
   public static Stream<Arguments> itemDetailsQueryParamsScenarios() {
     return Stream.of(
+
         Arguments.of("Out of range minLevel/maxLevel",
             ItemTestDataFactory.createItemDetailsQueryParams(
                 ItemDetailsSearchCriteria.builder().minLevel(0L).maxLevel(300L).typesIds(List.of(1L))
                     .build())),
+
         Arguments.of("Name exceed max characters", ItemTestDataFactory.createItemDetailsQueryParams(
-            ItemDetailsSearchCriteria.builder().name("A".repeat(101)).typesIds(List.of(1L)).build())));
+            ItemDetailsSearchCriteria.builder().name("A".repeat(101)).typesIds(List.of(1L)).build())),
+
+        Arguments.of("typesIds exceeds max size (46 elements)", ItemTestDataFactory.createItemDetailsQueryParams(
+            ItemDetailsSearchCriteria.builder()
+                .typesIds(Stream.iterate(1L, i -> i + 1).limit(46).collect(Collectors.toList()))
+                .build())),
+
+        Arguments.of("effectsIds exceeds max size (21 elements)", ItemTestDataFactory.createItemDetailsQueryParams(
+            ItemDetailsSearchCriteria.builder()
+                .effectsIds(Stream.iterate(100L, i -> i + 1).limit(21).collect(Collectors.toList()))
+                .typesIds(List.of(1L))
+                .build()))
+    );
   }
 
 }

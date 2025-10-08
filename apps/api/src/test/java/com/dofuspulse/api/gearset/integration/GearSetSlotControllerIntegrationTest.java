@@ -80,7 +80,7 @@ public class GearSetSlotControllerIntegrationTest extends PostgresIntegrationTes
       setupBefore = TestExecutionEvent.TEST_EXECUTION)
   void shouldEquipItemForUserGearSetWith200Status() throws Exception {
     EquipItemRequest request = new EquipItemRequest(
-        gearSetScenario.slotType().getId(),
+        gearSetScenario.slotType().getName().toString(),
         gearSetScenario.itemDetails().getId()
     );
 
@@ -112,7 +112,7 @@ public class GearSetSlotControllerIntegrationTest extends PostgresIntegrationTes
     gearSetSlotTypeRepository.deleteAll();
 
     EquipItemRequest request = new EquipItemRequest(
-        gearSetScenario.slotType().getId(),
+        gearSetScenario.slotType().getName().toString(),
         gearSetScenario.itemDetails().getId()
     );
 
@@ -143,7 +143,7 @@ public class GearSetSlotControllerIntegrationTest extends PostgresIntegrationTes
 
     //equiping a ring on amulet slot
     EquipItemRequest request = new EquipItemRequest(
-        gearSetScenario.slotType().getId(),
+        gearSetScenario.slotType().getName().toString(),
         ringItemDetails.getId()
     );
 
@@ -182,7 +182,7 @@ public class GearSetSlotControllerIntegrationTest extends PostgresIntegrationTes
       setupBefore = TestExecutionEvent.TEST_EXECUTION)
   void shouldReturn404WhenEquippingItemOnAnotherUsersGearSet() throws Exception {
     EquipItemRequest request = new EquipItemRequest(
-        gearSetScenario.slotType().getId(),
+        gearSetScenario.slotType().getName().toString(),
         gearSetScenario.itemDetails().getId()
     );
 

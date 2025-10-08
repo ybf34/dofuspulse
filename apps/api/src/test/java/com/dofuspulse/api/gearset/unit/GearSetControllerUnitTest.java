@@ -16,13 +16,14 @@ import com.dofuspulse.api.gearset.dto.CharacterClassDto;
 import com.dofuspulse.api.gearset.dto.CharacterClassName;
 import com.dofuspulse.api.gearset.dto.CreateGearSetRequest;
 import com.dofuspulse.api.gearset.dto.GearSetDto;
+import com.dofuspulse.api.gearset.dto.UpdateGearSetRequest;
 import com.dofuspulse.api.gearset.service.GearSetServiceImpl;
 import com.dofuspulse.api.security.CustomAccessDeniedHandler;
 import com.dofuspulse.api.security.UnauthorizedHandler;
 import com.dofuspulse.api.security.WebSecurityConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
-import java.util.Optional;
+import java.util.NoSuchElementException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -66,10 +67,15 @@ public class GearSetControllerUnitTest {
   }
 
   @Test
-  @WithMockUser
+  @WithUserDetails(
+      value = testUserEmail,
+      userDetailsServiceBeanName = "customUserDetailsService",
+      setupBefore = TestExecutionEvent.TEST_EXECUTION
+  )
   void shouldReturnGearSetById() {
 
-    when(gearSetService.findById(mockGearSet.id())).thenReturn(Optional.of(mockGearSet));
+    when(gearSetService.findById(eq(mockGearSet.id()), any(UserPrincipal.class))).thenReturn(mockGearSet);
+
     mvcTester.get()
         .uri("/api/v1/gearsets/{id}", mockGearSet.id())
         .contentType(MediaType.APPLICATION_JSON)
@@ -79,14 +85,19 @@ public class GearSetControllerUnitTest {
         .convertTo(GearSetDto.class)
         .isEqualTo(mockGearSet);
 
-    verify(gearSetService, times(1)).findById(mockGearSet.id());
+    verify(gearSetService, times(1)).findById(eq(mockGearSet.id()), any(UserPrincipal.class));
   }
 
   @Test
-  @WithMockUser
+  @WithUserDetails(
+      value = testUserEmail,
+      userDetailsServiceBeanName = "customUserDetailsService",
+      setupBefore = TestExecutionEvent.TEST_EXECUTION
+  )
   void shouldReturn404WhenGearSetByIdNotFound() {
 
-    when(gearSetService.findById(mockGearSet.id())).thenReturn(Optional.empty());
+    when(gearSetService.findById(eq(mockGearSet.id()), any(UserPrincipal.class))).thenThrow(
+        new NoSuchElementException(""));
 
     mvcTester.get()
         .uri("/api/v1/gearsets/{id}", mockGearSet.id())
@@ -94,7 +105,7 @@ public class GearSetControllerUnitTest {
         .assertThat()
         .hasStatus(404);
 
-    verify(gearSetService, times(1)).findById(mockGearSet.id());
+    verify(gearSetService, times(1)).findById(eq(mockGearSet.id()), any(UserPrincipal.class));
   }
 
   @Test
@@ -150,7 +161,15 @@ public class GearSetControllerUnitTest {
         .contentType(MediaType.APPLICATION_JSON)
         .content(new ObjectMapper().writeValueAsString(createGearSetRequest))
         .assertThat()
-        .hasStatus(201);
+        .hasStatus(201)
+        .bodyJson()
+        .hasPath("$.id")
+        .hasPath("$.title")
+        .hasPath("$.characterClass")
+        .hasPath("$.characterGender")
+        .hasPath("$.tags")
+        .hasPath("$.slots");
+
 
     //then
     ArgumentCaptor<CreateGearSetRequest> captor = ArgumentCaptor.forClass(
@@ -163,6 +182,61 @@ public class GearSetControllerUnitTest {
           assertThat(captured.characterClass()).isEqualTo(expectedClass);
           assertThat(captured.characterGender()).isEqualTo(expectedGender);
           assertThat(captured.tags()).containsExactlyElementsOf(expectedTags);
+        });
+  }
+
+  @Test
+  @WithUserDetails(
+      value = testUserEmail,
+      userDetailsServiceBeanName = "customUserDetailsService",
+      setupBefore = TestExecutionEvent.TEST_EXECUTION
+  )
+  void shouldUpdateGearsetWith200Status() throws Exception {
+    //given
+    String newTitle = "gearset updated";
+    String newClass = "iop";
+    String newGenre = "m";
+    List<String> newTags = List.of("tag1", "tag2");
+
+    UpdateGearSetRequest updateGearSetRequest = new UpdateGearSetRequest(
+        newTitle,
+        newClass,
+        newGenre,
+        newTags
+    );
+
+    when(gearSetService.updateGearSet(eq(mockGearSet.id()), any(UpdateGearSetRequest.class),
+        any(UserPrincipal.class)))
+        .thenReturn(mockGearSet);
+
+    //when
+    mvcTester.put()
+        .uri("/api/v1/gearsets/{id}", mockGearSet.id())
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(new ObjectMapper().writeValueAsString(updateGearSetRequest))
+        .assertThat()
+        .hasStatus(200)
+        .bodyJson()
+        .hasPath("$.id")
+        .hasPath("$.title")
+        .hasPath("$.characterClass")
+        .hasPath("$.characterGender")
+        .hasPath("$.tags")
+        .hasPath("$.slots");
+
+    //then
+    ArgumentCaptor<UpdateGearSetRequest> captor = ArgumentCaptor.forClass(
+        UpdateGearSetRequest.class);
+
+    verify(gearSetService, times(1)).updateGearSet(eq(mockGearSet.id()), captor.capture(),
+        any(UserPrincipal.class));
+
+    assertThat(captor.getValue())
+        .satisfies(captured -> {
+          assertThat(captured.title()).isEqualTo(newTitle);
+          assertThat(captured.characterClass()).isEqualTo(newClass);
+          assertThat(captured.characterGender()).isEqualTo(newGenre);
+          assertThat(captured.tags()).containsExactlyElementsOf(newTags);
         });
   }
 

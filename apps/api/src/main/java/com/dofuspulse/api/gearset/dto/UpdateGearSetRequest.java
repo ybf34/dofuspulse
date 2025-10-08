@@ -6,18 +6,14 @@ import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import java.util.List;
 
+public record UpdateGearSetRequest(
 
-public record CreateGearSetRequest(
-
-    @NotBlank
     @Size(min = 1, max = 60)
     String title,
 
-    @NotBlank
     @ValidCharacterClassName
     String characterClass,
 
-    @NotBlank
     @Pattern(regexp = "^[mf]$", message = "Gender must be 'm' or 'f'")
     String characterGender,
 
@@ -26,5 +22,5 @@ public record CreateGearSetRequest(
         @NotBlank
         @Size(min = 1, max = 15, message = "Each tag must be between 1 and 15 characters long.")
         @Pattern(regexp = "^[a-z0-9- ]+$", message = "Tags must be alphanumeric.")
-            String> tags
-) {}
+            String> tags) {
+}

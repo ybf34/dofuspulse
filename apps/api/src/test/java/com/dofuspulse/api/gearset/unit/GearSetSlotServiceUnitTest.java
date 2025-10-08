@@ -11,6 +11,7 @@ import com.dofuspulse.api.exception.ItemNotFoundException;
 import com.dofuspulse.api.exception.ItemTypeIncompatibilityException;
 import com.dofuspulse.api.gearset.dto.EquipItemRequest;
 import com.dofuspulse.api.gearset.dto.GearSetSlotDto;
+import com.dofuspulse.api.gearset.dto.GearSetSlotTypeIdentifier;
 import com.dofuspulse.api.gearset.service.GearSetSlotServiceImpl;
 import com.dofuspulse.api.model.GearSet;
 import com.dofuspulse.api.model.GearSetSlot;
@@ -62,6 +63,7 @@ public class GearSetSlotServiceUnitTest {
 
     ItemType itemType = new ItemType(1L, "Amulet");
     slotType = new GearSetSlotType();
+    slotType.setName(GearSetSlotTypeIdentifier.AMULET);
     slotType.setId(1L);
     slotType.setItemTypes(List.of(itemType));
 
@@ -71,10 +73,10 @@ public class GearSetSlotServiceUnitTest {
 
   @Test
   void shouldEquipItem() {
-    EquipItemRequest request = new EquipItemRequest(slotType.getId(), item.getId());
+    EquipItemRequest request = new EquipItemRequest(slotType.getName().toString(), item.getId());
 
     when(gearSetRepository.findById(1L)).thenReturn(Optional.of(gearSet));
-    when(slotTypeRepository.findById(1L)).thenReturn(Optional.of(slotType));
+    when(slotTypeRepository.findByName(GearSetSlotTypeIdentifier.AMULET)).thenReturn(Optional.of(slotType));
     when(itemDetailsRepository.findById(10L)).thenReturn(Optional.of(item));
     when(slotRepository.findFirstByGearSetAndGearSetSlotType(gearSet, slotType))
         .thenReturn(Optional.empty());
@@ -95,7 +97,7 @@ public class GearSetSlotServiceUnitTest {
   void shouldThrowWhenGearSetNotFound() {
     when(gearSetRepository.findById(1L)).thenReturn(Optional.empty());
 
-    assertThatThrownBy(() -> gearSetSlotService.equipItem(new EquipItemRequest(1L, 10L), 1L, user))
+    assertThatThrownBy(() -> gearSetSlotService.equipItem(new EquipItemRequest("AMULET", 10L), 1L, user))
         .isInstanceOf(NoSuchElementException.class);
   }
 
@@ -107,26 +109,27 @@ public class GearSetSlotServiceUnitTest {
 
     when(gearSetRepository.findById(1L)).thenReturn(Optional.of(gearSet));
 
-    assertThatThrownBy(() -> gearSetSlotService.equipItem(new EquipItemRequest(1L, 10L), 1L, user))
+    assertThatThrownBy(() -> gearSetSlotService.equipItem(new EquipItemRequest("AMULET", 10L), 1L, user))
         .isInstanceOf(NoSuchElementException.class);
   }
 
   @Test
   void shouldThrowWhenSlotTypeNotFound() {
     when(gearSetRepository.findById(1L)).thenReturn(Optional.of(gearSet));
-    when(slotTypeRepository.findById(1L)).thenReturn(Optional.empty());
+    when(slotTypeRepository.findByName(GearSetSlotTypeIdentifier.AMULET)).thenReturn(Optional.empty());
 
-    assertThatThrownBy(() -> gearSetSlotService.equipItem(new EquipItemRequest(1L, 10L), 1L, user))
+    assertThatThrownBy(() -> gearSetSlotService.equipItem(new EquipItemRequest("AMULET", 10L), 1L, user))
         .isInstanceOf(NoSuchElementException.class);
   }
 
   @Test
   void shouldThrowWhenItemNotFound() {
     when(gearSetRepository.findById(1L)).thenReturn(Optional.of(gearSet));
-    when(slotTypeRepository.findById(1L)).thenReturn(Optional.of(slotType));
+    when(slotTypeRepository.findByName(GearSetSlotTypeIdentifier.AMULET))
+        .thenReturn(Optional.of(slotType));
     when(itemDetailsRepository.findById(10L)).thenReturn(Optional.empty());
 
-    assertThatThrownBy(() -> gearSetSlotService.equipItem(new EquipItemRequest(1L, 10L), 1L, user))
+    assertThatThrownBy(() -> gearSetSlotService.equipItem(new EquipItemRequest("AMULET", 10L), 1L, user))
         .isInstanceOf(ItemNotFoundException.class);
   }
 
@@ -137,10 +140,10 @@ public class GearSetSlotServiceUnitTest {
     wrongItem.setItemTypeId(999L);
 
     when(gearSetRepository.findById(1L)).thenReturn(Optional.of(gearSet));
-    when(slotTypeRepository.findById(1L)).thenReturn(Optional.of(slotType));
+    when(slotTypeRepository.findByName(GearSetSlotTypeIdentifier.AMULET)).thenReturn(Optional.of(slotType));
     when(itemDetailsRepository.findById(20L)).thenReturn(Optional.of(wrongItem));
 
-    assertThatThrownBy(() -> gearSetSlotService.equipItem(new EquipItemRequest(1L, 20L), 1L, user))
+    assertThatThrownBy(() -> gearSetSlotService.equipItem(new EquipItemRequest("AMULET", 20L), 1L, user))
         .isInstanceOf(ItemTypeIncompatibilityException.class);
   }
 

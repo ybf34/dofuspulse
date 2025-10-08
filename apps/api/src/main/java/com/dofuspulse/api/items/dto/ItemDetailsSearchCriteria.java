@@ -9,8 +9,8 @@ import lombok.Builder;
 @Builder
 public record ItemDetailsSearchCriteria(
     @Size(max = 100) String name,
-    List<Long> typesIds,
-    Integer effect,
+    @Size(max = 45) List<Long> typesIds,
+    @Size(max = 20) List<Long> effectsIds,
     Long ingredient,
     @Min(value = 1) @Max(value = 200) Long minLevel,
     @Min(value = 1) @Max(value = 200) Long maxLevel
