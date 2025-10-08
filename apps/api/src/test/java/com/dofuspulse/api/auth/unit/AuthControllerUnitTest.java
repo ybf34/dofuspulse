@@ -44,6 +44,7 @@ class AuthControllerUnitTest {
 
   @Test
   @DisplayName("Check user can register with valid data")
+  @WithAnonymousUser
   public void shouldSucceedRegistrationWithValidData() throws Exception {
 
     when(authService.register(any()))
@@ -66,6 +67,7 @@ class AuthControllerUnitTest {
 
   @Test
   @DisplayName("Check user can't register with existing email address")
+  @WithAnonymousUser
   public void shouldReturn409WhenRegisteringWithExistingEmail() throws Exception {
 
     when(authService.register(any()))
@@ -88,6 +90,7 @@ class AuthControllerUnitTest {
   @ParameterizedTest(name = "{index} => Register Scenario: {0}")
   @MethodSource("com.dofuspulse.api.auth.unit.InvalidRegistrationScenarios#scenarios")
   @DisplayName("Should return 400 when invalid registration data is provided")
+  @WithAnonymousUser
   void shouldReturn400WhenInvalidRegistrationDataProvided(
       String displayName,
       RegisterRequest registerRequest) throws Exception {
@@ -103,6 +106,7 @@ class AuthControllerUnitTest {
 
   @Test
   @DisplayName("Check user can login with valid credentials")
+  @WithAnonymousUser
   void shouldReturn200WhenUserLogsInWithValidCredentials() throws Exception {
 
     LoginRequest loginRequest = LoginRequest.builder()
@@ -122,6 +126,7 @@ class AuthControllerUnitTest {
 
   @Test
   @DisplayName("Check user can't login in with invalid credentials")
+  @WithAnonymousUser
   void shouldReturn401WhenLoginFailsWithInvalidCredentials() throws Exception {
 
     doThrow(new BadCredentialsException("Invalid credentials"))
