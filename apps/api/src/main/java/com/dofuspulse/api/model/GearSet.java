@@ -11,12 +11,15 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 @Getter
 @Setter
@@ -48,4 +51,9 @@ public class GearSet {
   @OneToMany(mappedBy = "gearSet", cascade = CascadeType.ALL, orphanRemoval = true)
   private List<GearSetSlot> slots = new ArrayList<>();
 
+  @CreationTimestamp
+  private Instant createdAt;
+
+  @UpdateTimestamp
+  private Instant updatedAt;
 }

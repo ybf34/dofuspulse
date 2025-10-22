@@ -15,7 +15,6 @@ import com.dofuspulse.api.security.UnauthorizedHandler;
 import com.dofuspulse.api.security.WebSecurityConfig;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,7 +59,7 @@ public class ItemPerformanceControllerUnitTest {
   void shouldReturnItemPerformanceMetrics() {
 
     when(itemPerformanceService.getItemPerformanceMetrics(1L, startDate, endDate))
-        .thenReturn(Optional.of(mockItemsPerformance.getFirst()));
+        .thenReturn(mockItemsPerformance.getFirst());
 
     mockMvcTester.get().uri("/api/v1/items/{id}/performance", mockItemDetails.getId())
         .param("startDate", startDate.toString())

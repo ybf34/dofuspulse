@@ -80,4 +80,14 @@
       tableName="slot_type_item_types"/>
   </changeSet>
 
+  <changeSet author="ybf34" id="0005-add-gearset-create-update-timestamp">
+    <addColumn tableName="gear_set">
+      <column name="created_at" type="DATETIME"/>
+    </addColumn>
+    <addColumn tableName="gear_set">
+      <column name="updated_at" type="DATETIME"/>
+    </addColumn>
+  </changeSet>
+
+
 </databaseChangeLog>

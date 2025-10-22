@@ -4,11 +4,10 @@ import com.dofuspulse.api.items.dto.ItemDetailsSearchCriteria;
 import com.dofuspulse.api.projections.ItemPerformance;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 public interface ItemPerformanceService {
 
-  Optional<ItemPerformance> getItemPerformanceMetrics(
+  ItemPerformance getItemPerformanceMetrics(
       Long itemId,
       LocalDate startDate,
       LocalDate endDate

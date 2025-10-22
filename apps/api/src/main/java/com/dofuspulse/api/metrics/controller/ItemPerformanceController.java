@@ -28,9 +28,8 @@ public class ItemPerformanceController {
       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
       @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
 
-    return itemPerformanceService.getItemPerformanceMetrics(id, startDate, endDate)
-        .map(ResponseEntity::ok)
-        .orElseGet(() -> ResponseEntity.notFound().build());
+    ItemPerformance performance = itemPerformanceService.getItemPerformanceMetrics(id, startDate, endDate);
+    return ResponseEntity.ok(performance);
   }
 
   @GetMapping("/items/performance")

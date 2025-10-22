@@ -91,7 +91,7 @@ public class GearSetServiceUnitTest {
     gearSet.setCharacterClass(characterClass);
     gearSet.setUserPrincipal(user);
 
-    when(gearSetRepository.findByUserPrincipalId(user.getId())).thenReturn(List.of(gearSet));
+    when(gearSetRepository.findByUserPrincipalIdOrderByUpdatedAtDesc(user.getId())).thenReturn(List.of(gearSet));
 
     List<GearSetDto> result = gearSetService.findUserGearSets(user);
 
@@ -100,7 +100,7 @@ public class GearSetServiceUnitTest {
       assertThat(dto.characterClass().name()).isEqualTo(CharacterClassName.CRA);
     });
 
-    verify(gearSetRepository, times(1)).findByUserPrincipalId(user.getId());
+    verify(gearSetRepository, times(1)).findByUserPrincipalIdOrderByUpdatedAtDesc(user.getId());
   }
 
   @Test
@@ -159,7 +159,6 @@ public class GearSetServiceUnitTest {
 
     when(gearSetRepository.findById(42L)).thenReturn(Optional.of(saved));
     when(characterClassRepository.findByName(newClass)).thenReturn(Optional.of(characterClass));
-    when(gearSetRepository.save(any(GearSet.class))).thenReturn(saved);
 
     GearSetDto result = gearSetService.updateGearSet(42L, updateGearSetRequest, user);
 
@@ -172,7 +171,6 @@ public class GearSetServiceUnitTest {
     });
 
     verify(characterClassRepository).findByName(CharacterClassName.CRA);
-    verify(gearSetRepository).save(any(GearSet.class));
   }
 
   @Test

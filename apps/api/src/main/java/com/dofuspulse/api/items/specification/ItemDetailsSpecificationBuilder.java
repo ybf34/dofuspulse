@@ -2,6 +2,7 @@ package com.dofuspulse.api.items.specification;
 
 import static com.dofuspulse.api.items.specification.ItemDetailsSpecification.hasEffects;
 import static com.dofuspulse.api.items.specification.ItemDetailsSpecification.hasIngredient;
+import static com.dofuspulse.api.items.specification.ItemDetailsSpecification.hasItemIds;
 import static com.dofuspulse.api.items.specification.ItemDetailsSpecification.hasLevelBetween;
 import static com.dofuspulse.api.items.specification.ItemDetailsSpecification.hasName;
 import static com.dofuspulse.api.items.specification.ItemDetailsSpecification.hasTypesIds;
@@ -16,6 +17,7 @@ public class ItemDetailsSpecificationBuilder {
     return hasName(criteria.name())
         .and(hasTypesIds(criteria.typesIds()))
         .and(hasEffects(criteria.effectsIds()))
+        .and(hasItemIds(criteria.itemIds()))
         .and(hasIngredient(criteria.ingredient()))
         .and(hasLevelBetween(criteria.minLevel(), criteria.maxLevel()));
   }

@@ -61,7 +61,7 @@ public class GearSetRepositoryIntegrationTest extends PostgresIntegrationTestCon
   @Test
   void shouldReturnUserGearSets() {
 
-    List<GearSet> userGearSets = gearSetRepository.findByUserPrincipalId(userId);
+    List<GearSet> userGearSets = gearSetRepository.findByUserPrincipalIdOrderByUpdatedAtDesc(userId);
 
     assertThat(userGearSets)
         .hasSize(1)

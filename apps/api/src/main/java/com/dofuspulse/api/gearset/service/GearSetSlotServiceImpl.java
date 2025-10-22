@@ -16,6 +16,7 @@ import com.dofuspulse.api.repository.GearSetRepository;
 import com.dofuspulse.api.repository.GearSetSlotRepository;
 import com.dofuspulse.api.repository.GearSetSlotTypeRepository;
 import com.dofuspulse.api.repository.ItemDetailsRepository;
+import java.time.Instant;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -62,9 +63,12 @@ public class GearSetSlotServiceImpl implements GearSetSlotService {
             gearSetSlotType)
         .orElse(new GearSetSlot());
 
+
     newSlot.setGearSet(gearSet);
     newSlot.setGearSetSlotType(gearSetSlotType);
     newSlot.setItemDetails(itemDetails);
+
+    gearSet.setUpdatedAt(Instant.now());
 
     return new GearSetSlotDto(slotRepository.save(newSlot));
   }

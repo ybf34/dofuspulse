@@ -18,6 +18,7 @@ import com.dofuspulse.api.repository.ItemDetailsRepository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +36,7 @@ public class ItemPerformanceServiceImpl implements ItemPerformanceService {
 
   @Override
   @Transactional(readOnly = true)
-  public Optional<ItemPerformance> getItemPerformanceMetrics(
+  public ItemPerformance getItemPerformanceMetrics(
       Long itemId,
       LocalDate startDate,
       LocalDate endDate) {
@@ -44,9 +45,14 @@ public class ItemPerformanceServiceImpl implements ItemPerformanceService {
     List<ProfitMetrics> profitMetrics = profitService.getItemProfitMetricsHistory(itemId, startDate,
         endDate);
 
-    return metricRegistry.calculate(MetricType.PERFORMANCE,
-        new PerformanceMetricsParam(itemId, dailySales, profitMetrics));
+    return metricRegistry.<PerformanceMetricsParam, Optional<ItemPerformance>>calculate(
+            MetricType.PERFORMANCE,
+            new PerformanceMetricsParam(itemId, dailySales, profitMetrics))
+        .orElseThrow(() -> new NoSuchElementException(
+            String.format("No sales or profit metrics available for item ID %d in the range %s to %s.",
+                itemId, startDate, endDate)));
   }
+
 
   @Override
   @Transactional(readOnly = true)

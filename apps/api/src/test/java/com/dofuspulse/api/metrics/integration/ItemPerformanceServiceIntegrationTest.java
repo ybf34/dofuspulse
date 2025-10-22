@@ -24,7 +24,6 @@ import com.dofuspulse.api.repository.ItemMarketEntryRepository;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -112,11 +111,10 @@ public class ItemPerformanceServiceIntegrationTest extends PostgresIntegrationTe
   @Test
   void shouldReturnItemPerformanceMetrics() {
 
-    Optional<ItemPerformance> itemPerformanceOpt = itemPerformanceService
+    ItemPerformance itemPerformance = itemPerformanceService
         .getItemPerformanceMetrics(mockItemDetails.getId(), startDate, endDate);
 
-    assertThat(itemPerformanceOpt)
-        .isPresent();
+    assertThat(itemPerformance).isNotNull();
 
   }
 

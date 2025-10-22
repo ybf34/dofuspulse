@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface GearSetRepository extends JpaRepository<GearSet, Long> {
 
-  List<GearSet> findByUserPrincipalId(Long id);
+  List<GearSet> findByUserPrincipalIdOrderByUpdatedAtDesc(Long userId);
 }

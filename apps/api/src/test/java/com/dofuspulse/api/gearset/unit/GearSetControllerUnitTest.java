@@ -22,6 +22,7 @@ import com.dofuspulse.api.security.CustomAccessDeniedHandler;
 import com.dofuspulse.api.security.UnauthorizedHandler;
 import com.dofuspulse.api.security.WebSecurityConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.Instant;
 import java.util.List;
 import java.util.NoSuchElementException;
 import org.junit.jupiter.api.BeforeEach;
@@ -56,7 +57,7 @@ public class GearSetControllerUnitTest {
   @BeforeEach
   void setUp() {
     mockGearSet = new GearSetDto(1L, "My gearset", new CharacterClassDto(CharacterClassName.CRA), "m", List.of(),
-        List.of());
+        List.of(), Instant.now(), Instant.now());
 
     UserPrincipal user = new UserPrincipal();
     user.setEmail(testUserEmail);
@@ -116,8 +117,10 @@ public class GearSetControllerUnitTest {
   )
   void shouldReturnUserGearSetsWith200Status() {
     List<GearSetDto> gearSets = List.of(
-        new GearSetDto(1L, "Set1", new CharacterClassDto(CharacterClassName.CRA), "m", List.of("tag1"), List.of()),
-        new GearSetDto(2L, "Set2", new CharacterClassDto(CharacterClassName.CRA), "m", List.of("tag1"), List.of())
+        new GearSetDto(1L, "Set1", new CharacterClassDto(CharacterClassName.CRA), "m", List.of("tag1"), List.of(),
+            Instant.now(), Instant.now()),
+        new GearSetDto(2L, "Set2", new CharacterClassDto(CharacterClassName.CRA), "m", List.of("tag1"), List.of(),
+            Instant.now(), Instant.now())
     );
     when(gearSetService.findUserGearSets(any(UserPrincipal.class))).thenReturn(gearSets);
 

@@ -78,6 +78,10 @@ public class ItemTestDataFactory {
     if (filters.maxLevel() != null) {
       queryParams.add("maxLevel", String.valueOf(filters.maxLevel()));
     }
+    if (filters.itemIds() != null) {
+      queryParams.add("itemIds",
+          filters.itemIds().stream().map(String::valueOf).collect(Collectors.joining(",")));
+    }
     return queryParams;
   }
 
@@ -101,6 +105,11 @@ public class ItemTestDataFactory {
             ItemDetailsSearchCriteria.builder()
                 .effectsIds(Stream.iterate(100L, i -> i + 1).limit(21).collect(Collectors.toList()))
                 .typesIds(List.of(1L))
+                .build())),
+
+        Arguments.of("itemIds exceeds max size (101 elements)", ItemTestDataFactory.createItemDetailsQueryParams(
+            ItemDetailsSearchCriteria.builder()
+                .itemIds(Stream.iterate(1L, i -> i + 1).limit(101).collect(Collectors.toList()))
                 .build()))
     );
   }

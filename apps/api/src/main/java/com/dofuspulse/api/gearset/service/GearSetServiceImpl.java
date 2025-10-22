@@ -10,6 +10,7 @@ import com.dofuspulse.api.model.CharacterClass;
 import com.dofuspulse.api.model.GearSet;
 import com.dofuspulse.api.repository.CharacterClassRepository;
 import com.dofuspulse.api.repository.GearSetRepository;
+import java.time.Instant;
 import java.util.List;
 import java.util.NoSuchElementException;
 import lombok.RequiredArgsConstructor;
@@ -35,7 +36,7 @@ public class GearSetServiceImpl implements GearSetService {
   @Override
   @Transactional(readOnly = true)
   public List<GearSetDto> findUserGearSets(UserPrincipal user) {
-    return gearSetRepository.findByUserPrincipalId(user.getId()).stream().map(GearSetDto::new)
+    return gearSetRepository.findByUserPrincipalIdOrderByUpdatedAtDesc(user.getId()).stream().map(GearSetDto::new)
         .toList();
   }
 
@@ -87,7 +88,9 @@ public class GearSetServiceImpl implements GearSetService {
       gearset.setTags(request.tags());
     }
 
-    return new GearSetDto(gearSetRepository.save(gearset));
+    gearset.setUpdatedAt(Instant.now());
+
+    return new GearSetDto(gearset);
   }
 
   @Override

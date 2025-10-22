@@ -166,7 +166,7 @@ public class GearSetControllerIntegrationTest extends PostgresIntegrationTestCon
         .assertThat()
         .hasStatus(201);
 
-    List<GearSet> gearSets = gearSetRepository.findByUserPrincipalId(
+    List<GearSet> gearSets = gearSetRepository.findByUserPrincipalIdOrderByUpdatedAtDesc(
         gearSetScenario.user().getId());
 
     assertThat(gearSets)
@@ -212,7 +212,9 @@ public class GearSetControllerIntegrationTest extends PostgresIntegrationTestCon
         .hasPath("$.characterClass")
         .hasPath("$.characterGender")
         .hasPath("$.tags")
-        .hasPath("$.slots");
+        .hasPath("$.slots")
+        .hasPath("$.createdAt")
+        .hasPath("$.updatedAt");
 
   }
 
@@ -238,7 +240,7 @@ public class GearSetControllerIntegrationTest extends PostgresIntegrationTestCon
         .assertThat()
         .hasStatus(HttpStatus.BAD_REQUEST);
 
-    List<GearSet> gearSets = gearSetRepository.findByUserPrincipalId(
+    List<GearSet> gearSets = gearSetRepository.findByUserPrincipalIdOrderByUpdatedAtDesc(
         gearSetScenario.user().getId());
     assertThat(gearSets)
         .hasSize(1)

@@ -121,3 +121,4 @@ public class ItemDetailsServiceIntegrationTest extends PostgresIntegrationTestCo
   }
 
 }
+

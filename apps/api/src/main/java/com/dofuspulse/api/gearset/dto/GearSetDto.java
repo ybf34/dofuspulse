@@ -1,6 +1,7 @@
 package com.dofuspulse.api.gearset.dto;
 
 import com.dofuspulse.api.model.GearSet;
+import java.time.Instant;
 import java.util.List;
 
 public record GearSetDto(Long id,
@@ -8,7 +9,9 @@ public record GearSetDto(Long id,
                          CharacterClassDto characterClass,
                          String characterGender,
                          List<String> tags,
-                         List<GearSetSlotDto> slots) {
+                         List<GearSetSlotDto> slots,
+                         Instant createdAt,
+                         Instant updatedAt) {
 
   public GearSetDto(GearSet entity) {
     this(entity.getId(),
@@ -19,7 +22,9 @@ public record GearSetDto(Long id,
         entity.getSlots()
             .stream()
             .map(GearSetSlotDto::new)
-            .toList()
+            .toList(),
+        entity.getCreatedAt(),
+        entity.getUpdatedAt()
     );
   }
 }

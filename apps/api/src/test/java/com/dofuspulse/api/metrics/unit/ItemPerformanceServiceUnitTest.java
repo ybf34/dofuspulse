@@ -101,12 +101,11 @@ public class ItemPerformanceServiceUnitTest {
     when(metricRegistry.calculate(eq(MetricType.PERFORMANCE), any(PerformanceMetricsParam.class)))
         .thenReturn(Optional.of(mockItemsPerformance.getFirst()));
 
-    Optional<ItemPerformance> itemPerformanceOpt = itemPerformanceService.getItemPerformanceMetrics(
+    ItemPerformance itemPerformanceOpt = itemPerformanceService.getItemPerformanceMetrics(
         mockItemDetailsFirst.getId(), startDate, endDate);
 
     assertThat(itemPerformanceOpt)
-        .isPresent()
-        .get()
+        .isNotNull()
         .extracting(ItemPerformance::itemId)
         .isEqualTo(mockItemDetailsFirst.getId());
 

@@ -76,4 +76,13 @@ public class ItemDetailsSpecification {
           cb.literal(ingredientId)));
     };
   }
+
+  public static Specification<ItemDetails> hasItemIds(List<Long> itemIds) {
+    return ((root, query, cb) -> {
+      if (itemIds != null && !itemIds.isEmpty()) {
+        return root.get("id").in(itemIds);
+      }
+      return cb.conjunction();
+    });
+  }
 }
