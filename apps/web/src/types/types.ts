@@ -1,4 +1,8 @@
-import type {APIItemDetails, APIUser, CharacterClassName,} from "@/services/api/api.types";
+import type {
+	APIItemDetails,
+	APIUser,
+	CharacterClassName,
+} from "@/services/api/api.types";
 
 export type GridValue = 1 | 2 | 3 | 4 | 5 | 6;
 
@@ -8,13 +12,13 @@ export type GridPosition = {
 };
 
 export type SlotConfig = {
-  gridPosition: GridPosition;
-  placeholderIcon: string;
+	gridPosition: GridPosition;
+	placeholderIcon: string;
 };
 
 export type CharacterClassType = {
-  characterClass: CharacterClassName;
-  gender: "m" | "f";
+	characterClass: CharacterClassName;
+	gender: "m" | "f";
 };
 
 export type OAuth2Provider = "discord" | "google";
@@ -62,10 +66,10 @@ export type UserDisplayProfile = {
 };
 
 export type ItemWithQuantity = Pick<
-    APIItemDetails,
-    "id" | "name" | "iconId"
+	APIItemDetails,
+	"id" | "name" | "iconId"
 > & {
-  quantity?: number;
+	quantity?: number;
 };
 
 export const timeRanges = ["7d", "30d", "1y", "max"] as const;

@@ -1,11 +1,11 @@
 import type {
-  DiscordUserAttributes,
-  GoogleUserAttributes,
-  UserDisplayProfile,
-  UserProfile,
+	DiscordUserAttributes,
+	GoogleUserAttributes,
+	UserDisplayProfile,
+	UserProfile,
 } from "@/types/types";
 
-import {discordAvatarBaseUrl} from "@/utils/constants";
+import { discordAvatarBaseUrl } from "@/utils/constants";
 
 const getDiscordAvatarUrl = (
 	userSocialId: string,
@@ -40,10 +40,10 @@ export const getUserProfilePicture = (
 };
 
 export const normalizeUserProfile = (
-    userProfile: UserProfile | undefined,
+	userProfile: UserProfile | undefined,
 ): UserDisplayProfile | undefined => {
 	if (!userProfile) {
-    return undefined;
+		return undefined;
 	}
 
 	const email = userProfile.email ?? "";

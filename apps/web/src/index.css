@@ -12,9 +12,9 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --menu-link-active-color: oklch(0.145 0 0);
-  --menu-link-default-color: oklch(0.5 0 0);
-  --font-sans: "Outfit", sans-serif;
+	--menu-link-active-color: oklch(0.145 0 0);
+	--menu-link-default-color: oklch(0.5 0 0);
+	--font-sans: "Outfit", sans-serif;
 	--font-mono: "Consolas", monospace;
 	--radius: 0.625rem;
 	--background: oklch(1 0 0);
@@ -35,12 +35,12 @@
 	--border: oklch(0.922 0 0);
 	--input: oklch(0.922 0 0);
 	--ring: oklch(0.708 0 0);
-  --chart-neutral: oklch(0.25 0 0);
-  --chart-1: oklch(0.6 0.2 30);
-  --chart-2: oklch(0.55 0.2 200);
-  --chart-3: oklch(0.6 0.18 120);
-  --chart-4: oklch(0.6 0.18 300);
-  --chart-5: oklch(0.62 0.15 60);
+	--chart-neutral: oklch(0.25 0 0);
+	--chart-1: oklch(0.6 0.2 30);
+	--chart-2: oklch(0.55 0.2 200);
+	--chart-3: oklch(0.6 0.18 120);
+	--chart-4: oklch(0.6 0.18 300);
+	--chart-5: oklch(0.62 0.15 60);
 	--sidebar: oklch(0.985 0 0);
 	--sidebar-foreground: oklch(0.145 0 0);
 	--sidebar-primary: oklch(0.205 0 0);
@@ -90,8 +90,8 @@
 }
 
 .dark {
-  --menu-link-active-color: white;
-  --menu-link-default-color: gray;
+	--menu-link-active-color: white;
+	--menu-link-default-color: gray;
 	--background: oklch(0.145 0 0);
 	--foreground: oklch(0.985 0 0);
 	--card: oklch(0.205 0 0);
@@ -110,13 +110,13 @@
 	--border: oklch(1 0 0 / 10%);
 	--input: oklch(1 0 0 / 15%);
 	--ring: oklch(0.556 0 0);
-  --chart-neutral: oklch(0.9 0 0);
-  --chart-1: oklch(0.68 0.2 30);
-  --chart-2: oklch(0.7 0.12 220);
-  --chart-3: oklch(0.65 0.18 140);
-  --chart-4: oklch(0.68 0.15 300);
-  --chart-5: oklch(0.66 0.16 80);
-  --sidebar: oklch(0.145 0 0);
+	--chart-neutral: oklch(0.9 0 0);
+	--chart-1: oklch(0.68 0.2 30);
+	--chart-2: oklch(0.7 0.12 220);
+	--chart-3: oklch(0.65 0.18 140);
+	--chart-4: oklch(0.68 0.15 300);
+	--chart-5: oklch(0.66 0.16 80);
+	--sidebar: oklch(0.145 0 0);
 	--sidebar-foreground: oklch(0.985 0 0);
 	--sidebar-primary: oklch(0.488 0.243 264.376);
 	--sidebar-primary-foreground: oklch(0.985 0 0);
