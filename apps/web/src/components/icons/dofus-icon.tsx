@@ -1,9 +1,5 @@
-import { ReactComponent as DofusSvgIcon } from "@/assets/dofus-pulse.svg";
+import DofusSvgIcon from "@/assets/dofus-pulse.svg?react";
 
-export type DofusIconProps = {
-	className?: string;
-};
-
-export default function DofusIcon({ className }: DofusIconProps) {
+export default function DofusIcon({className}: { className: string }) {
 	return <DofusSvgIcon className={className} />;
 }

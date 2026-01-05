@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import {motion} from "framer-motion";
 
 export type LoadingSpinnerProps = {
 	className?: string;
@@ -9,36 +9,37 @@ const pathD =
 
 function LoadingSpinner({ className }: LoadingSpinnerProps) {
 	return (
-		<motion.svg
-			xmlns="http://www.w3.org/2000/svg"
-			viewBox="0 0 1024 1024"
-			className={className}
-			preserveAspectRatio="xMidYMid meet"
-		>
-			<title>Loading...</title>
-			<motion.path
-				d={pathD}
-				strokeWidth="1"
-				shapeRendering="geometricPrecision"
-				animate={{
-					scale: [1, 1.025, 1],
-					filter: [
-						// Glow always on, starts soft, peaks stronger
-						"drop-shadow(0 0 10px rgba(255,255,255,0.3)) drop-shadow(0 0 4px rgba(255,255,255,0.15))",
-						"drop-shadow(0 0 20px rgba(255,255,255,0.8)) drop-shadow(0 0 10px rgba(255,255,255,0.5))",
-						"drop-shadow(0 0 10px rgba(255,255,255,0.3)) drop-shadow(0 0 4px rgba(255,255,255,0.15))",
-					],
-					fill: ["#A0A0A0", "#FFFFFF", "#A0A0A0"],
-					stroke: ["#A0A0A0", "#FFFFFF", "#A0A0A0"],
-				}}
-				transition={{
-					duration: 3.5,
-					repeat: Infinity,
-					ease: "easeInOut",
-				}}
-				style={{ originX: "50%", originY: "50%" }}
-			/>
-		</motion.svg>
+      <div className="flex justify-center items-center h-screen">
+        <motion.svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 1024 1024"
+            className={className}
+            preserveAspectRatio="xMidYMid meet"
+        >
+          <title>Loading...</title>
+          <motion.path
+              d={pathD}
+              strokeWidth="1"
+              shapeRendering="geometricPrecision"
+              animate={{
+                scale: [1, 1.025, 1],
+                filter: [
+                  "drop-shadow(0 0 10px rgba(255,255,255,0.3)) drop-shadow(0 0 4px rgba(255,255,255,0.15))",
+                  "drop-shadow(0 0 20px rgba(255,255,255,0.8)) drop-shadow(0 0 10px rgba(255,255,255,0.5))",
+                  "drop-shadow(0 0 10px rgba(255,255,255,0.3)) drop-shadow(0 0 4px rgba(255,255,255,0.15))",
+                ],
+                fill: ["#A0A0A0", "#FFFFFF", "#A0A0A0"],
+                stroke: ["#A0A0A0", "#FFFFFF", "#A0A0A0"],
+              }}
+              transition={{
+                duration: 3.5,
+                repeat: Infinity,
+                ease: "easeInOut",
+              }}
+              style={{originX: "50%", originY: "50%"}}
+          />
+        </motion.svg>
+      </div>
 	);
 }
 

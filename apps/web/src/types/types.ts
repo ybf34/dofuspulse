@@ -1,9 +1,4 @@
-import type {
-	GearSetDto,
-	GearSetSlotDto,
-	ItemDetailsDto,
-	UserProfileDto,
-} from "@/api/model";
+import type {APIItemDetails, APIUser, CharacterClassName,} from "@/services/api/api.types";
 
 export type GridValue = 1 | 2 | 3 | 4 | 5 | 6;
 
@@ -12,47 +7,14 @@ export type GridPosition = {
 	rowStart: GridValue;
 };
 
-export const GearsetSlotIdentifierValues = {
-	HAT: "HAT",
-	CLOAK: "CLOAK",
-	AMULET: "AMULET",
-	WEAPON: "WEAPON",
-	LEGENDARY_WEAPON: "LEGENDARY_WEAPON",
-	SHIELD: "SHIELD",
-	RING_1: "RING_1",
-	RING_2: "RING_2",
-	BELT: "BELT",
-	BOOTS: "BOOTS",
-	PET_MOUNT: "PET_MOUNT",
-	DOFUS_TROPHY_1: "DOFUS_TROPHY_1",
-	DOFUS_TROPHY_2: "DOFUS_TROPHY_2",
-	DOFUS_TROPHY_3: "DOFUS_TROPHY_3",
-	DOFUS_TROPHY_4: "DOFUS_TROPHY_4",
-	DOFUS_TROPHY_5: "DOFUS_TROPHY_5",
-	DOFUS_TROPHY_6: "DOFUS_TROPHY_6",
-} as const;
-
-export type GearsetSlotIdentifier =
-	(typeof GearsetSlotIdentifierValues)[keyof typeof GearsetSlotIdentifierValues];
-
-export type GearSetSlotCellProps = {
-	slotIdentifier: GearsetSlotIdentifier;
-	itemDetails?: ItemDetailsDto | null;
+export type SlotConfig = {
+  gridPosition: GridPosition;
+  placeholderIcon: string;
 };
 
 export type CharacterClassType = {
-	name: string;
-	gender: string;
-};
-export type GearSetGridProps = {
-	id: string;
-	characterClass: CharacterClassType;
-	gearsetSlots: GearSetSlotDto[];
-};
-
-export type GearSetCardProps = {
-	onDelete: (id: number) => void;
-	gearSet: GearSetDto;
+  characterClass: CharacterClassName;
+  gender: "m" | "f";
 };
 
 export type OAuth2Provider = "discord" | "google";
@@ -89,7 +51,7 @@ export type GoogleUserAttributes = {
 	email_verified: boolean;
 };
 
-export type UserProfile = Omit<UserProfileDto, "attributes"> & {
+export type UserProfile = Omit<APIUser, "attributes"> & {
 	attributes?: GoogleUserAttributes | DiscordUserAttributes | null;
 };
 
@@ -99,19 +61,13 @@ export type UserDisplayProfile = {
 	avatar?: string;
 };
 
-export type CharacterClassNameType =
-	| "cra"
-	| "ecaflip"
-	| "eniripsia"
-	| "enutrof"
-	| "feca"
-	| "iop"
-	| "osamodas"
-	| "pandawa"
-	| "roublard"
-	| "sacrieur"
-	| "sadida"
-	| "sram"
-	| "steamer"
-	| "xelor"
-	| "zobal";
+export type ItemWithQuantity = Pick<
+    APIItemDetails,
+    "id" | "name" | "iconId"
+> & {
+  quantity?: number;
+};
+
+export const timeRanges = ["7d", "30d", "1y", "max"] as const;
+
+export type TimeRange = (typeof timeRanges)[number];
