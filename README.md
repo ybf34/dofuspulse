@@ -14,13 +14,12 @@
     <img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT">
 
   </p>
-
+  
 <p align="center">
-  <b>Dofus Pulse</b> is a data-driven web application for Dofus Touch, built to provide a comprehensive view of the in-game economy.
-  <br />
-  It combines market analytics, historical price trends, sales performance metrics, profit calculations, gearset planning, and portfolio monitoring,
-  <br />
-  giving players the tools to make informed trading and crafting decisions.
+  <sub>
+    <b>Dofus Pulse</b> is a data-driven web application for Dofus Touch, built to provide a comprehensive view of the in-game economy.
+    It combines market analytics, historical price trends, sales performance metrics, profit calculations, gearset planning, and portfolio monitoring, giving players the tools to make informed trading and crafting decisions.
+  </sub>
   <br />
   <br />
   <a href="#-local-development">Run locally</a>
