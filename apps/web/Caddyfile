@@ -1,0 +1,17 @@
+:80 {
+
+  root * /srv
+  file_server
+
+  @frontend {
+    not path /api/*
+  }
+
+  handle @frontend {
+     try_files {path} {path}/ /index.html
+  }
+
+  handle /api/* {
+    reverse_proxy api-dofuspulse:8080
+  }
+}
