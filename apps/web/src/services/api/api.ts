@@ -5,6 +5,10 @@ import { toast } from "sonner";
 import { contract } from "@/services/api/api.contract";
 import type { ProblemDetail } from "@/services/api/api.types";
 
+const API_BASE_URL = import.meta.env.DEV
+	? import.meta.env.VITE_API_BASE_URL
+	: "";
+
 export const queryClient = new QueryClient({
 	defaultOptions: {
 		queries: {
@@ -14,7 +18,7 @@ export const queryClient = new QueryClient({
 });
 
 export const tsr = initTsrReactQuery(contract, {
-	baseUrl: import.meta.env.VITE_API_BASE_URL,
+	baseUrl: API_BASE_URL,
 	baseHeaders: {
 		accept: "application/json",
 		"content-type": "application/json",
@@ -23,7 +27,7 @@ export const tsr = initTsrReactQuery(contract, {
 });
 
 export function getApiUrl(path: `/${string}`) {
-	return import.meta.env.VITE_API_BASE_URL + path;
+	return API_BASE_URL + path;
 }
 
 export function handleApiError(error: unknown) {

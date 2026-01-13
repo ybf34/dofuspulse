@@ -1,4 +1,3 @@
-import { Link } from "@tanstack/react-router";
 import { BadgeCheck, ChevronsUpDown, LogOut } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -69,12 +68,12 @@ export function NavUser() {
 
 						<DropdownMenuSeparator />
 
-						<Link to={getApiUrl("/api/v1/auth/logout")}>
-							<DropdownMenuItem className="text-destructive focus:text-destructive cursor-pointer">
+						<a href={getApiUrl("/api/v1/auth/logout")}>
+							<DropdownMenuItem className="text-destructive focus: text-destructive cursor-pointer">
 								<LogOut className="mr-2 h-4 w-4" />
 								Disconnect
 							</DropdownMenuItem>
-						</Link>
+						</a>
 					</DropdownMenuContent>
 				</DropdownMenu>
 			</SidebarMenuItem>
