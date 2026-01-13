@@ -37,6 +37,15 @@
 
 https://github.com/user-attachments/assets/103a628f-aafd-471b-9ecc-b1f5a3bb27b1
 
+## About this project
+
+I built **Dofus Pulse** to improve my skills in full-stack development, working on backend technologies like **Spring Boot** and **Java**, frontend with **TypeScript** and **React**, as well as databases, testing, CI/CD, and infrastructure.  
+
+Along the way, I also learned a lot about handling **time-series data**, performing **data-driven calculations**, and **optimizing queries**.
+
+---
+
+
 ## 🛠 Tech Stack
 
 * **Backend**: Spring Boot 3.x, Java 21, Maven
