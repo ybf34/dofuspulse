@@ -37,6 +37,7 @@ spring:
             client-name: Discord
             client-authentication-method: client_secret_post
             authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/discord"
         provider:
           discord:
             authorization-uri: https://discord.com/api/oauth2/authorize
@@ -62,14 +63,8 @@ spring:
   config:
     activate:
       on-profile: local
-  security:
-    oauth2:
-      client:
-        registration:
-          discord:
-            redirect-uri: http://${APP_HOST}:8080/login/oauth2/code/discord
   jpa:
-    show-sql: false
+    show-sql: true
 logging:
   level:
     org.springframework.security: trace
@@ -86,12 +81,6 @@ spring:
   config:
     activate:
       on-profile: prod
-  security:
-    oauth2:
-      client:
-        registration:
-          discord:
-            redirect-uri: https://${APP_HOST}/login/oauth2/code/discord
 logging:
   level:
     root: INFO
@@ -103,4 +92,3 @@ management:
     web:
       exposure:
         include: '*'
-

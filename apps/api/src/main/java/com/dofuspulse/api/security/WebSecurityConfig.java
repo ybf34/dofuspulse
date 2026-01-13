@@ -63,7 +63,7 @@ public class WebSecurityConfig {
         .logout(logout -> logout
             .logoutUrl("/api/v1/auth/logout")
             .invalidateHttpSession(true)
-            .logoutSuccessUrl(frontendHost + "/login")
+            .logoutSuccessUrl(frontendHost)
             .permitAll()
         )
         .authorizeHttpRequests(registry -> registry

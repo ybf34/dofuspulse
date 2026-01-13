@@ -30,7 +30,7 @@ public class OAuth2Config {
                         .userService(customOAuth2UserService)
                 )
                 .defaultSuccessUrl(frontendHost)
-                .failureUrl(frontendHost + "/login?error=access_denied")
+                .failureUrl(frontendHost + "/?error=access_denied")
         );
     return http.build();
   }
