@@ -5,10 +5,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useLoginMutation } from "@/features/auth/hooks/use-login-mutation";
 import { useRegisterMutation } from "@/features/auth/hooks/use-register-mutation";
 import { getOAuth2AuthorizationUrl } from "@/features/auth/utils/auth";
-import { LoginForm } from "./login-form";
-import { RegisterForm } from "./register-form";
-import { OAuthButtons } from "./oauth-buttons";
 import type { OAuth2Provider } from "@/types/types";
+import { LoginForm } from "./login-form";
+import { OAuthButtons } from "./oauth-buttons";
+import { RegisterForm } from "./register-form";
 
 interface AuthModalProps {
 	open: boolean;

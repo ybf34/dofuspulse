@@ -1,6 +1,6 @@
 import type {
-	APIGearset,
 	APIGearSetSlotType,
+	APIGearset,
 	APIItemDetails,
 	GearsetSlotTypeIdentifier,
 } from "@/services/api/api.types";

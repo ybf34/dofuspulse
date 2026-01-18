@@ -2,8 +2,8 @@ import { memo } from "react";
 import { useEffectsQuery } from "@/features/items/hooks/use-effects-query";
 import {
 	getEffectIconPath,
-	itemEffects,
 	type ItemStatRow,
+	itemEffects,
 	toItemStatRow,
 } from "@/features/items/utils/item.utils.ts";
 import type { ItemEffect } from "@/services/api/api.types";
